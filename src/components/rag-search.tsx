@@ -114,56 +114,54 @@ export function RAGSearch() {
         <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
           Get instant answers about interview preparation, tax automation strategies, and technical implementation details
         </p>
-
-        {/* Subtle Mode Switcher */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex items-center justify-center"
-        >
-          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full p-1 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setSearchMode('chat')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  searchMode === 'chat'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
-                }`}
-              >
-                <MessageSquare className="w-4 h-4" />
-                Chat
-              </button>
-              <button
-                onClick={() => setSearchMode('search')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  searchMode === 'search'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
-                }`}
-              >
-                <Search className="w-4 h-4" />
-                Q&A
-              </button>
-            </div>
-          </div>
-        </motion.div>
       </motion.div>
 
-      {/* Content based on selected mode */}
-      <AnimatePresence mode="wait">
-        {searchMode === 'chat' ? (
+      {/* Action Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="flex justify-center gap-4 mb-8"
+      >
+        <Button
+          onClick={() => setShowDocumentUpload(!showDocumentUpload)}
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Upload className="w-4 h-4" />
+          {showDocumentUpload ? 'Hide' : 'Upload Documents'}
+        </Button>
+        <Button
+          onClick={() => setShowRAGInfo(!showRAGInfo)}
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Info className="w-4 h-4" />
+          {showRAGInfo ? 'Hide' : 'How RAG Works'}
+          {showRAGInfo ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </Button>
+      </motion.div>
+
+      {/* Document Upload Section */}
+      <AnimatePresence>
+        {showDocumentUpload && (
           <motion.div
-            key="chat"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
+            className="mb-8"
           >
-            <ConversationalRAG />
+            <DocumentUpload onUploadSuccess={handleUploadSuccess} />
           </motion.div>
-        ) : (
+        )}
+      </AnimatePresence>
+
+      {/* RAG Information Section */}
+      <AnimatePresence>
+        {showRAGInfo && (
           <motion.div
             key="search"
             initial={{ opacity: 0, y: 20 }}
@@ -374,7 +372,7 @@ export function RAGSearch() {
                       </h3>
                       
                       <div className="grid gap-4">
-                        {searchResponse.results.map((result, index) => (
+                        {searchResponse.results.map((result: SearchResult, index: number) => (
                           <motion.div
                             key={result.id}
                             className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-5 border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-shadow"

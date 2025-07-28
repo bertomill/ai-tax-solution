@@ -67,6 +67,33 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Documentation",
           icon: <BookOpen className="size-4" />,
           url: "/documentation",
+          subItems: [
+            {
+              title: "Overview",
+              url: "/documentation#overview",
+              section: "overview"
+            },
+            {
+              title: "Different Forms of AI",
+              url: "/documentation#ai-forms",
+              section: "ai-forms"
+            },
+            {
+              title: "Efficiency Gains",
+              url: "/documentation#efficiency",
+              section: "efficiency"
+            },
+            {
+              title: "Strategic Insights",
+              url: "/documentation#insights",
+              section: "insights"
+            },
+            {
+              title: "Practical Lessons",
+              url: "/documentation#practical-lessons",
+              section: "practical-lessons"
+            }
+          ]
         },
       ],
     },
@@ -191,6 +218,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     } else if (pathname === "/problem-identification") {
       sections = ["problem-identification", "user-analysis", "mvp-strategy", "ai-implementation"]
       itemToExpand = "Approach"
+    } else if (pathname === "/documentation") {
+      sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons"]
+      itemToExpand = "Documentation"
     }
     
     if (sections.length === 0) return

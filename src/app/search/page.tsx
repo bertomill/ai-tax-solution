@@ -155,51 +155,52 @@ export default function SearchPage() {
       
       <div className="relative z-10 py-8">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Header */}
+          {/* Subtle Tab Navigation - Top Left */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute top-6 left-6 z-20"
           >
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                AI Tax Research Platform
-              </h1>
-            </div>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Experience the future of tax research with AI-powered search and comprehensive solution design
-            </p>
-          </motion.div>
-
-          {/* Main Tabs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <Tabs defaultValue="search" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 h-14">
-                <TabsTrigger value="search" className="text-lg py-4 px-6">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  AI Search Tool
+            <Tabs defaultValue="search" className="w-auto">
+              <TabsList className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-sm h-10">
+                <TabsTrigger value="search" className="text-sm px-3 py-1.5 data-[state=active]:bg-blue-500 data-[state=active]:text-white">
+                  <Sparkles className="w-4 h-4 mr-1.5" />
+                  AI Search
                 </TabsTrigger>
-                <TabsTrigger value="design" className="text-lg py-4 px-6">
-                  <Lightbulb className="w-5 h-5 mr-2" />
+                <TabsTrigger value="design" className="text-sm px-3 py-1.5 data-[state=active]:bg-blue-500 data-[state=active]:text-white">
+                  <Lightbulb className="w-4 h-4 mr-1.5" />
                   Solution Design
                 </TabsTrigger>
               </TabsList>
 
               {/* AI Search Tool Tab */}
-              <TabsContent value="search">
+              <TabsContent value="search" className="mt-16">
+                {/* Header for Search */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-center mb-8"
+                >
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+                      <Sparkles className="w-8 h-8 text-white" />
+                    </div>
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      AI Tax Research Platform
+                    </h1>
+                  </div>
+                  <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Experience the future of tax research with AI-powered search and comprehensive solution design
+                  </p>
+                </motion.div>
+                
                 <RAGSearch />
               </TabsContent>
 
               {/* Solution Design Tab */}
-              <TabsContent value="design" className="space-y-8">
+              <TabsContent value="design" className="space-y-8 mt-16">
                 {/* Solution Design Header */}
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
