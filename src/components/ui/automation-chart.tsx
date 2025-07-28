@@ -21,6 +21,7 @@ const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string>('high-priority')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +65,47 @@ const AutomationChart: React.FC = () => {
         return 'Low Volume, High Complexity'
       default:
         return 'Unknown'
+    }
+  }
+
+  const getCategoryDisplayData = (category: string) => {
+    switch (category) {
+      case 'high-priority':
+        return {
+          title: 'High Priority Opportunities',
+          subtitle: 'Best candidates for AI automation',
+          bgColor: 'bg-green-50/50',
+          borderColor: 'border-green-200/50',
+          dotColor: 'bg-green-500',
+          colorClass: 'bg-green-500 border-green-600'
+        }
+      case 'medium-priority':
+        return {
+          title: 'Medium Priority Opportunities',
+          subtitle: 'Moderate automation potential',
+          bgColor: 'bg-yellow-50/50',
+          borderColor: 'border-yellow-200/50',
+          dotColor: 'bg-yellow-500',
+          colorClass: 'bg-yellow-500 border-yellow-600'
+        }
+      case 'low-priority':
+        return {
+          title: 'Low Priority Opportunities',
+          subtitle: 'Complex processes requiring careful evaluation',
+          bgColor: 'bg-red-50/50',
+          borderColor: 'border-red-200/50',
+          dotColor: 'bg-red-500',
+          colorClass: 'bg-red-500 border-red-600'
+        }
+      default:
+        return {
+          title: 'Unknown Category',
+          subtitle: '',
+          bgColor: 'bg-gray-50/50',
+          borderColor: 'border-gray-200/50',
+          dotColor: 'bg-gray-500',
+          colorClass: 'bg-gray-500 border-gray-600'
+        }
     }
   }
 
@@ -350,57 +392,81 @@ const AutomationChart: React.FC = () => {
 
       {/* Legend and Opportunities List */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Legend */}
+        {/* Interactive Legend */}
         <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Legend</CardTitle>
+            <p className="text-sm text-gray-600">Click to view opportunities</p>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setSelectedCategory('high-priority')}
+              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-green-50 ${
+                selectedCategory === 'high-priority' ? 'bg-green-100 border border-green-200' : ''
+              }`}
+            >
               <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-600"></div>
-              <span className="text-sm">High Volume, Low Complexity</span>
-            </div>
-            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium">High Volume, Low Complexity</span>
+            </button>
+            <button
+              onClick={() => setSelectedCategory('medium-priority')}
+              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-yellow-50 ${
+                selectedCategory === 'medium-priority' ? 'bg-yellow-100 border border-yellow-200' : ''
+              }`}
+            >
               <div className="w-4 h-4 rounded-full bg-yellow-500 border-2 border-yellow-600"></div>
-              <span className="text-sm">Medium Priority</span>
-            </div>
-            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium">Medium Priority</span>
+            </button>
+            <button
+              onClick={() => setSelectedCategory('low-priority')}
+              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-red-50 ${
+                selectedCategory === 'low-priority' ? 'bg-red-100 border border-red-200' : ''
+              }`}
+            >
               <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-red-600"></div>
-              <span className="text-sm">Low Volume, High Complexity</span>
-            </div>
+              <span className="text-sm font-medium">Low Volume, High Complexity</span>
+            </button>
           </CardContent>
         </Card>
 
-        {/* High Priority Opportunities */}
+        {/* Dynamic Opportunities List */}
         <Card className="lg:col-span-2 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg flex items-center space-x-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span>High Priority Opportunities</span>
+              <div className={`w-3 h-3 rounded-full ${getCategoryDisplayData(selectedCategory).dotColor}`}></div>
+              <span>{getCategoryDisplayData(selectedCategory).title}</span>
             </CardTitle>
-            <p className="text-sm text-gray-600">Best candidates for AI automation</p>
+            <p className="text-sm text-gray-600">{getCategoryDisplayData(selectedCategory).subtitle}</p>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {automationOpportunities
-                .filter(op => op.category === 'high-priority')
+                .filter(op => op.category === selectedCategory)
                 .slice(0, 6)
-                .map((opportunity) => (
-                  <div key={opportunity.id} className="flex items-start justify-between p-3 bg-green-50/50 rounded-lg border border-green-200/50">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">{opportunity.name}</h4>
-                      <p className="text-xs text-gray-600 mt-1">{opportunity.description}</p>
+                .map((opportunity) => {
+                  const displayData = getCategoryDisplayData(selectedCategory)
+                  return (
+                    <div key={opportunity.id} className={`flex items-start justify-between p-3 ${displayData.bgColor} rounded-lg border ${displayData.borderColor}`}>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900">{opportunity.name}</h4>
+                        <p className="text-xs text-gray-600 mt-1">{opportunity.description}</p>
+                      </div>
+                      <div className="flex space-x-2 ml-4">
+                        <Badge variant="secondary" className="text-xs">
+                          V: {opportunity.volume}%
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          C: {opportunity.complexity}%
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="flex space-x-2 ml-4">
-                      <Badge variant="secondary" className="text-xs">
-                        V: {opportunity.volume}%
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        C: {opportunity.complexity}%
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
+              {automationOpportunities.filter(op => op.category === selectedCategory).length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <p className="text-sm">No opportunities found for this category.</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
