@@ -558,7 +558,35 @@ export default function ProblemIdentificationPage() {
                     </Collapsible.Root>
                   </div>
 
-                  <AutomationChart />
+                  {/* Collapsible Banking Tax Automation Opportunities Chart */}
+                  <Collapsible.Root>
+                    <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-6">
+                      <Collapsible.Trigger asChild>
+                        <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                          <div className="flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4 text-green-600" />
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                              Banking Tax Automation Opportunities Analysis
+                            </h4>
+                            <Badge variant="outline" className="text-xs">
+                              Volume vs Complexity Chart
+                            </Badge>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                        </button>
+                      </Collapsible.Trigger>
+                      
+                      <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                        <div className="border-t border-gray-200/50 p-4">
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Interactive analysis showing the relationship between task volume and complexity, with strategic categorization 
+                            into traditional automation vs. AI-powered solutions. Click any data point for detailed analysis.
+                          </p>
+                          <AutomationChart />
+                        </div>
+                      </Collapsible.Content>
+                    </div>
+                  </Collapsible.Root>
 
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-200/50 rounded-lg p-6">
                     <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center space-x-2">
