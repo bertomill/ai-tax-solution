@@ -32,7 +32,8 @@ const badgeVariants = cva(
 )
 
 export interface ModernBadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 
+    'onDrag' | 'onDragEnd' | 'onDragStart' | 'onAnimationStart' | 'onAnimationEnd' | 'onAnimationIteration'>,
     VariantProps<typeof badgeVariants> {
   children: React.ReactNode
   animated?: boolean

@@ -7,9 +7,8 @@ import { Separator } from '@/components/ui/separator'
 import { 
   Settings, 
   Brain, 
-  FileText, 
+ 
   MessageSquare, 
-  Search,
   CheckCircle,
   ArrowRight,
   Zap,
@@ -43,13 +42,6 @@ const AutomationVsAIAnalysis: React.FC = () => {
   const automationSolutions = taxSolutions.filter(solution => solution.type === 'automation')
   const aiSolutions = taxSolutions.filter(solution => solution.type === 'ai')
 
-  const getTypeIcon = (type: string) => {
-    return type === 'automation' ? <Settings className="w-4 h-4" /> : <Brain className="w-4 h-4" />
-  }
-
-  const getTypeColor = (type: string) => {
-    return type === 'automation' ? 'bg-blue-500' : 'bg-purple-500'
-  }
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -201,7 +193,7 @@ const AutomationVsAIAnalysis: React.FC = () => {
                     
                     <div className="flex items-start space-x-2">
                       <ArrowRight className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-xs text-gray-700"><strong>Business Value:</strong> {solution.businessValue}</p>
+                      <p className="text-xs text-gray-700"><strong>Business Value:</strong> {solution.business_value}</p>
                     </div>
                   </div>
                   
@@ -250,7 +242,7 @@ const AutomationVsAIAnalysis: React.FC = () => {
                     
                     <div className="flex items-start space-x-2">
                       <ArrowRight className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-xs text-gray-700"><strong>Business Value:</strong> {solution.businessValue}</p>
+                      <p className="text-xs text-gray-700"><strong>Business Value:</strong> {solution.business_value}</p>
                     </div>
                   </div>
                   

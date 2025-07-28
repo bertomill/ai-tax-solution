@@ -3,6 +3,17 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { 
+  TrendingUp, 
+  Clock, 
+  Target, 
+  Zap, 
+  DollarSign, 
+  CheckCircle,
+  AlertCircle,
+  Info
+} from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
 import { getAutomationOpportunities, type AutomationOpportunity } from '@/lib/automation-data'
 
@@ -104,6 +115,155 @@ const AutomationChart: React.FC = () => {
     }
   }
 
+  const getAutomationRecommendation = (opportunity: AutomationOpportunity) => {
+    const { volume, complexity } = opportunity
+    
+    if (volume >= 70 && complexity <= 30) {
+      return {
+        type: 'Immediate Implementation',
+        icon: <CheckCircle className="w-4 h-4 text-green-600" />,
+        color: 'text-green-600',
+        description: 'Perfect candidate for AI automation. High volume with low complexity ensures quick ROI.'
+      }
+    } else if (volume >= 50 && complexity <= 50) {
+      return {
+        type: 'High Priority',
+        icon: <TrendingUp className="w-4 h-4 text-blue-600" />,
+        color: 'text-blue-600',
+        description: 'Strong automation candidate. Consider implementing in Phase 1 of automation rollout.'
+      }
+    } else if (volume >= 30 && complexity <= 70) {
+      return {
+        type: 'Medium Priority',
+        icon: <Clock className="w-4 h-4 text-yellow-600" />,
+        color: 'text-yellow-600',
+        description: 'Moderate automation potential. May require more sophisticated AI solutions.'
+      }
+    } else {
+      return {
+        type: 'Low Priority',
+        icon: <AlertCircle className="w-4 h-4 text-red-600" />,
+        color: 'text-red-600',
+        description: 'Complex process with lower volume. Consider human-AI collaboration instead.'
+      }
+    }
+  }
+
+  const getEstimatedROI = (opportunity: AutomationOpportunity) => {
+    const { volume, complexity } = opportunity
+    const baseROI = (volume / 10) * (1 - complexity / 100)
+    
+    if (baseROI >= 7) return { value: '300-500%', timeline: '6-12 months' }
+    if (baseROI >= 5) return { value: '200-300%', timeline: '9-15 months' }
+    if (baseROI >= 3) return { value: '150-250%', timeline: '12-18 months' }
+    return { value: '100-150%', timeline: '18+ months' }
+  }
+
+  const getImplementationEffort = (complexity: number) => {
+    if (complexity <= 30) return { level: 'Low', timeline: '2-4 weeks', description: 'Simple rule-based automation' }
+    if (complexity <= 60) return { level: 'Medium', timeline: '6-12 weeks', description: 'Moderate AI model training required' }
+    return { level: 'High', timeline: '3-6 months', description: 'Complex AI solution with extensive training' }
+  }
+
+  const DetailedPopoverContent = ({ opportunity }: { opportunity: AutomationOpportunity }) => {
+    const recommendation = getAutomationRecommendation(opportunity)
+    const roi = getEstimatedROI(opportunity)
+    const effort = getImplementationEffort(opportunity.complexity)
+
+    return (
+      <div className="space-y-4 max-w-80">
+        {/* Header */}
+        <div className="space-y-3">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 pr-3">
+              <h4 className="font-bold text-gray-900 text-base leading-tight">{opportunity.name}</h4>
+              <p className="text-sm text-gray-600 mt-1 leading-relaxed">{opportunity.description}</p>
+            </div>
+            <div className={`w-4 h-4 rounded-full ${getCategoryColor(opportunity.category)} shadow-sm`} />
+          </div>
+        </div>
+
+        {/* Metrics */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3 border border-blue-200/30">
+            <div className="flex items-center space-x-2 mb-1">
+              <TrendingUp className="w-4 h-4 text-blue-600" />
+              <span className="text-xs font-medium text-gray-700">Volume</span>
+            </div>
+            <div className="text-xl font-bold text-blue-700">{opportunity.volume}%</div>
+          </div>
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-3 border border-purple-200/30">
+            <div className="flex items-center space-x-2 mb-1">
+              <Target className="w-4 h-4 text-purple-600" />
+              <span className="text-xs font-medium text-gray-700">Complexity</span>
+            </div>
+            <div className="text-xl font-bold text-purple-700">{opportunity.complexity}%</div>
+          </div>
+        </div>
+
+        {/* Recommendation */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-xl p-4 border border-gray-200/30">
+          <div className="flex items-center space-x-2 mb-2">
+            {recommendation.icon}
+            <span className={`font-semibold ${recommendation.color}`}>{recommendation.type}</span>
+          </div>
+          <p className="text-sm text-gray-600 leading-relaxed">{recommendation.description}</p>
+        </div>
+
+        {/* ROI & Timeline */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <DollarSign className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-gray-700">Estimated ROI</span>
+            </div>
+            <Badge variant="secondary" className="text-green-700 bg-green-100">
+              {roi.value}
+            </Badge>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Clock className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-medium text-gray-700">ROI Timeline</span>
+            </div>
+            <span className="text-sm text-gray-600">{roi.timeline}</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Zap className="w-4 h-4 text-orange-600" />
+              <span className="text-sm font-medium text-gray-700">Implementation</span>
+            </div>
+            <Badge variant="outline" className={
+              effort.level === 'Low' ? 'text-green-700 border-green-300' :
+              effort.level === 'Medium' ? 'text-yellow-700 border-yellow-300' :
+              'text-red-700 border-red-300'
+            }>
+              {effort.level} ({effort.timeline})
+            </Badge>
+          </div>
+        </div>
+
+        {/* Implementation Details */}
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-xl p-4 border border-blue-200/30">
+          <div className="flex items-center space-x-2 mb-2">
+            <Info className="w-4 h-4 text-blue-600" />
+            <span className="font-semibold text-blue-700">Implementation Approach</span>
+          </div>
+          <p className="text-sm text-gray-600 leading-relaxed">{effort.description}</p>
+        </div>
+
+        {/* Category Badge */}
+        <div className="pt-2 border-t border-gray-200">
+          <Badge className={`${getCategoryColor(opportunity.category)} text-white border-0`}>
+            {getCategoryBadge(opportunity.category)}
+          </Badge>
+        </div>
+      </div>
+    )
+  }
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -151,6 +311,10 @@ const AutomationChart: React.FC = () => {
           <p className="text-gray-600 text-sm">
             Volume vs Complexity analysis of potential AI automation opportunities in banking tax functions
           </p>
+          <div className="flex items-center space-x-2 mt-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+            <span className="text-xs text-blue-600 font-medium">Click on any data point for detailed analysis</span>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="relative">
@@ -188,16 +352,28 @@ const AutomationChart: React.FC = () => {
                 const y = 6 + ((100 - opportunity.complexity) / 100) * (100 - 12)
                 
                 return (
-                  <div
-                    key={opportunity.id}
-                    className={`absolute w-3 h-3 rounded-full border-2 ${getCategoryColor(opportunity.category)} transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-150 transition-transform duration-200 z-10`}
-                    style={{
-                      left: `${x}%`,
-                      top: `${y}%`,
-                    }}
-                    onMouseEnter={(e) => handleMouseEnter(opportunity, e)}
-                    onMouseLeave={handleMouseLeave}
-                  />
+                  <Popover key={opportunity.id}>
+                    <PopoverTrigger asChild>
+                      <button
+                        className={`absolute w-4 h-4 rounded-full border-2 ${getCategoryColor(opportunity.category)} transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 hover:shadow-lg hover:shadow-blue-200/50 transition-all duration-200 z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-110`}
+                        style={{
+                          left: `${x}%`,
+                          top: `${y}%`,
+                        }}
+                        onMouseEnter={(e) => handleMouseEnter(opportunity, e)}
+                        onMouseLeave={handleMouseLeave}
+                        aria-label={`View details for ${opportunity.name}`}
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent 
+                      className="p-4 border border-gray-200/50 shadow-xl bg-white/95 backdrop-blur-sm"
+                      align="start"
+                      side="right"
+                      sideOffset={15}
+                    >
+                      <DetailedPopoverContent opportunity={opportunity} />
+                    </PopoverContent>
+                  </Popover>
                 )
               })}
 

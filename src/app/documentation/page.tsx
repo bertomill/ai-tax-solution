@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
@@ -13,7 +12,6 @@ import {
   BarChart3, 
   Zap, 
   Target, 
-  ArrowLeft,
   Search,
   Clock,
   Users,
@@ -22,14 +20,13 @@ import {
   Rocket
 } from 'lucide-react'
 import Footer from '@/components/ui/footer'
+import SmoothTab, { type TabItem } from '@/components/ui/smooth-tab'
 import { getDocumentationSections, type DocumentationSection } from '@/lib/documentation-data'
 
 const DocumentationPage: React.FC = () => {
   const [sections, setSections] = useState<DocumentationSection[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeSection, setActiveSection] = useState<string>('efficiency')
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,6 +48,96 @@ const DocumentationPage: React.FC = () => {
   const efficiencySection = sections.find(s => s.category === 'efficiency')
   const insightsSection = sections.find(s => s.category === 'insights')
   const practicalLessonsSection = sections.find(s => s.category === 'practical-lessons')
+
+  const createSectionContent = (section: DocumentationSection, colorTheme: 'green' | 'purple' | 'orange', icon: React.ReactElement) => {
+    if (!section) return null
+    
+    const themeClasses = {
+      green: {
+        border: 'border-green-200/50',
+        title: 'text-green-700',
+        bg: 'bg-green-50/50',
+        icon: 'text-green-600'
+      },
+      purple: {
+        border: 'border-purple-200/50',
+        title: 'text-purple-700',
+        bg: 'bg-purple-50/50',
+        icon: 'text-purple-600'
+      },
+      orange: {
+        border: 'border-orange-200/50',
+        title: 'text-orange-700',
+        bg: 'bg-orange-50/50',
+        icon: 'text-orange-600'
+      }
+    }
+    
+    const theme = themeClasses[colorTheme]
+    
+    return (
+      <Card className={`bg-white/80 backdrop-blur-sm ${theme.border} shadow-sm`}>
+        <CardHeader>
+          <CardTitle className={`flex items-center space-x-3 ${theme.title}`}>
+            {icon}
+            <span>{section.title}</span>
+          </CardTitle>
+          <p className="text-gray-600">{section.description}</p>
+        </CardHeader>
+        <CardContent>
+          <div className="prose prose-sm max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: section.content }} />
+          </div>
+          
+          <Separator className="my-6" />
+          
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900">
+              {section.category === 'practical-lessons' ? 'Key Implementation Tips' : 'Key Benefits'}
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {section.key_points?.map((point, index) => (
+                <div key={index} className={`flex items-start space-x-2 p-3 ${theme.bg} rounded-lg`}>
+                  <CheckCircle className={`w-4 h-4 ${theme.icon} mt-0.5 flex-shrink-0`} />
+                  <span className="text-sm text-gray-700">{point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const tabItems: TabItem[] = React.useMemo(() => {
+    if (!efficiencySection || !insightsSection || !practicalLessonsSection) {
+      return []
+    }
+    
+    return [
+      {
+        id: 'efficiency',
+        title: 'Efficiency',
+        icon: TrendingUp,
+        color: 'bg-gradient-to-r from-green-500 to-green-600',
+        content: createSectionContent(efficiencySection, 'green', <TrendingUp className="w-6 h-6" />)
+      },
+      {
+        id: 'insights',
+        title: 'Insights',
+        icon: Lightbulb,
+        color: 'bg-gradient-to-r from-purple-500 to-purple-600',
+        content: createSectionContent(insightsSection, 'purple', <Lightbulb className="w-6 h-6" />)
+      },
+      {
+        id: 'practical-lessons',
+        title: 'Practical Lessons',
+        icon: Rocket,
+        color: 'bg-gradient-to-r from-orange-500 to-orange-600',
+        content: createSectionContent(practicalLessonsSection, 'orange', <Rocket className="w-6 h-6" />)
+      }
+    ]
+  }, [efficiencySection, insightsSection, practicalLessonsSection])
 
   if (loading) {
     return (
@@ -155,129 +242,23 @@ const DocumentationPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap gap-4">
-          <Button
-            variant={activeSection === 'efficiency' ? 'default' : 'outline'}
-            onClick={() => setActiveSection('efficiency')}
-            className="flex items-center space-x-2"
-          >
-            <TrendingUp className="w-4 h-4" />
-            <span>Efficiency</span>
-          </Button>
-          <Button
-            variant={activeSection === 'insights' ? 'default' : 'outline'}
-            onClick={() => setActiveSection('insights')}
-            className="flex items-center space-x-2"
-          >
-            <Lightbulb className="w-4 h-4" />
-            <span>Insights</span>
-          </Button>
-          <Button
-            variant={activeSection === 'practical-lessons' ? 'default' : 'outline'}
-            onClick={() => setActiveSection('practical-lessons')}
-            className="flex items-center space-x-2"
-          >
-            <Rocket className="w-4 h-4" />
-            <span>Practical Lessons</span>
-          </Button>
+        {/* Smooth Tab Switcher */}
+        <div className="min-h-[500px]">
+          {tabItems.length > 0 ? (
+            <SmoothTab 
+              items={tabItems}
+              defaultTabId="efficiency"
+              className="mb-6"
+            />
+          ) : (
+            <div className="flex items-center justify-center h-96">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading documentation sections...</p>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Efficiency Section */}
-        {activeSection === 'efficiency' && efficiencySection && (
-          <Card className="bg-white/80 backdrop-blur-sm border-green-200/50 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-3 text-green-700">
-                <TrendingUp className="w-6 h-6" />
-                <span>{efficiencySection.title}</span>
-              </CardTitle>
-              <p className="text-gray-600">{efficiencySection.description}</p>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-sm max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: efficiencySection.content }} />
-              </div>
-              
-              <Separator className="my-6" />
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900">Key Benefits</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {efficiencySection.key_points?.map((point, index) => (
-                    <div key={index} className="flex items-start space-x-2 p-3 bg-green-50/50 rounded-lg">
-                      <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{point}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Insights Section */}
-        {activeSection === 'insights' && insightsSection && (
-          <Card className="bg-white/80 backdrop-blur-sm border-purple-200/50 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-3 text-purple-700">
-                <Lightbulb className="w-6 h-6" />
-                <span>{insightsSection.title}</span>
-              </CardTitle>
-              <p className="text-gray-600">{insightsSection.description}</p>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-sm max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: insightsSection.content }} />
-              </div>
-              
-              <Separator className="my-6" />
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900">Key Benefits</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {insightsSection.key_points?.map((point, index) => (
-                    <div key={index} className="flex items-start space-x-2 p-3 bg-purple-50/50 rounded-lg">
-                      <CheckCircle className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{point}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Practical Lessons Section */}
-        {activeSection === 'practical-lessons' && practicalLessonsSection && (
-          <Card className="bg-white/80 backdrop-blur-sm border-orange-200/50 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-3 text-orange-700">
-                <Rocket className="w-6 h-6" />
-                <span>{practicalLessonsSection.title}</span>
-              </CardTitle>
-              <p className="text-gray-600">{practicalLessonsSection.description}</p>
-            </CardHeader>
-            <CardContent>
-              <div className="prose prose-sm max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: practicalLessonsSection.content }} />
-              </div>
-              
-              <Separator className="my-6" />
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900">Key Implementation Tips</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {practicalLessonsSection.key_points?.map((point, index) => (
-                    <div key={index} className="flex items-start space-x-2 p-3 bg-orange-50/50 rounded-lg">
-                      <CheckCircle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{point}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Quick Navigation */}
         <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200/50 shadow-sm">

@@ -4,17 +4,14 @@ import * as React from "react"
 import { 
   Brain, 
   FileText, 
-  Lightbulb, 
+ 
   Target, 
   Users, 
   Zap,
   Search,
   Check,
-  ChevronsUpDown,
-  GalleryVerticalEnd,
   Home,
   BookOpen,
-  Sparkles
 } from "lucide-react"
 
 import {
@@ -31,12 +28,6 @@ import {
   SidebarInput,
   useSidebar,
 } from "@/components/ui/sidebar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 // TypeScript interfaces for navigation data
 interface NavigationItem {
@@ -77,22 +68,22 @@ const navigationData: { sections: NavigationSection[] } = {
         {
           title: "Assignment Overview",
           icon: <FileText className="size-4" />,
-          url: "/#overview",
+          url: "/assignment-overview",
         },
         {
           title: "Interview Format",
           icon: <Users className="size-4" />,
-          url: "/#format",
+          url: "/interview-format",
         },
         {
           title: "What We're Looking For",
           icon: <Target className="size-4" />,
-          url: "/#expectations",
+          url: "/expectations",
         },
         {
           title: "Problem Identification",
           icon: <Brain className="size-4" />,
-          url: "/#problem",
+          url: "/problem-identification",
         },
       ],
     },
@@ -107,7 +98,7 @@ const navigationData: { sections: NavigationSection[] } = {
         {
           title: "Automation Analysis",
           icon: <Zap className="size-4" />,
-          url: "/#problem",
+          url: "/problem-identification",
           badge: "Hot",
         },
         {

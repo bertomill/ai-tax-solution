@@ -42,7 +42,8 @@ const cardVariants = cva(
 )
 
 export interface EnhancedCardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 
+    'onDrag' | 'onDragEnd' | 'onDragStart' | 'onAnimationStart' | 'onAnimationEnd' | 'onAnimationIteration'>,
     VariantProps<typeof cardVariants> {
   children: React.ReactNode
   hoverEffect?: boolean
