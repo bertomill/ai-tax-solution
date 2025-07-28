@@ -21,8 +21,6 @@ const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [hoveredPoint, setHoveredPoint] = useState<AutomationOpportunity | null>(null)
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,52 +40,6 @@ const AutomationChart: React.FC = () => {
     fetchData()
   }, [])
 
-  const handleMouseEnter = (opportunity: AutomationOpportunity, event: React.MouseEvent) => {
-    setHoveredPoint(opportunity)
-    
-    // Calculate position relative to the chart container
-    const chartContainer = event.currentTarget.closest('.relative') as HTMLElement
-    const rect = chartContainer.getBoundingClientRect()
-    
-    // Calculate the data point position within the chart
-    const x = 6 + (opportunity.volume / 100) * (100 - 12)
-    const y = 6 + ((100 - opportunity.complexity) / 100) * (100 - 12)
-    
-    // Convert percentage to pixels
-    const chartWidth = rect.width
-    const chartHeight = rect.height
-    const pixelX = (x / 100) * chartWidth
-    const pixelY = (y / 100) * chartHeight
-    
-    // Determine optimal tooltip position to avoid edge overflow
-    const tooltipWidth = 320 // estimated tooltip width
-    const tooltipHeight = 150 // estimated tooltip height
-    const padding = 15
-    
-    let finalX = rect.left + pixelX + padding
-    let finalY = rect.top + pixelY - tooltipHeight / 2
-    
-    // Adjust if tooltip would go off right edge of screen
-    if (finalX + tooltipWidth > window.innerWidth) {
-      finalX = rect.left + pixelX - tooltipWidth - padding
-    }
-    
-    // Adjust if tooltip would go off top/bottom edge
-    if (finalY < 0) {
-      finalY = rect.top + pixelY + padding
-    } else if (finalY + tooltipHeight > window.innerHeight) {
-      finalY = rect.top + pixelY - tooltipHeight - padding
-    }
-    
-    setTooltipPosition({ 
-      x: finalX,
-      y: finalY
-    })
-  }
-
-  const handleMouseLeave = () => {
-    setHoveredPoint(null)
-  }
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -360,8 +312,6 @@ const AutomationChart: React.FC = () => {
                           left: `${x}%`,
                           top: `${y}%`,
                         }}
-                        onMouseEnter={(e) => handleMouseEnter(opportunity, e)}
-                        onMouseLeave={handleMouseLeave}
                         aria-label={`View details for ${opportunity.name}`}
                       />
                     </PopoverTrigger>
@@ -394,39 +344,6 @@ const AutomationChart: React.FC = () => {
               </div>
             </div>
 
-            {/* Tooltip */}
-            {hoveredPoint && (
-              <div
-                className="fixed z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-4 w-80 pointer-events-none"
-                style={{
-                  left: tooltipPosition.x,
-                  top: tooltipPosition.y
-                }}
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-semibold text-gray-900 text-sm">{hoveredPoint.name}</h4>
-                    <div className={`w-3 h-3 rounded-full ${getCategoryColor(hoveredPoint.category)}`} />
-                  </div>
-                  <p className="text-xs text-gray-600">{hoveredPoint.description}</p>
-                  <div className="flex space-x-3 text-xs">
-                    <div className="flex items-center space-x-1">
-                      <span className="font-medium text-gray-700">Volume:</span>
-                      <Badge variant="secondary" className="text-xs">{hoveredPoint.volume}%</Badge>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <span className="font-medium text-gray-700">Complexity:</span>
-                      <Badge variant="outline" className="text-xs">{hoveredPoint.complexity}%</Badge>
-                    </div>
-                  </div>
-                  <div className="pt-1 border-t border-gray-100">
-                    <Badge variant="secondary" className="text-xs">
-                      {getCategoryBadge(hoveredPoint.category)}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
