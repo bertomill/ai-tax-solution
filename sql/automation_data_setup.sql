@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS automation_opportunities (
   complexity INTEGER NOT NULL CHECK (complexity >= 0 AND complexity <= 100),
   category TEXT NOT NULL CHECK (category IN ('high-priority', 'medium-priority', 'low-priority')),
   description TEXT NOT NULL,
+  solution_type TEXT NOT NULL CHECK (solution_type IN ('ai', 'automation')),
+  solution_reasoning TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -28,25 +30,25 @@ CREATE TABLE IF NOT EXISTS tax_solutions (
 );
 
 -- Insert automation opportunities data
-INSERT INTO automation_opportunities (name, volume, complexity, category, description) VALUES
-('Daily Cash Position Reports', 85, 25, 'high-priority', 'Automated generation of daily cash position reports from multiple banking systems'),
-('Tax Document Classification', 90, 35, 'high-priority', 'AI-powered classification and routing of incoming tax documents'),
-('Regulatory Filing Validation', 75, 45, 'high-priority', 'Automated validation of regulatory tax filings before submission'),
-('Interest Calculation Verification', 80, 30, 'high-priority', 'Automated verification of interest calculations across loan portfolios'),
-('Expense Categorization', 70, 20, 'high-priority', 'AI-driven categorization of business expenses for tax purposes'),
-('Transaction Monitoring', 95, 40, 'high-priority', 'Real-time monitoring of transactions for tax compliance issues'),
-('Quarterly Report Generation', 40, 55, 'medium-priority', 'Automated generation of quarterly tax reports with AI insights'),
-('Audit Trail Creation', 65, 35, 'medium-priority', 'Automated creation and maintenance of audit trails for tax purposes'),
-('Depreciation Calculations', 50, 60, 'medium-priority', 'Complex asset depreciation calculations with multiple methodologies'),
-('Cross-Border Tax Analysis', 30, 85, 'low-priority', 'Complex analysis of cross-border transactions for tax implications'),
-('Customer Data Validation', 85, 15, 'high-priority', 'Automated validation of customer tax information and documentation'),
-('Compliance Reporting', 60, 50, 'medium-priority', 'Automated generation of compliance reports for various jurisdictions'),
-('Tax Treaty Interpretation', 15, 90, 'low-priority', 'Complex interpretation of tax treaties for specific transaction scenarios'),
-('Transfer Pricing Documentation', 25, 80, 'low-priority', 'Detailed analysis and documentation for transfer pricing compliance'),
-('Tax Provision Analysis', 20, 75, 'low-priority', 'Complex quarterly tax provision calculations with multiple variables'),
-('Advanced Tax Planning Scenarios', 10, 95, 'low-priority', 'Sophisticated tax planning for complex corporate structures'),
-('Multi-Jurisdiction Audit Defense', 18, 88, 'low-priority', 'Complex audit defense strategies across multiple tax jurisdictions'),
-('Derivative Instrument Tax Analysis', 12, 92, 'low-priority', 'Tax treatment analysis for complex derivative financial instruments');
+INSERT INTO automation_opportunities (name, volume, complexity, category, description, solution_type, solution_reasoning) VALUES
+('Daily Cash Position Reports', 85, 25, 'high-priority', 'Automated generation of daily cash position reports from multiple banking systems', 'automation', 'Highly structured data with predictable inputs/outputs. Rule-based process with clear formatting requirements.'),
+('Tax Document Classification', 90, 35, 'high-priority', 'AI-powered classification and routing of incoming tax documents', 'ai', 'Unstructured documents requiring content analysis and interpretation. AI handles document variability better than rules.'),
+('Regulatory Filing Validation', 75, 45, 'high-priority', 'Automated validation of regulatory tax filings before submission', 'ai', 'Complex validation requiring interpretation of evolving regulations and edge cases. AI adapts to regulatory changes.'),
+('Interest Calculation Verification', 80, 30, 'high-priority', 'Automated verification of interest calculations across loan portfolios', 'automation', 'Mathematical calculations with clear validation rules. Traditional automation provides accuracy and reliability.'),
+('Expense Categorization', 70, 20, 'high-priority', 'AI-driven categorization of business expenses for tax purposes', 'automation', 'Most expenses follow predictable categorization patterns. Rule-based approach handles majority of cases efficiently.'),
+('Transaction Monitoring', 95, 40, 'high-priority', 'Real-time monitoring of transactions for tax compliance issues', 'ai', 'Pattern recognition and anomaly detection in transaction data. AI excels at identifying suspicious patterns.'),
+('Customer Data Validation', 85, 15, 'high-priority', 'Automated validation of customer tax information and documentation', 'automation', 'Structured validation rules with predictable data formats. Traditional automation handles field validation efficiently.'),
+('Quarterly Report Generation', 40, 55, 'medium-priority', 'Automated generation of quarterly tax reports with AI insights', 'ai', 'Requires data interpretation and insight generation beyond simple formatting. AI adds analytical value.'),
+('Audit Trail Creation', 65, 35, 'medium-priority', 'Automated creation and maintenance of audit trails for tax purposes', 'automation', 'Systematic data logging and trail creation follows predictable patterns. Rule-based approach ensures consistency.'),
+('Depreciation Calculations', 50, 60, 'medium-priority', 'Complex asset depreciation calculations with multiple methodologies', 'automation', 'Mathematical calculations following established formulas. Rules-based approach ensures accuracy and auditability.'),
+('Cross-Border Tax Analysis', 30, 85, 'low-priority', 'Complex analysis of cross-border transactions for tax implications', 'ai', 'Multi-jurisdiction analysis requiring interpretation of complex regulatory frameworks and their interactions.'),
+('Compliance Reporting', 60, 50, 'medium-priority', 'Automated generation of compliance reports for various jurisdictions', 'ai', 'Regulatory interpretation and adaptive reporting requirements. AI handles jurisdiction-specific variations.'),
+('Tax Treaty Interpretation', 15, 90, 'low-priority', 'Complex interpretation of tax treaties for specific transaction scenarios', 'ai', 'Deep understanding and interpretation of complex legal documents requiring human-like reasoning.'),
+('Transfer Pricing Documentation', 25, 80, 'low-priority', 'Detailed analysis and documentation for transfer pricing compliance', 'ai', 'Economic analysis and regulatory interpretation requiring sophisticated reasoning and benchmarking.'),
+('Tax Provision Analysis', 20, 75, 'low-priority', 'Complex quarterly tax provision calculations with multiple variables', 'ai', 'Multi-variable modeling with interpretation of accounting standards requiring sophisticated analysis.'),
+('Advanced Tax Planning Scenarios', 10, 95, 'low-priority', 'Sophisticated tax planning for complex corporate structures', 'ai', 'Strategic analysis requiring deep expertise synthesis and scenario modeling beyond rule-based approaches.'),
+('Multi-Jurisdiction Audit Defense', 18, 88, 'low-priority', 'Complex audit defense strategies across multiple tax jurisdictions', 'ai', 'Strategic planning and argumentation requiring expert-level reasoning and jurisdiction-specific knowledge.'),
+('Derivative Instrument Tax Analysis', 12, 92, 'low-priority', 'Tax treatment analysis for complex derivative financial instruments', 'ai', 'Highly complex financial analysis requiring interpretation of evolving regulations and market conditions.');
 
 -- Insert tax solutions data
 INSERT INTO tax_solutions (name, type, category, reasoning, description, key_features, business_value) VALUES

@@ -45,14 +45,16 @@ model SearchQuery {
 }
 
 model AutomationOpportunity {
-  id          String   @id @default(cuid())
-  name        String
-  volume      Int      // 0-100 percentage
-  complexity  Int      // 0-100 percentage
-  category    String   // 'high-priority' | 'medium-priority' | 'low-priority'
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id                String   @id @default(cuid())
+  name              String
+  volume            Int      // 0-100 percentage
+  complexity        Int      // 0-100 percentage
+  category          String   // 'high-priority' | 'medium-priority' | 'low-priority'
+  description       String
+  solutionType      String   @map("solution_type") // 'ai' | 'automation'
+  solutionReasoning String   @map("solution_reasoning")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   @@map("automation_opportunities")
 }

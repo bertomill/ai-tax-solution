@@ -398,34 +398,62 @@ const AutomationChart: React.FC = () => {
             <CardTitle className="text-lg">Legend</CardTitle>
             <p className="text-sm text-gray-600">Click to view opportunities</p>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <button
-              onClick={() => setSelectedCategory('high-priority')}
-              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-green-50 ${
-                selectedCategory === 'high-priority' ? 'bg-green-100 border border-green-200' : ''
-              }`}
-            >
-              <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-600"></div>
-              <span className="text-sm font-medium">High Volume, Low Complexity</span>
-            </button>
-            <button
-              onClick={() => setSelectedCategory('medium-priority')}
-              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-yellow-50 ${
-                selectedCategory === 'medium-priority' ? 'bg-yellow-100 border border-yellow-200' : ''
-              }`}
-            >
-              <div className="w-4 h-4 rounded-full bg-yellow-500 border-2 border-yellow-600"></div>
-              <span className="text-sm font-medium">Medium Priority</span>
-            </button>
-            <button
-              onClick={() => setSelectedCategory('low-priority')}
-              className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-red-50 ${
-                selectedCategory === 'low-priority' ? 'bg-red-100 border border-red-200' : ''
-              }`}
-            >
-              <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-red-600"></div>
-              <span className="text-sm font-medium">Low Volume, High Complexity</span>
-            </button>
+          <CardContent className="space-y-4">
+            {/* Solution Type Breakdown */}
+            <div className="space-y-2">
+              <h5 className="text-sm font-medium text-gray-900">Solution Types</h5>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-purple-500 rounded"></div>
+                    <span>AI Solutions</span>
+                  </div>
+                  <span className="font-medium">
+                    {automationOpportunities.filter(op => op.solution_type === 'ai' && op.category === selectedCategory).length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded"></div>
+                    <span>Traditional Automation</span>
+                  </div>
+                  <span className="font-medium">
+                    {automationOpportunities.filter(op => op.solution_type === 'automation' && op.category === selectedCategory).length}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="border-t pt-3 space-y-3">
+              <h5 className="text-sm font-medium text-gray-900">Priority Categories</h5>
+              <button
+                onClick={() => setSelectedCategory('high-priority')}
+                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-green-50 ${
+                  selectedCategory === 'high-priority' ? 'bg-green-100 border border-green-200' : ''
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-600"></div>
+                <span className="text-sm font-medium">High Volume, Low Complexity</span>
+              </button>
+              <button
+                onClick={() => setSelectedCategory('medium-priority')}
+                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-yellow-50 ${
+                  selectedCategory === 'medium-priority' ? 'bg-yellow-100 border border-yellow-200' : ''
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-yellow-500 border-2 border-yellow-600"></div>
+                <span className="text-sm font-medium">Medium Priority</span>
+              </button>
+              <button
+                onClick={() => setSelectedCategory('low-priority')}
+                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-red-50 ${
+                  selectedCategory === 'low-priority' ? 'bg-red-100 border border-red-200' : ''
+                }`}
+              >
+                <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-red-600"></div>
+                <span className="text-sm font-medium">Low Volume, High Complexity</span>
+              </button>
+            </div>
           </CardContent>
         </Card>
 
@@ -442,14 +470,26 @@ const AutomationChart: React.FC = () => {
             <div className="space-y-3">
               {automationOpportunities
                 .filter(op => op.category === selectedCategory)
-                .slice(0, 6)
+                .slice(0, 12)
                 .map((opportunity) => {
                   const displayData = getCategoryDisplayData(selectedCategory)
                   return (
                     <div key={opportunity.id} className={`flex items-start justify-between p-3 ${displayData.bgColor} rounded-lg border ${displayData.borderColor}`}>
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{opportunity.name}</h4>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium text-gray-900">{opportunity.name}</h4>
+                          <Badge 
+                            className={`text-xs ${
+                              opportunity.solution_type === 'ai' 
+                                ? 'bg-purple-100 text-purple-700 hover:bg-purple-100' 
+                                : 'bg-blue-100 text-blue-700 hover:bg-blue-100'
+                            }`}
+                          >
+                            {opportunity.solution_type === 'ai' ? '🤖 AI' : '⚙️ Automation'}
+                          </Badge>
+                        </div>
                         <p className="text-xs text-gray-600 mt-1">{opportunity.description}</p>
+                        <p className="text-xs text-gray-500 mt-1 italic">{opportunity.solution_reasoning}</p>
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <Badge variant="secondary" className="text-xs">

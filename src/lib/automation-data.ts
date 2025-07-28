@@ -7,6 +7,8 @@ export interface AutomationOpportunity {
   complexity: number
   category: 'high-priority' | 'medium-priority' | 'low-priority'
   description: string
+  solution_type: 'ai' | 'automation'
+  solution_reasoning: string
   created_at?: string
   updated_at?: string
 }

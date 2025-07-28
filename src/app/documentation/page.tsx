@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { 
   Brain, 
@@ -20,13 +22,13 @@ import {
   Rocket
 } from 'lucide-react'
 import Footer from '@/components/ui/footer'
-import SmoothTab, { type TabItem } from '@/components/ui/smooth-tab'
 import { getDocumentationSections, type DocumentationSection } from '@/lib/documentation-data'
 
 const DocumentationPage: React.FC = () => {
   const [sections, setSections] = useState<DocumentationSection[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,6 +83,9 @@ const DocumentationPage: React.FC = () => {
           <CardTitle className={`flex items-center space-x-3 ${theme.title}`}>
             {icon}
             <span>{section.title}</span>
+            <Badge variant="outline" className="text-xs ml-2">
+              {section.category}
+            </Badge>
           </CardTitle>
           <p className="text-gray-600">{section.description}</p>
         </CardHeader>
@@ -108,36 +113,6 @@ const DocumentationPage: React.FC = () => {
       </Card>
     )
   }
-
-  const tabItems: TabItem[] = React.useMemo(() => {
-    if (!efficiencySection || !insightsSection || !practicalLessonsSection) {
-      return []
-    }
-    
-    return [
-      {
-        id: 'efficiency',
-        title: 'Efficiency',
-        icon: TrendingUp,
-        color: 'bg-gradient-to-r from-green-500 to-green-600',
-        content: createSectionContent(efficiencySection, 'green', <TrendingUp className="w-6 h-6" />)
-      },
-      {
-        id: 'insights',
-        title: 'Insights',
-        icon: Lightbulb,
-        color: 'bg-gradient-to-r from-purple-500 to-purple-600',
-        content: createSectionContent(insightsSection, 'purple', <Lightbulb className="w-6 h-6" />)
-      },
-      {
-        id: 'practical-lessons',
-        title: 'Practical Lessons',
-        icon: Rocket,
-        color: 'bg-gradient-to-r from-orange-500 to-orange-600',
-        content: createSectionContent(practicalLessonsSection, 'orange', <Rocket className="w-6 h-6" />)
-      }
-    ]
-  }, [efficiencySection, insightsSection, practicalLessonsSection])
 
   if (loading) {
     return (
@@ -242,23 +217,35 @@ const DocumentationPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Smooth Tab Switcher */}
-        <div className="min-h-[500px]">
-          {tabItems.length > 0 ? (
-            <SmoothTab 
-              items={tabItems}
-              defaultTabId="efficiency"
-              className="mb-6"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-96">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading documentation sections...</p>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Standard Shadcn Tabs */}
+        <Tabs defaultValue="efficiency" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 bg-muted">
+            <TabsTrigger value="efficiency" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              Efficiency
+            </TabsTrigger>
+            <TabsTrigger value="insights" className="flex items-center gap-2">
+              <Lightbulb className="w-4 h-4" />
+              Insights
+            </TabsTrigger>
+            <TabsTrigger value="practical-lessons" className="flex items-center gap-2">
+              <Rocket className="w-4 h-4" />
+              Practical Lessons
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="efficiency" className="mt-6">
+            {efficiencySection && createSectionContent(efficiencySection, 'green', <TrendingUp className="w-6 h-6" />)}
+          </TabsContent>
+          
+          <TabsContent value="insights" className="mt-6">
+            {insightsSection && createSectionContent(insightsSection, 'purple', <Lightbulb className="w-6 h-6" />)}
+          </TabsContent>
+          
+          <TabsContent value="practical-lessons" className="mt-6">
+            {practicalLessonsSection && createSectionContent(practicalLessonsSection, 'orange', <Rocket className="w-6 h-6" />)}
+          </TabsContent>
+        </Tabs>
 
         {/* Quick Navigation */}
         <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200/50 shadow-sm">

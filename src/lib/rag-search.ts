@@ -1,4 +1,4 @@
-import { generateEmbedding } from './openai'
+import { generateEmbedding, generateChatCompletion } from './openai'
 import { supabase } from './supabase-direct'
 
 export interface SearchResult {
@@ -101,23 +101,37 @@ export async function generateRAGResponse(
   query: string,
   context: SearchResult[]
 ): Promise<string> {
-  // This is a simple template-based response
-  // In a full implementation, you'd use OpenAI's completion API
-  
-  const relevantContent = context
-    .map(result => `From "${result.metadata.section}": ${result.content}`)
-    .join('\n\n')
-  
-  return `Based on the available information about the AI Tax Use Cases whiteboarding interview:
+  try {
+    // Format the context from search results
+    const relevantContent = context
+      .map((result, index) => {
+        const { metadata, content, similarity } = result
+        return `**Source ${index + 1}** (Relevance: ${(similarity * 100).toFixed(1)}%)
+From: ${metadata.section || metadata.source}
+Content: ${content}`
+      })
+      .join('\n\n')
 
-**Query:** ${query}
+    // Generate AI response using OpenAI
+    const response = await generateChatCompletion(query, relevantContent)
+    
+    return response
+  } catch (error) {
+    console.error('Error generating RAG response:', error)
+    
+    // Fallback to basic template if OpenAI fails
+    if (context.length > 0) {
+      const relevantContent = context
+        .map(result => `From "${result.metadata.section || result.metadata.source}": ${result.content}`)
+        .join('\n\n')
+      
+      return `Based on the available information:
 
-**Relevant Information:**
 ${relevantContent}
 
-**Summary:**
-${context.length > 0 
-  ? `The information above addresses your question about ${query}. The most relevant sections are: ${context.map(r => r.metadata.section).join(', ')}.`
-  : 'I could not find specific information related to your query in the available content.'
-}`
+The most relevant sections are: ${context.map(r => r.metadata.section || r.metadata.source).join(', ')}.`
+    } else {
+      return 'I could not find specific information related to your query in the available content. Please try rephrasing your question or adding more context.'
+    }
+  }
 }

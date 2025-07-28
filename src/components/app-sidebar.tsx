@@ -1,17 +1,17 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 import { 
   Brain, 
-  FileText, 
- 
-  Target, 
   Users, 
   Zap,
   Search,
   Check,
   Home,
   BookOpen,
+  ChevronRight,
+  ChevronDown,
 } from "lucide-react"
 
 import {
@@ -27,15 +27,24 @@ import {
   SidebarRail,
   SidebarInput,
   useSidebar,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
 // TypeScript interfaces for navigation data
+interface NavigationSubItem {
+  title: string
+  url: string
+  section: string // for scroll highlighting
+}
+
 interface NavigationItem {
   title: string
   icon: React.ReactElement
   url: string
-  isActive?: boolean
   badge?: string
+  subItems?: NavigationSubItem[]
 }
 
 interface NavigationSection {
@@ -53,7 +62,6 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Home",
           icon: <Home className="size-4" />,
           url: "/",
-          isActive: true,
         },
         {
           title: "Documentation",
@@ -66,24 +74,53 @@ const navigationData: { sections: NavigationSection[] } = {
       title: "Interview Sections",
       items: [
         {
-          title: "Assignment Overview",
-          icon: <FileText className="size-4" />,
-          url: "/assignment-overview",
-        },
-        {
           title: "Interview Format",
           icon: <Users className="size-4" />,
           url: "/interview-format",
+          subItems: [
+            {
+              title: "Assignment Overview",
+              url: "/interview-format#assignment-overview",
+              section: "assignment-overview"
+            },
+            {
+              title: "Interview Process",
+              url: "/interview-format#interview-process", 
+              section: "interview-process"
+            },
+            {
+              title: "What We're Looking For",
+              url: "/interview-format#expectations",
+              section: "expectations"
+            }
+          ]
         },
         {
-          title: "What We're Looking For",
-          icon: <Target className="size-4" />,
-          url: "/expectations",
-        },
-        {
-          title: "Problem Identification",
+          title: "Approach",
           icon: <Brain className="size-4" />,
           url: "/problem-identification",
+          subItems: [
+            {
+              title: "Problem Identification",
+              url: "/problem-identification#problem-identification",
+              section: "problem-identification"
+            },
+            {
+              title: "User Analysis",
+              url: "/problem-identification#user-analysis",
+              section: "user-analysis"
+            },
+            {
+              title: "MVP Strategy",
+              url: "/problem-identification#mvp-strategy",
+              section: "mvp-strategy"
+            },
+            {
+              title: "AI Implementation",
+              url: "/problem-identification#ai-implementation",
+              section: "ai-implementation"
+            }
+          ]
         },
       ],
     },
@@ -114,6 +151,75 @@ const navigationData: { sections: NavigationSection[] } = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
+  const pathname = usePathname()
+  const [activeSection, setActiveSection] = React.useState<string>("")
+  const [expandedItems, setExpandedItems] = React.useState<string[]>([])
+  
+  // Helper function to determine if a navigation item is active
+  const isActiveItem = (url: string): boolean => {
+    if (url === "/" && pathname === "/") {
+      return true
+    }
+    if (url !== "/" && pathname.startsWith(url.split('#')[0])) {
+      return true
+    }
+    return false
+  }
+
+  // Helper function to check if a sub-item is active based on scroll position
+  const isActiveSubItem = (section: string): boolean => {
+    return activeSection === section
+  }
+
+  // Toggle expanded state for items with sub-items
+  const toggleExpanded = (itemTitle: string) => {
+    setExpandedItems(prev => 
+      prev.includes(itemTitle) 
+        ? prev.filter(item => item !== itemTitle)
+        : [...prev, itemTitle]
+    )
+  }
+
+  // Effect to listen for scroll events and update active section
+  React.useEffect(() => {
+    let sections: string[] = []
+    let itemToExpand = ""
+    
+    if (pathname === "/interview-format") {
+      sections = ["assignment-overview", "interview-process", "expectations"]
+      itemToExpand = "Interview Format"
+    } else if (pathname === "/problem-identification") {
+      sections = ["problem-identification", "user-analysis", "mvp-strategy", "ai-implementation"]
+      itemToExpand = "Approach"
+    }
+    
+    if (sections.length === 0) return
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100 // Offset for header
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    // Auto-expand the appropriate item when on that page
+    if (itemToExpand && !expandedItems.includes(itemToExpand)) {
+      setExpandedItems(prev => [...prev, itemToExpand])
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [pathname, expandedItems])
   
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -148,36 +254,92 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             )}
             <SidebarGroupContent>
               <SidebarMenu>
-                {section.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton 
-                      asChild 
-                      isActive={item.isActive}
-                      tooltip={state === "collapsed" ? item.title : undefined}
-                      className="group relative transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-700"
-                    >
-                      <a href={item.url} className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-3">
-                          <div className="transition-transform duration-200 group-hover:scale-110">
-                            {item.icon}
+                {section.items.map((item) => {
+                  const isExpanded = expandedItems.includes(item.title)
+                  const hasSubItems = item.subItems && item.subItems.length > 0
+                  
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton 
+                        asChild={!hasSubItems}
+                        isActive={isActiveItem(item.url)}
+                        tooltip={state === "collapsed" ? item.title : undefined}
+                        className="group relative transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-700"
+                        onClick={hasSubItems ? () => toggleExpanded(item.title) : undefined}
+                      >
+                        {hasSubItems ? (
+                          <div className="flex items-center justify-between w-full cursor-pointer">
+                            <div className="flex items-center gap-3">
+                              <div className="transition-transform duration-200 group-hover:scale-110">
+                                {item.icon}
+                              </div>
+                              {state === "expanded" && (
+                                <span className="font-medium transition-all duration-200">{item.title}</span>
+                              )}
+                            </div>
+                            {state === "expanded" && (
+                              <div className="flex items-center gap-2">
+                                {item.badge && (
+                                  <div className={`px-2 py-0.5 text-xs font-medium rounded-full transition-all duration-200 ${
+                                    item.badge === "New" 
+                                      ? "bg-green-100 text-green-700" 
+                                      : "bg-orange-100 text-orange-700"
+                                  }`}>
+                                    {item.badge}
+                                  </div>
+                                )}
+                                {isExpanded ? (
+                                  <ChevronDown className="size-4 transition-transform duration-200" />
+                                ) : (
+                                  <ChevronRight className="size-4 transition-transform duration-200" />
+                                )}
+                              </div>
+                            )}
                           </div>
-                          {state === "expanded" && (
-                            <span className="font-medium transition-all duration-200">{item.title}</span>
-                          )}
-                        </div>
-                        {state === "expanded" && item.badge && (
-                          <div className={`px-2 py-0.5 text-xs font-medium rounded-full transition-all duration-200 ${
-                            item.badge === "New" 
-                              ? "bg-green-100 text-green-700" 
-                              : "bg-orange-100 text-orange-700"
-                          }`}>
-                            {item.badge}
-                          </div>
+                        ) : (
+                          <a href={item.url} className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-3">
+                              <div className="transition-transform duration-200 group-hover:scale-110">
+                                {item.icon}
+                              </div>
+                              {state === "expanded" && (
+                                <span className="font-medium transition-all duration-200">{item.title}</span>
+                              )}
+                            </div>
+                            {state === "expanded" && item.badge && (
+                              <div className={`px-2 py-0.5 text-xs font-medium rounded-full transition-all duration-200 ${
+                                item.badge === "New" 
+                                  ? "bg-green-100 text-green-700" 
+                                  : "bg-orange-100 text-orange-700"
+                              }`}>
+                                {item.badge}
+                              </div>
+                            )}
+                          </a>
                         )}
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                      </SidebarMenuButton>
+                      
+                      {/* Sub-items */}
+                      {hasSubItems && isExpanded && state === "expanded" && (
+                        <SidebarMenuSub>
+                          {item.subItems!.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.section}>
+                              <SidebarMenuSubButton 
+                                asChild
+                                isActive={isActiveSubItem(subItem.section)}
+                                className="transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-700 data-[active=true]:font-medium"
+                              >
+                                <a href={subItem.url}>
+                                  <span>{subItem.title}</span>
+                                </a>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      )}
+                    </SidebarMenuItem>
+                  )
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
