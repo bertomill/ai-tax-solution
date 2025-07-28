@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { 
   Brain, 
@@ -9,7 +11,10 @@ import {
   Search,
   Check,
   ChevronsUpDown,
-  GalleryVerticalEnd
+  GalleryVerticalEnd,
+  Home,
+  BookOpen,
+  Sparkles
 } from "lucide-react"
 
 import {
@@ -24,6 +29,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarInput,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
@@ -32,52 +38,61 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-// Navigation data for our whiteboarding interview preparation
-const navigationData = {
+// TypeScript interfaces for navigation data
+interface NavigationItem {
+  title: string
+  icon: React.ReactElement
+  url: string
+  isActive?: boolean
+  badge?: string
+}
+
+interface NavigationSection {
+  title: string
+  items: NavigationItem[]
+}
+
+// Navigation data for our AI Tax Use Cases application
+const navigationData: { sections: NavigationSection[] } = {
   sections: [
     {
-      title: "Assignment Context",
+      title: "Main",
       items: [
         {
-          title: "Overview",
-          icon: <FileText className="size-4" />,
-          url: "#overview",
+          title: "Home",
+          icon: <Home className="size-4" />,
+          url: "/",
           isActive: true,
         },
         {
-          title: "Interview Format",
-          icon: <Users className="size-4" />,
-          url: "#format",
-        },
-        {
-          title: "What We're Looking For",
-          icon: <Target className="size-4" />,
-          url: "#expectations",
+          title: "Documentation",
+          icon: <BookOpen className="size-4" />,
+          url: "/documentation",
         },
       ],
     },
     {
-      title: "Our Approach",
+      title: "Interview Sections",
       items: [
+        {
+          title: "Assignment Overview",
+          icon: <FileText className="size-4" />,
+          url: "/#overview",
+        },
+        {
+          title: "Interview Format",
+          icon: <Users className="size-4" />,
+          url: "/#format",
+        },
+        {
+          title: "What We're Looking For",
+          icon: <Target className="size-4" />,
+          url: "/#expectations",
+        },
         {
           title: "Problem Identification",
           icon: <Brain className="size-4" />,
-          url: "#problem-identification",
-        },
-        {
-          title: "Solution Design",
-          icon: <Lightbulb className="size-4" />,
-          url: "#solution-design",
-        },
-        {
-          title: "AI Integration",
-          icon: <Zap className="size-4" />,
-          url: "#ai-integration",
-        },
-        {
-          title: "MVP Strategy",
-          icon: <Target className="size-4" />,
-          url: "#mvp-strategy",
+          url: "/#problem",
         },
       ],
     },
@@ -89,40 +104,57 @@ const navigationData = {
           icon: <Search className="size-4" />,
           url: "/search",
         },
+        {
+          title: "Automation Analysis",
+          icon: <Zap className="size-4" />,
+          url: "/#problem",
+          badge: "Hot",
+        },
+        {
+          title: "Tax Research & Compliance",
+          icon: <Check className="size-4" />,
+          url: "/tax-research",
+          badge: "New",
+        },
       ],
     },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar()
+  
   return (
-    <Sidebar {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2">
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white flex aspect-square size-8 items-center justify-center rounded-lg">
-            <Brain className="size-4" />
-          </div>
-          <div className="flex flex-col gap-0.5 leading-none">
-            <span className="font-medium">AI Tax Use Cases</span>
-            <span className="text-xs text-muted-foreground">Interview Prep</span>
-          </div>
+          {state === "expanded" && (
+            <div className="flex flex-col gap-0.5 leading-none animate-in slide-in-from-left-2 duration-300">
+              <span className="font-medium text-gray-900">AI Tax Use Cases</span>
+              <span className="text-xs text-muted-foreground">Interview Prep</span>
+            </div>
+          )}
         </div>
         
-        {/* Search */}
-        <div className="px-2">
-          <SidebarInput
-            placeholder="Search sections..."
-            className="pl-8"
-          />
-          <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
-        </div>
+        {/* Search - only show when expanded */}
+        {state === "expanded" && (
+          <div className="relative px-2 animate-in slide-in-from-left-2 duration-300 delay-100">
+            <SidebarInput
+              placeholder="Search sections..."
+              className="pl-8 transition-all duration-200 focus:ring-2 focus:ring-blue-500/20"
+            />
+            <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 opacity-50 select-none" />
+          </div>
+        )}
       </SidebarHeader>
       
       <SidebarContent>
         {/* Navigation Sections */}
         {navigationData.sections.map((section) => (
           <SidebarGroup key={section.title}>
-            <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+            {state === "expanded" && (
+              <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+            )}
             <SidebarGroupContent>
               <SidebarMenu>
                 {section.items.map((item) => (
@@ -130,11 +162,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuButton 
                       asChild 
                       isActive={item.isActive}
-                      tooltip={item.title}
+                      tooltip={state === "collapsed" ? item.title : undefined}
+                      className="group relative transition-all duration-200 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-700"
                     >
-                      <a href={item.url}>
-                        {item.icon}
-                        <span>{item.title}</span>
+                      <a href={item.url} className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-3">
+                          <div className="transition-transform duration-200 group-hover:scale-110">
+                            {item.icon}
+                          </div>
+                          {state === "expanded" && (
+                            <span className="font-medium transition-all duration-200">{item.title}</span>
+                          )}
+                        </div>
+                        {state === "expanded" && item.badge && (
+                          <div className={`px-2 py-0.5 text-xs font-medium rounded-full transition-all duration-200 ${
+                            item.badge === "New" 
+                              ? "bg-green-100 text-green-700" 
+                              : "bg-orange-100 text-orange-700"
+                          }`}>
+                            {item.badge}
+                          </div>
+                        )}
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "env": {},
+      "disabled": true,
+      "autoApprove": []
+    },
+    "shadcn-ui": {
+      "command": "npx",
+      "args": [
+        "@jpisnice/shadcn-ui-mcp-server",
+        "--github-api-key",
+        "ghp_your_token_here"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "list_components",
+        "get_component",
+        "get_component",
+        "get_component_demo"
+      ]
+    }
+  }
+}

@@ -30,7 +30,7 @@ export async function createDocumentsTable() {
   return true
 }
 
-export async function insertDocumentsDirectly(documents: any[]) {
+export async function insertDocumentsDirectly(documents: Record<string, unknown>[]) {
   const { data, error } = await supabase
     .from('documents')
     .insert(documents)
@@ -44,7 +44,7 @@ export async function insertDocumentsDirectly(documents: any[]) {
   return data
 }
 
-export async function searchDocumentsDirectly(query: string) {
+export async function searchDocumentsDirectly() {
   const { data, error } = await supabase
     .from('documents')
     .select('*')

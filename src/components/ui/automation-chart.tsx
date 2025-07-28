@@ -1,120 +1,35 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-
-interface AutomationOpportunity {
-  id: string
-  name: string
-  volume: number
-  complexity: number
-  category: 'high-priority' | 'medium-priority' | 'low-priority'
-  description: string
-}
-
-const automationOpportunities: AutomationOpportunity[] = [
-  {
-    id: '1',
-    name: 'Daily Cash Position Reports',
-    volume: 85,
-    complexity: 25,
-    category: 'high-priority',
-    description: 'Automated generation of daily cash position reports from multiple banking systems'
-  },
-  {
-    id: '2',
-    name: 'Tax Document Classification',
-    volume: 90,
-    complexity: 35,
-    category: 'high-priority',
-    description: 'AI-powered classification and routing of incoming tax documents'
-  },
-  {
-    id: '3',
-    name: 'Regulatory Filing Validation',
-    volume: 75,
-    complexity: 45,
-    category: 'high-priority',
-    description: 'Automated validation of regulatory tax filings before submission'
-  },
-  {
-    id: '4',
-    name: 'Interest Calculation Verification',
-    volume: 80,
-    complexity: 30,
-    category: 'high-priority',
-    description: 'Automated verification of interest calculations across loan portfolios'
-  },
-  {
-    id: '5',
-    name: 'Expense Categorization',
-    volume: 70,
-    complexity: 20,
-    category: 'high-priority',
-    description: 'AI-driven categorization of business expenses for tax purposes'
-  },
-  {
-    id: '6',
-    name: 'Transaction Monitoring',
-    volume: 95,
-    complexity: 40,
-    category: 'high-priority',
-    description: 'Real-time monitoring of transactions for tax compliance issues'
-  },
-  {
-    id: '7',
-    name: 'Quarterly Report Generation',
-    volume: 40,
-    complexity: 55,
-    category: 'medium-priority',
-    description: 'Automated generation of quarterly tax reports with AI insights'
-  },
-  {
-    id: '8',
-    name: 'Audit Trail Creation',
-    volume: 65,
-    complexity: 35,
-    category: 'medium-priority',
-    description: 'Automated creation and maintenance of audit trails for tax purposes'
-  },
-  {
-    id: '9',
-    name: 'Depreciation Calculations',
-    volume: 50,
-    complexity: 60,
-    category: 'medium-priority',
-    description: 'Complex asset depreciation calculations with multiple methodologies'
-  },
-  {
-    id: '10',
-    name: 'Cross-Border Tax Analysis',
-    volume: 30,
-    complexity: 85,
-    category: 'low-priority',
-    description: 'Complex analysis of cross-border transactions for tax implications'
-  },
-  {
-    id: '11',
-    name: 'Customer Data Validation',
-    volume: 85,
-    complexity: 15,
-    category: 'high-priority',
-    description: 'Automated validation of customer tax information and documentation'
-  },
-  {
-    id: '12',
-    name: 'Compliance Reporting',
-    volume: 60,
-    complexity: 50,
-    category: 'medium-priority',
-    description: 'Automated generation of compliance reports for various jurisdictions'
-  }
-]
+import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
+import { getAutomationOpportunities, type AutomationOpportunity } from '@/lib/automation-data'
 
 const AutomationChart: React.FC = () => {
+  const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [hoveredPoint, setHoveredPoint] = useState<AutomationOpportunity | null>(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const opportunities = await getAutomationOpportunities()
+        setAutomationOpportunities(opportunities)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching automation opportunities:', err)
+        setError('Failed to load automation opportunities')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   const handleMouseEnter = (opportunity: AutomationOpportunity, event: React.MouseEvent) => {
     setHoveredPoint(opportunity)
@@ -187,6 +102,40 @@ const AutomationChart: React.FC = () => {
       default:
         return 'Unknown'
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center h-96">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading automation opportunities...</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <Card className="bg-white/80 backdrop-blur-sm border-red-200/50 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center h-96">
+              <div className="text-center">
+                <p className="text-red-600 mb-2">{error}</p>
+                <p className="text-gray-600 text-sm">Please check your Supabase connection and try again.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -363,6 +312,9 @@ const AutomationChart: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Automation vs AI Analysis */}
+      <AutomationVsAIAnalysis />
     </div>
   )
 }

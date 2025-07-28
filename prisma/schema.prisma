@@ -43,3 +43,45 @@ model SearchQuery {
 
   @@map("search_queries")
 }
+
+model AutomationOpportunity {
+  id          String   @id @default(cuid())
+  name        String
+  volume      Int      // 0-100 percentage
+  complexity  Int      // 0-100 percentage
+  category    String   // 'high-priority' | 'medium-priority' | 'low-priority'
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("automation_opportunities")
+}
+
+model TaxSolution {
+  id           String   @id @default(cuid())
+  name         String
+  type         String   // 'automation' | 'ai'
+  category     String   // 'rule-based' | 'predictable' | 'research' | 'expert-interface'
+  reasoning    String
+  description  String
+  keyFeatures  String[] // Array of feature strings
+  businessValue String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("tax_solutions")
+}
+
+model DocumentationSection {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // 'efficiency' | 'insights' | 'overview' | 'practical-lessons'
+  description String
+  content     String   // HTML content for rich formatting
+  keyPoints   String[] @map("key_points") // Array of key points
+  orderIndex  Int      @map("order_index") // For ordering sections
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("documentation_sections")
+}

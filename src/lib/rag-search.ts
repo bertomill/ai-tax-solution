@@ -54,7 +54,7 @@ export async function searchContent(
         return {
           id: doc.id,
           content: doc.content,
-          metadata: doc.metadata as any,
+          metadata: doc.metadata as Record<string, unknown>,
           similarity
         }
       })
