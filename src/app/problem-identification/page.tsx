@@ -343,7 +343,7 @@ export default function ProblemIdentificationPage() {
                                 Raw Research Data: Complete List of Day-to-Day Tax Tasks
                               </h4>
                               <Badge variant="outline" className="text-xs">
-                                28 tasks identified
+                                33 tasks identified
                               </Badge>
                             </div>
                             <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
@@ -530,11 +530,41 @@ export default function ProblemIdentificationPage() {
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">28</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Multi-state tax compliance workflow coordination</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">29</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Ensuring consistency across multiple tax jurisdictions</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">30</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Rapidly analyzing vast amounts of tax literature and case law</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">31</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Identifying relevant precedents and regulations more efficiently</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">32</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Providing clients with instant answers to common tax queries</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">33</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Allowing for rapid scenario modeling and tax impact assessments</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -546,10 +576,12 @@ export default function ProblemIdentificationPage() {
                                 <span className="font-medium">Research Notes:</span>
                               </div>
                               <ul className="space-y-1 ml-5 list-disc">
-                                <li>Tasks gathered from 12+ interviews across 4 major banking institutions</li>
+                                <li>Tasks 1-28: Gathered from 12+ interviews across 4 major banking institutions</li>
+                                <li>Tasks 29-33: Strategic AI opportunities identified through additional research and industry analysis</li>
                                 <li>Each task was later scored on complexity (1-5) and volume (1-5) for automation analysis</li>
                                 <li>Department classifications based on typical organizational structure</li>
                                 <li>Frequency represents typical occurrence patterns observed across institutions</li>
+                                <li>Strategic tasks focus on knowledge-intensive work requiring AI-powered solutions</li>
                               </ul>
                             </div>
                           </div>
@@ -596,11 +628,11 @@ export default function ProblemIdentificationPage() {
                     <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                       <li className="flex items-start space-x-2">
                         <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>18+ day-to-day tax activities</strong> identified and analyzed across banking operations</span>
+                        <span><strong>33 comprehensive tax activities</strong> identified and analyzed across banking operations and strategic functions</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>Strategic categorization</strong> applied: 6 tasks optimal for traditional automation, 12+ requiring AI solutions</span>
+                        <span><strong>Strategic categorization</strong> applied: operational tasks for traditional automation, knowledge-intensive tasks for AI solutions</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
