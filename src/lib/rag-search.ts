@@ -97,6 +97,32 @@ ${content}
     .join('\n')
 }
 
+export async function ragSearch(
+  query: string,
+  options: {
+    matchThreshold?: number
+    matchCount?: number
+  } = {}
+): Promise<{ results: SearchResult[], response: string, totalResults: number, query: string }> {
+  try {
+    // Perform the search
+    const results = await searchContent(query, options)
+    
+    // Generate the AI response
+    const response = await generateRAGResponse(query, results)
+    
+    return {
+      results,
+      response,
+      totalResults: results.length,
+      query
+    }
+  } catch (error) {
+    console.error('Error in ragSearch:', error)
+    throw error
+  }
+}
+
 export async function generateRAGResponse(
   query: string,
   context: SearchResult[]
