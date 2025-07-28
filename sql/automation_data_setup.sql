@@ -40,7 +40,13 @@ INSERT INTO automation_opportunities (name, volume, complexity, category, descri
 ('Depreciation Calculations', 50, 60, 'medium-priority', 'Complex asset depreciation calculations with multiple methodologies'),
 ('Cross-Border Tax Analysis', 30, 85, 'low-priority', 'Complex analysis of cross-border transactions for tax implications'),
 ('Customer Data Validation', 85, 15, 'high-priority', 'Automated validation of customer tax information and documentation'),
-('Compliance Reporting', 60, 50, 'medium-priority', 'Automated generation of compliance reports for various jurisdictions');
+('Compliance Reporting', 60, 50, 'medium-priority', 'Automated generation of compliance reports for various jurisdictions'),
+('Tax Treaty Interpretation', 15, 90, 'low-priority', 'Complex interpretation of tax treaties for specific transaction scenarios'),
+('Transfer Pricing Documentation', 25, 80, 'low-priority', 'Detailed analysis and documentation for transfer pricing compliance'),
+('Tax Provision Analysis', 20, 75, 'low-priority', 'Complex quarterly tax provision calculations with multiple variables'),
+('Advanced Tax Planning Scenarios', 10, 95, 'low-priority', 'Sophisticated tax planning for complex corporate structures'),
+('Multi-Jurisdiction Audit Defense', 18, 88, 'low-priority', 'Complex audit defense strategies across multiple tax jurisdictions'),
+('Derivative Instrument Tax Analysis', 12, 92, 'low-priority', 'Tax treatment analysis for complex derivative financial instruments');
 
 -- Insert tax solutions data
 INSERT INTO tax_solutions (name, type, category, reasoning, description, key_features, business_value) VALUES
@@ -60,7 +66,13 @@ INSERT INTO tax_solutions (name, type, category, reasoning, description, key_fea
 
 ('Cross-Border Tax Analysis', 'ai', 'research', 'Complex, jurisdiction-specific analysis requiring interpretation of multiple regulatory frameworks.', 'AI analysis of cross-border transactions for tax implications', ARRAY['Multi-jurisdiction analysis', 'Regulatory interpretation', 'Risk assessment'], 'Comprehensive analysis of complex international tax scenarios'),
 
-('Regulatory Filing Intelligence', 'ai', 'research', 'Regulations change frequently and require interpretation. AI can adapt to new requirements and edge cases.', 'AI-enhanced validation and optimization of regulatory tax filings', ARRAY['Regulation monitoring', 'Compliance checking', 'Optimization suggestions'], 'Proactive compliance with evolving regulatory landscape');
+('Regulatory Filing Intelligence', 'ai', 'research', 'Regulations change frequently and require interpretation. AI can adapt to new requirements and edge cases.', 'AI-enhanced validation and optimization of regulatory tax filings', ARRAY['Regulation monitoring', 'Compliance checking', 'Optimization suggestions'], 'Proactive compliance with evolving regulatory landscape'),
+
+('Tax Treaty Analysis', 'ai', 'research', 'Complex interpretation requiring deep understanding of multiple treaty provisions and their interactions.', 'AI-powered analysis of tax treaty applications for specific scenarios', ARRAY['Treaty interpretation', 'Precedent analysis', 'Multi-treaty comparison'], 'Expert-level treaty analysis with comprehensive reasoning'),
+
+('Transfer Pricing Intelligence', 'ai', 'research', 'Requires analysis of economic substance, market conditions, and regulatory requirements across jurisdictions.', 'AI-enhanced transfer pricing analysis and documentation', ARRAY['Economic analysis', 'Benchmarking', 'Documentation generation'], 'Sophisticated transfer pricing analysis with regulatory compliance'),
+
+('Tax Provision Modeling', 'ai', 'expert-interface', 'Complex calculations requiring interpretation of accounting standards and tax regulations.', 'AI-assisted quarterly tax provision calculations and analysis', ARRAY['Multi-variable modeling', 'Scenario analysis', 'Audit support'], 'Enhanced accuracy in complex tax provision scenarios');
 
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_automation_opportunities_category ON automation_opportunities(category);
