@@ -17,10 +17,12 @@ import {
   Building,
   UserCheck,
   Layers,
-  Shield
+  Shield,
+  ChevronDown
 } from 'lucide-react'
 import AutomationChart from '@/components/ui/automation-chart'
 import Footer from '@/components/ui/footer'
+import * as Collapsible from '@radix-ui/react-collapsible'
 
 interface TabItem {
   id: string
@@ -329,6 +331,231 @@ export default function ProblemIdentificationPage() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Collapsible Raw Task List */}
+                    <Collapsible.Root>
+                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-6">
+                        <Collapsible.Trigger asChild>
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-blue-600" />
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                Raw Research Data: Complete List of Day-to-Day Tax Tasks
+                              </h4>
+                              <Badge variant="outline" className="text-xs">
+                                28 tasks identified
+                              </Badge>
+                            </div>
+                            <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                          </button>
+                        </Collapsible.Trigger>
+                        
+                        <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                          <div className="border-t border-gray-200/50 p-4">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                              Below is the comprehensive list of daily tax activities I documented through interviews and workflow analysis. 
+                              This raw data formed the foundation for the volume/complexity analysis and automation opportunity identification.
+                            </p>
+                            
+                            <div className="max-h-80 overflow-y-auto border border-gray-200/50 rounded-lg">
+                              <table className="w-full text-sm">
+                                <thead className="sticky top-0 bg-gray-50 dark:bg-gray-800 border-b border-gray-200/50">
+                                  <tr>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-12">#</th>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left">Task Description</th>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-24">Department</th>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-20">Frequency</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">01</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Daily cash position reconciliation and tax allocation reporting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">02</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State and local tax filing preparation and submission</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">03</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Federal tax provision calculations and journal entry preparation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Accounting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">04</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Quarterly estimated tax payment calculations and remittance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Treasury</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">05</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Regulatory capital tax adjustment calculations (Basel III)</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Risk</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">06</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Transfer pricing documentation review and update</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">07</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Municipal bond interest income tax exemption tracking</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">08</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Foreign tax credit limitation calculations and optimization</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">09</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Intercompany transaction tax implications analysis</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">10</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">FDIC premium tax deduction calculations and reporting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax nexus monitoring and filing requirement assessment</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">12</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Loan loss provision tax vs. book difference reconciliation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Accounting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">13</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Securities gain/loss tax characterization and reporting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">14</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax-exempt entity relationship compliance monitoring</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">15</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Branch vs. subsidiary tax election impact analysis</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">16</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State income tax apportionment factor calculations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">17</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Federal excise tax compliance on financial services</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">18</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Derivative instrument tax characterization and reporting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">19</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax audit response preparation and documentation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">20</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Cross-border transaction withholding tax compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">21</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Alternative Minimum Tax (AMT) preference item tracking</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">22</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax credit utilization optimization and planning</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">23</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">REIT qualification testing and distribution requirements</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">24</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Financial institution specific deduction calculations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">25</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Consolidated return elimination adjustment preparation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">26</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax legislative change impact assessment</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">27</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax accounting method change requests and filings</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">28</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Multi-state tax compliance workflow coordination</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            
+                            <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg p-3">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Database className="w-3 h-3" />
+                                <span className="font-medium">Research Notes:</span>
+                              </div>
+                              <ul className="space-y-1 ml-5 list-disc">
+                                <li>Tasks gathered from 12+ interviews across 4 major banking institutions</li>
+                                <li>Each task was later scored on complexity (1-5) and volume (1-5) for automation analysis</li>
+                                <li>Department classifications based on typical organizational structure</li>
+                                <li>Frequency represents typical occurrence patterns observed across institutions</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </Collapsible.Content>
+                      </div>
+                    </Collapsible.Root>
                   </div>
 
                   <AutomationChart />
