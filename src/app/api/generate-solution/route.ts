@@ -25,7 +25,7 @@ Format your response with:
 - **Bold text** for key concepts and technologies
 - *Italics* for emphasis
 - Bullet points for lists
-- `Code snippets` for technical terms
+- \`Code snippets\` for technical terms
 - Clear sections with headers
 
 Keep your response focused, practical, and around 150-200 words. Be specific about the AI techniques and technologies.`
