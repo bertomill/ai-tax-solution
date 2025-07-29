@@ -28,7 +28,7 @@ export async function searchContent(
     matchCount?: number
   } = {}
 ): Promise<SearchResult[]> {
-  const { matchThreshold = 0.7, matchCount = 5 } = options
+  const { matchThreshold = 0.3, matchCount = 5 } = options
 
   try {
     console.log(`🔍 Searching for: "${query}"`)
@@ -43,6 +43,11 @@ export async function searchContent(
     
     if (error) {
       throw error
+    }
+    
+    if (!documents || documents.length === 0) {
+      console.log(`❌ No documents found in database`)
+      return []
     }
     
     // Calculate similarity scores

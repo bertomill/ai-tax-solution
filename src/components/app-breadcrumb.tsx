@@ -13,6 +13,13 @@ import {
 import { Home } from 'lucide-react'
 import React from 'react'
 
+interface BreadcrumbItem {
+  href: string
+  label: string
+  icon?: React.ReactNode
+  isCurrent?: boolean
+}
+
 const pageTitles: Record<string, string> = {
   '/': 'Home',
   '/interview-format': 'Session Format',
@@ -37,7 +44,7 @@ export function AppBreadcrumb() {
 
   const pathSegments = pathname.split('/').filter(Boolean)
   
-  const breadcrumbItems = [
+  const breadcrumbItems: BreadcrumbItem[] = [
     {
       href: '/',
       label: 'Home',

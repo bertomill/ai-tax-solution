@@ -4,7 +4,6 @@ import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AppBreadcrumb } from "@/components/app-breadcrumb";
-import Footer from "@/components/ui/footer";
 import { ThemeProvider } from "@/lib/theme-provider";
 
 const geistSans = Geist({

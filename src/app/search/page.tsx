@@ -5,7 +5,11 @@ import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
   ArrowRight,
-  ChevronDown
+  ChevronDown,
+  Shield,
+  Lock,
+  CheckCircle,
+  Brain
 } from 'lucide-react'
 import { RAGSearch } from '@/components/rag-search'
 import { DocumentSidebar } from '@/components/document-sidebar'
@@ -50,7 +54,8 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
     { id: 'pdf-processing', title: 'PDF Document Processing' },
     { id: 'value-proposition', title: 'Value Proposition' },
     { id: 'success-metrics', title: 'Success Metrics' },
-    { id: 'implementation-roadmap', title: 'Implementation Roadmap' }
+    { id: 'implementation-roadmap', title: 'Implementation Roadmap' },
+    { id: 'security-by-design', title: 'Security by Design' }
   ]
 
   useEffect(() => {
@@ -915,8 +920,8 @@ function SearchPageContent() {
                           </div>
                           <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
                             <li>Deploy AI-powered search across federal tax authorities</li>
-                            <li>Enable natural language querying for common tax questions</li>
-                            <li>Provide authoritative source citations and confidence scoring</li>
+                            <li>Conduct workdshops aroud the enterprise with partners and clients</li>
+                            <li>Identify key areas for improvement</li>
                           </ul>
                         </div>
 
@@ -927,9 +932,9 @@ function SearchPageContent() {
                             <div className="text-sm text-gray-500 dark:text-gray-400">Month 4-6</div>
                           </div>
                           <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
-                            <li>Add state and international tax coverage</li>
+                            <li>Allow users to create mulitple different projects</li>
                             <li>Implement professional memo generation</li>
-                            <li>Enable firm-specific knowledge integration</li>
+                            <li>Enable memory and  search across projects</li>
                           </ul>
                         </div>
 
@@ -940,10 +945,105 @@ function SearchPageContent() {
                             <div className="text-sm text-gray-500 dark:text-gray-400">Month 7-12</div>
                           </div>
                           <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
-                            <li>Develop proactive compliance monitoring</li>
-                            <li>Add tax planning scenario analysis</li>
+                            <li>Develop training curiculum</li>
+                            <li>Scale accessibility to full company</li>
                             <li>Create client-facing research interfaces</li>
                           </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Security by Design */}
+                    <div id="security-by-design" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        Security by Design
+                      </h3>
+                      <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                        Security and compliance are foundational to our AI search solution, ensuring client data protection 
+                        and regulatory adherence at every level of the system architecture.
+                      </p>
+                      
+                      <div className="grid md:grid-cols-2 gap-8">
+                        {/* Data Protection */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                              <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Data Protection & Privacy</h4>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
+                            <li>• End-to-end encryption for all data in transit and at rest</li>
+                            <li>• Client data isolation with dedicated secure environments</li>
+                            <li>• GDPR and PIPEDA compliance for Canadian tax data</li>
+                            <li>• Regular security audits and penetration testing</li>
+                            <li>• Data retention policies aligned with tax regulations</li>
+                          </ul>
+                        </div>
+
+                        {/* Access Control */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                              <Lock className="w-5 h-5 text-green-600 dark:text-green-400" />
+                            </div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Access Control & Authentication</h4>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
+                            <li>• Multi-factor authentication (MFA) for all users</li>
+                            <li>• Role-based access control (RBAC) with least privilege</li>
+                            <li>• Single sign-on (SSO) integration with enterprise systems</li>
+                            <li>• Session management with automatic timeout</li>
+                            <li>• Audit logging for all user activities</li>
+                          </ul>
+                        </div>
+
+                        {/* Compliance Framework */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                              <CheckCircle className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                            </div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Compliance Framework</h4>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
+                            <li>• SOC 2 Type II certification for security controls</li>
+                            <li>• ISO 27001 information security management</li>
+                            <li>• CRA security requirements compliance</li>
+                            <li>• Professional services industry standards</li>
+                            <li>• Regular compliance assessments and reporting</li>
+                          </ul>
+                        </div>
+
+                        {/* AI Model Security */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                              <Brain className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                            </div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">AI Model Security</h4>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
+                            <li>• Secure API endpoints with rate limiting</li>
+                            <li>• Input validation and sanitization</li>
+                            <li>• Model output filtering for sensitive data</li>
+                            <li>• No training on client-specific data</li>
+                            <li>• Regular model security assessments</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Security Commitment */}
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-lg p-6 border border-blue-200/50 dark:border-blue-800/50">
+                        <div className="text-center">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                            Our Security Commitment
+                          </h4>
+                          <p className="text-gray-600 dark:text-gray-300">
+                            We maintain the highest standards of security and compliance, ensuring that your tax research 
+                            and client data remain protected while delivering powerful AI capabilities. Our security-first 
+                            approach builds trust and enables confident adoption across your organization.
+                          </p>
                         </div>
                       </div>
                     </div>
