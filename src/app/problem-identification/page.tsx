@@ -936,14 +936,16 @@ export default function ProblemIdentificationPage() {
                                     className="space-y-4"
                                   >
                                     <div>
-                                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{persona.title}</h3>
+                                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                                        <Users className="w-5 h-5 text-gray-400" />
+                                        {persona.title}
+                                      </h3>
                                       <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
                                     </div>
                                     
                                     <div className="space-y-4">
                                       <div>
-                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                                          <CheckCircle className="w-4 h-4 text-red-500" />
+                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
                                           Current Pain Points
                                         </h4>
                                         <ul className="space-y-1">
@@ -1089,18 +1091,38 @@ export default function ProblemIdentificationPage() {
                                                                      <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[9])}>
                                      <td className="font-mono text-xs text-gray-500 px-3 py-2">10</td>
                                      <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FDIC premium tax deduction calculations and reporting</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Regulatory Tax Specialist</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                     <td className="px-3 py-2">
+                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                     </td>
                                    </tr>
                                    <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[10])}>
                                      <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
                                      <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">State tax nexus monitoring and filing requirement assessment</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">State Tax Manager</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                     <td className="px-3 py-2">
+                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                     </td>
                                    </tr>
                                    <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[11])}>
                                      <td className="font-mono text-xs text-gray-500 px-3 py-2">12</td>
                                      <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Loan loss provision tax vs. book difference reconciliation</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Accountant</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                     <td className="px-3 py-2">
+                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                     </td>
                                    </tr>
                                    <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[12])}>
                                      <td className="font-mono text-xs text-gray-500 px-3 py-2">13</td>
                                      <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Market research and tax compliance trends monitoring</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Strategy Analyst</td>
+                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                     <td className="px-3 py-2">
+                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                     </td>
                                    </tr>
                                    <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[13])}>
                                      <td className="font-mono text-xs text-gray-500 px-3 py-2">14</td>
@@ -1111,143 +1133,185 @@ export default function ProblemIdentificationPage() {
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax nexus monitoring and filing requirement assessment</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">12</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Loan loss provision tax vs. book difference reconciliation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">13</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Securities gain/loss tax characterization and reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[13])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">14</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax-exempt entity relationship compliance monitoring</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Securities gain/loss tax characterization and reporting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Securities Tax Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[14])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">15</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Branch vs. subsidiary tax election impact analysis</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax-exempt entity relationship compliance monitoring</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[15])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">16</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State income tax apportionment factor calculations</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Branch vs. subsidiary tax election impact analysis</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">International Tax Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[16])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">17</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Federal excise tax compliance on financial services</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Deferred tax asset/liability calculation and tracking</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Accountant</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[17])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">18</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Derivative instrument tax characterization and reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Research and development tax credit calculation and documentation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">R&D Tax Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[18])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">19</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax audit response preparation and documentation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Alternative minimum tax calculation and planning</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[19])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">20</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Cross-border transaction withholding tax compliance</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax basis tracking and calculation for investments</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Investment Tax Specialist</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[20])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">21</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Alternative Minimum Tax (AMT) preference item tracking</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax return review and quality assurance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[21])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">22</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax credit utilization optimization and planning</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax audit support and documentation preparation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">As needed</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[22])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">23</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">REIT qualification testing and distribution requirements</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax law change impact analysis and implementation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Policy Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">As needed</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[23])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">24</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Financial institution specific deduction calculations</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax calendar management and deadline tracking</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Coordinator</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[24])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">25</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Consolidated return elimination adjustment preparation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax software maintenance and updates</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Systems Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[25])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">26</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax legislative change impact assessment</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax data validation and quality control</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Data Analyst</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[26])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">27</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax accounting method change requests and filings</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax reporting automation and process improvement</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Process Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[27])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">28</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Multi-state tax compliance workflow coordination</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax risk assessment and mitigation planning</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Risk Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[28])}>
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">29</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax training and knowledge management</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Training Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[29])}>
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">30</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax document management and archiving</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Document Specialist</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[30])}>
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">31</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax communication and stakeholder management</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Communications Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[31])}>
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">32</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax technology evaluation and implementation</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Technology Manager</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
+                                  </tr>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[32])}>
+                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">33</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tax compliance monitoring and reporting</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">29</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Ensuring consistency across multiple tax jurisdictions</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">30</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Rapidly analyzing vast amounts of tax literature and case law</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">31</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Identifying relevant precedents and regulations more efficiently</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">32</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Providing clients with instant answers to common tax queries</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
-                                  </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">33</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Allowing for rapid scenario modeling and tax impact assessments</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
                                 </tbody>
                               </table>

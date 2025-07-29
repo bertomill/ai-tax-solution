@@ -336,192 +336,190 @@ Please conduct thorough analysis considering current tax laws, recent changes, a
               <h3 className="text-lg font-semibold text-gray-900">Select Business Type</h3>
             </div>
             <div className="space-y-3">
-                {BUSINESS_TYPES.map((businessType) => (
-                  <div 
-                    key={businessType.id} 
-                    className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors cursor-pointer ${
-                      selectedBusinessType === businessType.id 
-                        ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' 
-                        : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setSelectedBusinessType(businessType.id)}
-                  >
-                    <input
-                      type="radio"
-                      id={businessType.id}
-                      name="businessType"
-                      value={businessType.id}
-                      checked={selectedBusinessType === businessType.id}
-                      onChange={(e) => e.stopPropagation()}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <span className="font-medium text-gray-900 block">
-                        {businessType.name}
-                      </span>
-                      <p className="text-sm text-gray-600 mt-1">{businessType.description}</p>
-                      <div className="flex flex-wrap gap-1 mt-2">
-                        {businessType.taxConsiderations.map((consideration, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            {consideration}
-                          </Badge>
-                        ))}
-                      </div>
+              {BUSINESS_TYPES.map((businessType) => (
+                <div 
+                  key={businessType.id} 
+                  className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors cursor-pointer ${
+                    selectedBusinessType === businessType.id 
+                      ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                  onClick={() => setSelectedBusinessType(businessType.id)}
+                >
+                  <input
+                    type="radio"
+                    id={businessType.id}
+                    name="businessType"
+                    value={businessType.id}
+                    checked={selectedBusinessType === businessType.id}
+                    onChange={(e) => e.stopPropagation()}
+                    className="mt-1"
+                  />
+                  <div className="flex-1">
+                    <span className="font-medium text-gray-900 block">
+                      {businessType.name}
+                    </span>
+                    <p className="text-sm text-gray-600 mt-1">{businessType.description}</p>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {businessType.taxConsiderations.map((consideration, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {consideration}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Simulation Button */}
           <div className="space-y-4">
-              <div className="flex gap-3">
-                <Button 
-                  onClick={handleSimulation}
-                  disabled={selectedJurisdictions.length === 0 || !selectedBusinessType || isAnalyzing}
-                  className="flex-1 h-12"
-                  size="lg"
-                >
-                  {isAnalyzing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Running Compliance Analysis...
-                    </>
-                  ) : (
-                    <>
-                      <Shield className="w-4 h-4 mr-2" />
-                      Start Compliance Simulation
-                    </>
-                  )}
-                </Button>
-                <Sheet open={showPrompt} onOpenChange={setShowPrompt}>
-                  <SheetTrigger asChild>
-                    <Button
-                      disabled={selectedJurisdictions.length === 0 || !selectedBusinessType}
-                      variant="outline"
-                      className="h-12 px-4"
-                    >
-                      <Lightbulb className="w-4 h-4 mr-2" />
-                      View Analysis Prompt
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="right" className="w-full sm:max-w-2xl">
-                    <SheetHeader className="pb-6 border-b border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center justify-between">
-                        <SheetTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                          Compliance Analysis Prompt
-                        </SheetTitle>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() => setIsEditingPrompt(!isEditingPrompt)}
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-3"
-                          >
-                            <Edit3 className="w-4 h-4 mr-1" />
-                            {isEditingPrompt ? 'Preview' : 'Edit'}
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            onClick={() => setShowPrompt(false)}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </SheetHeader>
-                    <div className="py-6 space-y-6">
-                      {isEditingPrompt ? (
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                              Customize Analysis Prompt:
-                            </h4>
-                            <Textarea
-                              value={customPrompt || generateCompliancePrompt()}
-                              onChange={(e) => setCustomPrompt(e.target.value)}
-                              placeholder="Enter your custom compliance analysis prompt..."
-                              className="min-h-[400px] text-sm font-mono"
-                            />
-                          </div>
-                          <div className="flex justify-end gap-2">
-                            <Button variant="outline" onClick={handleResetPrompt}>
-                              Reset to Default
-                            </Button>
-                            <Button onClick={handleSaveCustomPrompt}>
-                              <Save className="w-4 h-4 mr-2" />
-                              Save Changes
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                              What the AI Will Analyze:
-                            </h4>
-                            <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
-                              {generateCompliancePrompt()}
-                            </pre>
-                          </div>
-                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                            <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                              Analysis Configuration:
-                            </h4>
-                            <div className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
-                              {selectedJurisdictions.length > 0 && (
-                                <div>
-                                  <strong>Jurisdictions:</strong> {selectedJurisdictions.map(id => TAX_JURISDICTIONS.find(j => j.id === id)?.name).join(', ')}
-                                </div>
-                              )}
-                              {selectedBusinessType && (
-                                <div>
-                                  <strong>Business Type:</strong> {BUSINESS_TYPES.find(b => b.id === selectedBusinessType)?.name}
-                                </div>
-                              )}
-                              <div>
-                                <strong>Expected Output:</strong> Compliance scenarios with risk assessments, opportunities, and recommendations
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          This prompt will be sent to the AI to conduct comprehensive compliance analysis.
-                        </p>
+            <div className="flex gap-3">
+              <Button 
+                onClick={handleSimulation}
+                disabled={selectedJurisdictions.length === 0 || !selectedBusinessType || isAnalyzing}
+                className="flex-1 h-12"
+                size="lg"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Running Compliance Analysis...
+                  </>
+                ) : (
+                  <>
+                    <Shield className="w-4 h-4 mr-2" />
+                    Start Compliance Simulation
+                  </>
+                )}
+              </Button>
+              <Sheet open={showPrompt} onOpenChange={setShowPrompt}>
+                <SheetTrigger asChild>
+                  <Button
+                    disabled={selectedJurisdictions.length === 0 || !selectedBusinessType}
+                    variant="outline"
+                    className="h-12 px-4"
+                  >
+                    <Lightbulb className="w-4 h-4 mr-2" />
+                    View Analysis Prompt
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full sm:max-w-2xl">
+                  <SheetHeader className="pb-6 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center justify-between">
+                      <SheetTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        Compliance Analysis Prompt
+                      </SheetTitle>
+                      <div className="flex items-center gap-2">
                         <Button
-                          onClick={() => {
-                            setShowPrompt(false)
-                            handleSimulation()
-                          }}
-                          disabled={isAnalyzing}
+                          onClick={() => setIsEditingPrompt(!isEditingPrompt)}
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-3"
                         >
-                          <Shield className="w-4 h-4 mr-2" />
-                          Start Analysis Now
+                          <Edit3 className="w-4 h-4 mr-1" />
+                          {isEditingPrompt ? 'Preview' : 'Edit'}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          onClick={() => setShowPrompt(false)}
+                        >
+                          <X className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
-                  </SheetContent>
-                </Sheet>
-              </div>
-              {(selectedJurisdictions.length > 0 || selectedBusinessType) && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <strong>Analysis Configuration:</strong>
-                    {selectedJurisdictions.length > 0 && (
-                      <span className="block mt-1">• Jurisdictions: {selectedJurisdictions.map(id => TAX_JURISDICTIONS.find(j => j.id === id)?.name).join(', ')}</span>
+                  </SheetHeader>
+                  <div className="py-6 space-y-6">
+                    {isEditingPrompt ? (
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Customize Analysis Prompt:
+                          </h4>
+                          <Textarea
+                            value={customPrompt || generateCompliancePrompt()}
+                            onChange={(e) => setCustomPrompt(e.target.value)}
+                            placeholder="Enter your custom compliance analysis prompt..."
+                            className="min-h-[400px] text-sm font-mono"
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button variant="outline" onClick={handleResetPrompt}>
+                            Reset to Default
+                          </Button>
+                          <Button onClick={handleSaveCustomPrompt}>
+                            <Save className="w-4 h-4 mr-2" />
+                            Save Changes
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            What the AI Will Analyze:
+                          </h4>
+                          <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
+                            {generateCompliancePrompt()}
+                          </pre>
+                        </div>
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                          <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                            Analysis Configuration:
+                          </h4>
+                          <div className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
+                            {selectedJurisdictions.length > 0 && (
+                              <div>
+                                <strong>Jurisdictions:</strong> {selectedJurisdictions.map(id => TAX_JURISDICTIONS.find(j => j.id === id)?.name).join(', ')}
+                              </div>
+                            )}
+                            {selectedBusinessType && (
+                              <div>
+                                <strong>Business Type:</strong> {BUSINESS_TYPES.find(b => b.id === selectedBusinessType)?.name}
+                              </div>
+                            )}
+                            <div>
+                              <strong>Expected Output:</strong> Compliance scenarios with risk assessments, opportunities, and recommendations
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
-                    {selectedBusinessType && (
-                      <span className="block mt-1">• Business Type: {BUSINESS_TYPES.find(b => b.id === selectedBusinessType)?.name}</span>
-                    )}
-                  </p>
-                </div>
-              )}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        This prompt will be sent to the AI to conduct comprehensive compliance analysis.
+                      </p>
+                      <Button
+                        onClick={() => {
+                          setShowPrompt(false)
+                          handleSimulation()
+                        }}
+                        disabled={isAnalyzing}
+                      >
+                        <Shield className="w-4 h-4 mr-2" />
+                        Start Analysis Now
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
+            {(selectedJurisdictions.length > 0 || selectedBusinessType) && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Analysis Configuration:</strong>
+                  {selectedJurisdictions.length > 0 && (
+                    <span className="block mt-1">• Jurisdictions: {selectedJurisdictions.map(id => TAX_JURISDICTIONS.find(j => j.id === id)?.name).join(', ')}</span>
+                  )}
+                  {selectedBusinessType && (
+                    <span className="block mt-1">• Business Type: {BUSINESS_TYPES.find(b => b.id === selectedBusinessType)?.name}</span>
+                  )}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Simulation Results */}
