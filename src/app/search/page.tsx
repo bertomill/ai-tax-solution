@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
@@ -21,14 +21,11 @@ import {
   ArrowRight,
   Database,
   MessageSquare,
-  Sparkles,
-  ChevronDown,
-  Upload
+  ChevronDown
 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { RAGSearch } from '@/components/rag-search'
 import { DocumentSidebar } from '@/components/document-sidebar'
 import * as Collapsible from '@radix-ui/react-collapsible'
@@ -130,7 +127,7 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   )
 }
 
-export default function SearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams()
   const [isProfessionalArchOpen, setIsProfessionalArchOpen] = useState(false)
   const [isEmbeddingModelOpen, setIsEmbeddingModelOpen] = useState(false)
@@ -251,7 +248,7 @@ export default function SearchPage() {
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(156,146,172,0.15)_1px,transparent_0)] bg-[length:20px_20px] opacity-30" />
       
-      <div className="relative z-10 py-8">
+      <div className="relative z-10 pt-4 pb-8">
         <div className="w-full px-4">
           {/* Main Layout - Two Columns */}
           <div className="flex gap-6 min-h-screen">
@@ -1120,5 +1117,18 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    </div>}>
+      <SearchPageContent />
+    </Suspense>
   )
 }

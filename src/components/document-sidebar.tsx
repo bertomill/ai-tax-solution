@@ -178,39 +178,7 @@ export function DocumentSidebar({ className }: DocumentSidebarProps) {
           </CardContent>
         </Card>
 
-        {/* Quick Upload Actions */}
-        {!showUpload && (
-          <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200/50">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setUploadMethod('file')
-                    setShowUpload(true)
-                  }}
-                  className="h-8 text-xs flex items-center gap-1"
-                >
-                  <FolderOpen className="w-3 h-3" />
-                  Upload
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setUploadMethod('text')
-                    setShowUpload(true)
-                  }}
-                  className="h-8 text-xs flex items-center gap-1"
-                >
-                  <Type className="w-3 h-3" />
-                  Paste
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+
       </motion.div>
 
       {/* Upload Progress Drawer */}

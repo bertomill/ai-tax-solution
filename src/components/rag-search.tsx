@@ -23,9 +23,6 @@ export function RAGSearch() {
             AI Tax Research Platform
           </h1>
         </div>
-        <p className="text-base text-black dark:text-gray-300">
-          Get instant answers about tax law, regulations, deductions, and compliance requirements from comprehensive tax code documentation
-        </p>
       </motion.div>
 
       {/* Chat Interface */}

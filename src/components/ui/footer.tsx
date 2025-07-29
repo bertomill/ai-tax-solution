@@ -100,7 +100,12 @@ const Footer: React.FC = () => {
           <div className="flex items-center space-x-6 text-sm text-gray-500">
             <span>Whiteboarding Interview Session</span>
             <span>•</span>
-            <span>Enterprise Innovation</span>
+            <a 
+              href="/about" 
+              className="text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer font-medium"
+            >
+              About Robert
+            </a>
             <span>•</span>
             <span className="flex items-center space-x-1">
               <Mail className="w-3 h-3" />

@@ -100,14 +100,14 @@ const ModernHomepage: React.FC = () => {
       <main className="flex-1 overflow-auto p-4 md:p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Welcome Section */}
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-300">
               AI Tax Use Cases
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <p className="text-base text-black dark:text-gray-300">
               Whiteboarding Interview Preparation Dashboard
             </p>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <p className="text-black dark:text-gray-300 max-w-4xl">
               Navigate through the interview preparation sections using the sidebar or the cards below. 
               Each section provides detailed information to help you prepare for the collaborative whiteboarding session.
             </p>
