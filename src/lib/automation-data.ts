@@ -159,3 +159,18 @@ export async function addAIDocumentSearchOpportunity(): Promise<AutomationOpport
 
   return await addAutomationOpportunity(opportunity)
 }
+
+// Add Tax Trends Market Research opportunity
+export async function addTaxTrendsMarketResearchOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'Tax Trends Market Research',
+    volume: 88, // Very high value/time savings
+    complexity: 20, // Very low complexity/risk
+    category: 'high-priority',
+    description: 'AI-powered analysis of tax trends, market developments, and regulatory changes to provide strategic insights for tax planning and compliance.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing and data analysis capabilities enable automated monitoring of tax trends, regulatory updates, and market developments across multiple sources, providing valuable strategic insights with minimal manual effort.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}

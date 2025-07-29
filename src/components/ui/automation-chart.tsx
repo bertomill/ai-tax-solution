@@ -15,7 +15,7 @@ import {
   Info
 } from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
-import { getAutomationOpportunities, addAIDocumentSearchOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
+import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
 
 const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
@@ -55,6 +55,23 @@ const AutomationChart: React.FC = () => {
     } catch (error) {
       console.error('Error adding AI Document Search:', error)
       alert('❌ Error adding AI Document Search')
+    }
+  }
+
+  const handleAddTaxTrendsMarketResearch = async () => {
+    try {
+      const result = await addTaxTrendsMarketResearchOpportunity()
+      if (result) {
+        // Refresh the data
+        const opportunities = await getAutomationOpportunities()
+        setAutomationOpportunities(opportunities)
+        alert('✅ Tax Trends Market Research added successfully!')
+      } else {
+        alert('❌ Failed to add Tax Trends Market Research')
+      }
+    } catch (error) {
+      console.error('Error adding Tax Trends Market Research:', error)
+      alert('❌ Error adding Tax Trends Market Research')
     }
   }
 
@@ -299,6 +316,30 @@ const AutomationChart: React.FC = () => {
             <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
             <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Click on any data point for detailed analysis</span>
           </div>
+          
+          {/* Add Opportunities Section */}
+          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
+            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Add Sample Opportunities</h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={handleAddDocumentSearch}
+                className="px-3 py-1.5 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-md transition-colors duration-200 flex items-center gap-1"
+              >
+                <Zap className="w-3 h-3" />
+                Add AI Document Search
+              </button>
+              <button
+                onClick={handleAddTaxTrendsMarketResearch}
+                className="px-3 py-1.5 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors duration-200 flex items-center gap-1"
+              >
+                <TrendingUp className="w-3 h-3" />
+                Add Tax Trends Research
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              These opportunities will appear as highlighted data points on the chart
+            </p>
+          </div>
         </div>
         <div>
           <div className="relative">
@@ -335,6 +376,7 @@ const AutomationChart: React.FC = () => {
                 const x = 6 + (opportunity.volume / 100) * (100 - 12)
                 const y = 6 + ((100 - opportunity.complexity) / 100) * (100 - 12)
                 const isSelectedSolution = opportunity.name === 'AI Document Search'
+                const isTaxTrendsResearch = opportunity.name === 'Tax Trends Market Research'
                 
                 return (
                   <Popover key={opportunity.id}>
@@ -342,6 +384,8 @@ const AutomationChart: React.FC = () => {
                       <button
                         className={`absolute w-4 h-4 rounded-full border-2 ${getCategoryColor(opportunity.category)} transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 hover:shadow-lg hover:shadow-blue-200/50 transition-all duration-200 z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-110 ${
                           isSelectedSolution ? 'ring-4 ring-purple-400 ring-opacity-60 shadow-lg shadow-purple-200 animate-pulse' : ''
+                        } ${
+                          isTaxTrendsResearch ? 'ring-4 ring-blue-400 ring-opacity-60 shadow-lg shadow-blue-200 animate-pulse' : ''
                         }`}
                         style={{
                           left: `${x}%`,

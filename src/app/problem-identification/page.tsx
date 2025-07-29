@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { 
   CheckCircle, 
@@ -19,10 +20,14 @@ import {
   Shield,
   ChevronDown,
   X,
-  Eye
+  Eye,
+  Lightbulb,
+  Loader2
 } from 'lucide-react'
 import AutomationChart from '@/components/ui/automation-chart'
 import * as Collapsible from '@radix-ui/react-collapsible'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface OnThisPageSection {
   id: string
@@ -101,8 +106,6 @@ interface UserPersona {
   description: string
   painPoints: string[]
   currentProcess: string
-  icon: React.ReactNode
-  color: string
 }
 
 interface MVPFeature {
@@ -139,9 +142,7 @@ export default function ProblemIdentificationPage() {
         "Risk of missing critical deadline notifications",
         "Difficulty prioritizing conflicting compliance requirements"
       ],
-      currentProcess: "Email alerts + manual spreadsheet tracking + quarterly reviews",
-      icon: <Shield className="w-5 h-5" />,
-      color: "from-blue-500 to-indigo-600"
+      currentProcess: "Email alerts + manual spreadsheet tracking + quarterly reviews"
     },
     {
       title: "Tax Research Analyst",
@@ -152,22 +153,18 @@ export default function ProblemIdentificationPage() {
         "Manual document review and cross-referencing",
         "Difficulty validating research completeness"
       ],
-      currentProcess: "Multiple database searches + manual document review + senior validation",
-      icon: <FileText className="w-5 h-5" />,
-      color: "from-green-500 to-emerald-600"
+      currentProcess: "Multiple database searches + manual document review + senior validation"
     },
     {
-      title: "Banking Operations Director",
-      description: "Executive overseeing tax operations and looking for efficiency improvements",
+      title: "KPMG Tax Partner",
+      description: "Senior partner overseeing client advisory services and business development for tax practice",
       painPoints: [
-        "Limited visibility into team productivity metrics",
-        "High cost per research hour ($150-300/hr)",
-        "Difficulty scaling expertise across regions",
-        "Inconsistent quality in research outputs"
+        "Limited visibility into team productivity and utilization rates",
+        "High cost per billable research hour ($200-400/hr) impacting client margins",
+        "Difficulty scaling senior expertise across multiple client engagements",
+        "Inconsistent research quality and turnaround times across teams"
       ],
-      currentProcess: "Monthly team reviews + client billing analysis + manual quality checks",
-      icon: <Building className="w-5 h-5" />,
-      color: "from-purple-500 to-pink-600"
+      currentProcess: "Weekly partner meetings + quarterly performance reviews + manual client profitability analysis"
     }
   ]
 
@@ -406,6 +403,38 @@ export default function ProblemIdentificationPage() {
     },
     {
       id: "13",
+      title: "Market research and tax compliance trends monitoring",
+      description: "Monitor and analyze latest tax compliance trends, regulatory changes, and AI use case developments in the tax industry to inform strategic planning and competitive positioning.",
+      user: "Tax Strategy Analyst",
+      userJourney: [
+        "Monitor tax regulatory updates and compliance changes",
+        "Research AI adoption trends in tax services",
+        "Analyze competitor technology implementations",
+        "Track emerging tax automation solutions",
+        "Prepare trend analysis reports for leadership"
+      ],
+      department: "Strategy",
+      frequency: "Weekly",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "14",
+      title: "Client communication drafting and review",
+      description: "Draft and review client communications including emails, memos, and reports to ensure clear, accurate, and professional communication of tax matters and compliance requirements.",
+      user: "Tax Communications Specialist",
+      userJourney: [
+        "Review client tax matters and requirements",
+        "Draft initial communication content",
+        "Ensure accuracy of tax information and calculations",
+        "Review for clarity and professional tone",
+        "Obtain necessary approvals and finalize communications"
+      ],
+      department: "Client Services",
+      frequency: "Daily",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "15",
       title: "Securities gain/loss tax characterization and reporting",
       description: "Characterize securities gains and losses for tax purposes and prepare required reporting for tax compliance.",
       user: "Securities Tax Specialist",
@@ -743,16 +772,60 @@ export default function ProblemIdentificationPage() {
   ]
 
   const [selectedTask, setSelectedTask] = useState<TaskDetail | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [aiSolution, setAiSolution] = useState('')
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false)
+  const [showMetricsModal, setShowMetricsModal] = useState(false)
 
-  const openTaskModal = (task: TaskDetail) => {
+  const openTaskDrawer = (task: TaskDetail) => {
     setSelectedTask(task)
-    setIsModalOpen(true)
+    setIsDrawerOpen(true)
+    setAiSolution('') // Reset AI solution when opening new task
   }
 
-  const closeTaskModal = () => {
-    setIsModalOpen(false)
+  const closeTaskDrawer = () => {
+    setIsDrawerOpen(false)
     setSelectedTask(null)
+    setAiSolution('')
+    setIsGeneratingAI(false)
+  }
+
+  const generateAISolution = async () => {
+    if (!selectedTask) return
+    
+    setIsGeneratingAI(true)
+    
+    try {
+      const response = await fetch('/api/generate-solution', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          task: {
+            title: selectedTask.title,
+            description: selectedTask.description,
+            user: selectedTask.user,
+            department: selectedTask.department,
+            frequency: selectedTask.frequency,
+            userJourney: selectedTask.userJourney,
+            aiClassification: selectedTask.aiClassification
+          }
+        })
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate AI solution')
+      }
+      
+      const data = await response.json()
+      setAiSolution(data.solution)
+    } catch (error) {
+      console.error('Error generating AI solution:', error)
+      setAiSolution('Sorry, there was an error generating the AI solution. Please try again.')
+    } finally {
+      setIsGeneratingAI(false)
+    }
   }
 
   // Scroll to top on mount
@@ -811,19 +884,19 @@ export default function ProblemIdentificationPage() {
                           <div className="border-t border-gray-200/50 p-4">
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-300">
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
-                                <p>Documented several day-to-day tax tasks</p>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Market Research</h5>
+                                <p>Conducted research on the market for tax automation tools and services</p>
                               </div>
                               <div>
                                 <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">User Interviews</h5>
                                 <p>Spoke with my colleagues who work in tax</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Market Research</h5>
-                                <p>Conducted research on the market for tax automation tools and services</p>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
+                                <p>Documented several day-to-day tax tasks</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Volume & Complexity Scoring</h5>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Risk & Value Scoring</h5>
                                 <p>Quantified each task in terms of volume and complexity</p>
                               </div>
                             </div>
@@ -862,14 +935,9 @@ export default function ProblemIdentificationPage() {
                                     transition={{ delay: index * 0.1 }}
                                     className="space-y-4"
                                   >
-                                    <div className="flex items-center gap-3">
-                                      <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
-                                        {persona.icon}
-                                      </div>
-                                      <div>
-                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
-                                        <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
-                                      </div>
+                                    <div>
+                                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{persona.title}</h3>
+                                      <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
                                     </div>
                                     
                                     <div className="space-y-4">
@@ -931,97 +999,113 @@ export default function ProblemIdentificationPage() {
                                   <tr>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-12">#</th>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left">Task Description</th>
-                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-24">Department</th>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-32">Persona</th>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-20">Frequency</th>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-12"></th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[0])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[0])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">01</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Daily cash position reconciliation and tax allocation reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[1])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[1])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">02</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">State and local tax filing preparation and submission</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[2])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[2])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">03</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Federal tax provision calculations and journal entry preparation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Accounting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[3])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[3])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">04</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Quarterly estimated tax payment calculations and remittance</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Treasury</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[4])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[4])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">05</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Regulatory capital tax adjustment calculations (Basel III)</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Risk</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[5])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[5])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">06</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Transfer pricing documentation review and update</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[6])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[6])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">07</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Municipal bond interest income tax exemption tracking</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[7])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[7])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">08</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Foreign tax credit limitation calculations and optimization</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[8])}>
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[8])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">09</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Intercompany transaction tax implications analysis</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
                                     </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[9])}>
-                                    <td className="font-mono text-xs text-gray-500 px-3 py-2">10</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FDIC premium tax deduction calculations and reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                                                     <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[9])}>
+                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">10</td>
+                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FDIC premium tax deduction calculations and reporting</td>
+                                   </tr>
+                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[10])}>
+                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
+                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">State tax nexus monitoring and filing requirement assessment</td>
+                                   </tr>
+                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[11])}>
+                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">12</td>
+                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Loan loss provision tax vs. book difference reconciliation</td>
+                                   </tr>
+                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[12])}>
+                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">13</td>
+                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Market research and tax compliance trends monitoring</td>
+                                   </tr>
+                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskDrawer(taskDetails[13])}>
+                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">14</td>
+                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Client communication drafting and review</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
                                     <td className="px-3 py-2">
                                       <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
@@ -1030,139 +1114,139 @@ export default function ProblemIdentificationPage() {
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax nexus monitoring and filing requirement assessment</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">12</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Loan loss provision tax vs. book difference reconciliation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Accounting</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">13</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Securities gain/loss tax characterization and reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">14</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax-exempt entity relationship compliance monitoring</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">15</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Branch vs. subsidiary tax election impact analysis</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">16</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State income tax apportionment factor calculations</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">17</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Federal excise tax compliance on financial services</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">18</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Derivative instrument tax characterization and reporting</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">19</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax audit response preparation and documentation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">20</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Cross-border transaction withholding tax compliance</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">21</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Alternative Minimum Tax (AMT) preference item tracking</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">22</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax credit utilization optimization and planning</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">23</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">REIT qualification testing and distribution requirements</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">24</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Financial institution specific deduction calculations</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">25</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Consolidated return elimination adjustment preparation</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">26</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State tax legislative change impact assessment</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">27</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Tax accounting method change requests and filings</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">28</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Multi-state tax compliance workflow coordination</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">29</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Ensuring consistency across multiple tax jurisdictions</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Compliance Manager</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ongoing</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">30</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Rapidly analyzing vast amounts of tax literature and case law</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Ad-hoc</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">31</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Identifying relevant precedents and regulations more efficiently</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax Research Analyst</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">32</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Providing clients with instant answers to common tax queries</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">33</td>
                                     <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Allowing for rapid scenario modeling and tax impact assessments</td>
-                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
+                                    <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">KPMG Tax Partner</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
                                   </tr>
                                 </tbody>
@@ -1326,94 +1410,142 @@ export default function ProblemIdentificationPage() {
                           Multi-Phase Enterprise Deployment Strategy
                         </h5>
                         <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                          Our enterprise rollout strategy focuses on systematic adoption, risk mitigation, and value demonstration across large-scale tax operations. The approach ensures smooth integration while maximizing ROI and user adoption.
+                          Based on my experience with the rollout of <a href="https://www.cibc.com/en/about-cibc/future-banking/ai/enterprise-generative-ai.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">CIBC generative AI at scale</a>, my process takes a holistic perspective of risk, user adoption, and technological scale. Our enterprise rollout strategy focuses on systematic adoption, risk mitigation, and value demonstration across large-scale tax operations. The approach ensures smooth integration while maximizing ROI and user adoption.
                         </p>
                       </div>
 
                       {/* Rollout Phases */}
                       <div className="space-y-4">
-                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
-                          Phase 1: Foundation & Pilot (Months 1-3)
-                        </h5>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Infrastructure Setup</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Deploy enterprise-grade infrastructure</li>
-                              <li>• Implement security & compliance frameworks</li>
-                              <li>• Establish data governance protocols</li>
-                              <li>• Set up monitoring & analytics systems</li>
-                            </ul>
+                        <Collapsible.Root>
+                          <div className="border border-gray-200/50 rounded-lg">
+                            <Collapsible.Trigger asChild>
+                              <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-lg">
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                                  Phase 1: Foundations & Pilots (1-3 months)
+                                </h5>
+                                <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                              </button>
+                            </Collapsible.Trigger>
+                            <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                              <div className="border-t border-gray-200/50 p-4">
+                                <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Infrastructure Setup</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Set up cloud environment (Azure, GCP, AWS, etc.)</li>
+                                      <li>• Implement security & compliance frameworks (SOC2, ISO 27001, GDPR, CCPA)</li>
+                                      <li>• Establish data governance protocols (DAMA-DMBOK, DCAM, data lineage, PII classification)</li>
+                                      <li>• Set up monitoring & analytics systems (Datadog, Splunk, Prometheus, Grafana, MLflow)</li>
+                                    </ul>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Pilot Program</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Select 2-3 high-impact departments</li>
+                                      <li>• Train 50-100 power users</li>
+                                      <li>• Implement feedback collection system</li>
+                                      <li>• Measure initial ROI metrics</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </Collapsible.Content>
                           </div>
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Pilot Program</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Select 2-3 high-impact departments</li>
-                              <li>• Train 50-100 power users</li>
-                              <li>• Implement feedback collection system</li>
-                              <li>• Measure initial ROI metrics</li>
-                            </ul>
-                          </div>
-                        </div>
+                        </Collapsible.Root>
                       </div>
 
                       <div className="space-y-4">
-                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
-                          Phase 2: Departmental Expansion (Months 4-8)
-                        </h5>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Scaling Strategy</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Roll out to 5-8 additional departments</li>
-                              <li>• Implement advanced features & integrations</li>
-                              <li>• Establish center of excellence</li>
-                              <li>• Develop internal training programs</li>
-                            </ul>
+                        <Collapsible.Root>
+                          <div className="border border-gray-200/50 rounded-lg">
+                            <Collapsible.Trigger asChild>
+                              <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-lg">
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                                  Phase 2: Departmental Expansion (4-8 months)
+                                </h5>
+                                <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                              </button>
+                            </Collapsible.Trigger>
+                            <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                              <div className="border-t border-gray-200/50 p-4">
+                                <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Scaling Strategy</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Roll out to 5-8 additional departments</li>
+                                      <li>• Implement advanced features & integrations</li>
+                                      <li>• Establish center of excellence</li>
+                                      <li>• Develop internal training programs</li>
+                                    </ul>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Change Management</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Deploy change management framework</li>
+                                      <li>• Conduct leadership workshops</li>
+                                      <li>• Establish user communities</li>
+                                      <li>• Monitor adoption metrics</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </Collapsible.Content>
                           </div>
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Change Management</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Deploy change management framework</li>
-                              <li>• Conduct leadership workshops</li>
-                              <li>• Establish user communities</li>
-                              <li>• Monitor adoption metrics</li>
-                            </ul>
-                          </div>
-                        </div>
+                        </Collapsible.Root>
                       </div>
 
                       <div className="space-y-4">
-                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
-                          Phase 3: Enterprise-Wide Deployment (Months 9-12)
-                        </h5>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Full Scale Rollout</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Deploy across all tax departments</li>
-                              <li>• Integrate with enterprise systems</li>
-                              <li>• Implement advanced analytics</li>
-                              <li>• Establish governance committees</li>
-                            </ul>
+                        <Collapsible.Root>
+                          <div className="border border-gray-200/50 rounded-lg">
+                            <Collapsible.Trigger asChild>
+                              <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-lg">
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                                  Phase 3: Enterprise-Wide Deployment (9-12 months)
+                                </h5>
+                                <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                              </button>
+                            </Collapsible.Trigger>
+                            <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                              <div className="border-t border-gray-200/50 p-4">
+                                <div className="grid md:grid-cols-2 gap-4">
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Full Scale Rollout</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Deploy across all tax departments</li>
+                                      <li>• Integrate with enterprise systems</li>
+                                      <li>• Implement advanced analytics</li>
+                                      <li>• Establish governance committees</li>
+                                    </ul>
+                                  </div>
+                                  <div className="space-y-2">
+                                    <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Optimization</h6>
+                                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                      <li>• Performance optimization & scaling</li>
+                                      <li>• Advanced feature deployment</li>
+                                      <li>• Continuous improvement programs</li>
+                                      <li>• ROI measurement & reporting</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </Collapsible.Content>
                           </div>
-                          <div className="space-y-2">
-                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Optimization</h6>
-                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Performance optimization & scaling</li>
-                              <li>• Advanced feature deployment</li>
-                              <li>• Continuous improvement programs</li>
-                              <li>• ROI measurement & reporting</li>
-                            </ul>
-                          </div>
-                        </div>
+                        </Collapsible.Root>
                       </div>
 
                       {/* Success Metrics */}
                       <div className="space-y-4">
-                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
-                          Success Metrics & KPIs
-                        </h5>
+                        <div className="flex items-center gap-2 group">
+                          <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                            Success Metrics & KPIs
+                          </h5>
+                          <button
+                            onClick={() => setShowMetricsModal(true)}
+                            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors opacity-0 group-hover:opacity-100"
+                            title="View Dashboard Example"
+                          >
+                            <Eye className="w-4 h-4 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" />
+                          </button>
+                        </div>
                         <div className="grid md:grid-cols-3 gap-4">
                           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Adoption Metrics</h6>
@@ -1485,10 +1617,23 @@ export default function ProblemIdentificationPage() {
       {/* Fixed On This Page Sidebar */}
       <OnThisPageSidebar className="fixed top-8 right-8 z-50 w-64 hidden xl:block" />
 
-      {/* Task Detail Modal */}
-      {isModalOpen && selectedTask && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      {/* Task Detail Drawer */}
+      {isDrawerOpen && selectedTask && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40"
+            onClick={closeTaskDrawer}
+          />
+          
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-y-auto"
+          >
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -1500,7 +1645,7 @@ export default function ProblemIdentificationPage() {
                   </p>
                 </div>
                 <button
-                  onClick={closeTaskModal}
+                  onClick={closeTaskDrawer}
                   className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 >
                   <X className="w-5 h-5 text-gray-500" />
@@ -1517,7 +1662,7 @@ export default function ProblemIdentificationPage() {
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid gap-4">
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                     <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
                       Primary User
@@ -1561,6 +1706,212 @@ export default function ProblemIdentificationPage() {
                         </p>
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* AI Solution Generator */}
+                <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100">
+                      AI Solution Idea
+                    </h5>
+                    <button
+                      onClick={generateAISolution}
+                      disabled={isGeneratingAI}
+                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors"
+                    >
+                      {isGeneratingAI ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Lightbulb className="w-4 h-4" />
+                      )}
+                      {isGeneratingAI ? 'Generating...' : 'Generate AI Solution'}
+                    </button>
+                  </div>
+                  
+                  {aiSolution && (
+                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg p-4">
+                      <p className="text-blue-900 dark:text-blue-100 text-sm leading-relaxed whitespace-pre-wrap">
+                        {aiSolution}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {!aiSolution && !isGeneratingAI && (
+                    <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-lg p-4">
+                                              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                          Click &quot;Generate AI Solution&quot; to get a custom AI automation idea for this specific tax task.
+                        </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+
+      {/* Success Metrics Dashboard Modal */}
+      {showMetricsModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                Success Metrics Dashboard Example
+              </h3>
+              <button
+                onClick={() => setShowMetricsModal(false)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              {/* Dashboard Overview */}
+              <div className="grid md:grid-cols-4 gap-4">
+                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">94%</div>
+                  <div className="text-sm text-blue-700 dark:text-blue-300">User Adoption</div>
+                </div>
+                <div className="bg-green-50 dark:bg-green-950/30 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">67%</div>
+                  <div className="text-sm text-green-700 dark:text-green-300">Time Savings</div>
+                </div>
+                <div className="bg-purple-50 dark:bg-purple-950/30 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">3.2x</div>
+                  <div className="text-sm text-purple-700 dark:text-purple-300">ROI</div>
+                </div>
+                <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">96%</div>
+                  <div className="text-sm text-orange-700 dark:text-orange-300">Satisfaction</div>
+                </div>
+              </div>
+
+              {/* Chart Example */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                  User Adoption Trend (Last 6 Months)
+                </h4>
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+                  <div className="flex items-end justify-between h-32 mb-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '60%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jan</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '70%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Feb</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '75%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Mar</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '85%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Apr</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '90%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">May</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '94%' }}></div>
+                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jun</span>
+                    </div>
+                  </div>
+                  <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                    Steady growth in user adoption with 94% current rate
+                  </div>
+                </div>
+              </div>
+
+              {/* Detailed Metrics */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">Efficiency Metrics</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Average Research Time</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">67% reduction</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '67%' }}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Error Rate</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">42% reduction</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-red-500 h-2 rounded-full" style={{ width: '42%' }}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Processing Speed</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">31% faster</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '31%' }}></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">Business Impact</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">ROI Achievement</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">3.2x (320%)</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-purple-500 h-2 rounded-full" style={{ width: '100%' }}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Compliance Score</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">52% improvement</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '52%' }}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Productivity Gain</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">38% increase</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div className="bg-orange-500 h-2 rounded-full" style={{ width: '38%' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-time Activity */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Real-time Activity</h4>
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-gray-600 dark:text-gray-400">User completed tax research task</span>
+                      <span className="text-gray-500 dark:text-gray-500 ml-auto">2 min ago</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span className="text-gray-600 dark:text-gray-400">New document uploaded to system</span>
+                      <span className="text-gray-500 dark:text-gray-500 ml-auto">5 min ago</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-gray-600 dark:text-gray-400">AI analysis completed</span>
+                      <span className="text-gray-500 dark:text-gray-500 ml-auto">8 min ago</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      <span className="text-gray-600 dark:text-gray-400">Compliance check passed</span>
+                      <span className="text-gray-500 dark:text-gray-500 ml-auto">12 min ago</span>
+                    </div>
                   </div>
                 </div>
               </div>
