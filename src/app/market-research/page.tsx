@@ -3,9 +3,8 @@
 import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
+import Image from 'next/image'
 
 import { 
   Search, 
@@ -17,7 +16,6 @@ import {
   BarChart3,
   Globe,
   Clock,
-  CheckCircle,
   AlertCircle,
   Building2,
   Briefcase
@@ -206,15 +204,28 @@ const MarketResearchAgent: React.FC = () => {
                       className="mt-1"
                     />
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <label htmlFor={firm.id} className="font-medium text-gray-900 cursor-pointer">
-                          {firm.name}
-                        </label>
-                        <Badge variant="outline" className="text-xs">
-                          {firm.size}
-                        </Badge>
+                      <div className="flex items-center gap-3">
+                        <div className="flex-shrink-0">
+                          <Image
+                            src={`/${firm.id}-logo.png`}
+                            alt={`${firm.name} logo`}
+                            width={40}
+                            height={40}
+                            className="rounded-md object-contain"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <label htmlFor={firm.id} className="font-medium text-gray-900 cursor-pointer">
+                              {firm.name}
+                            </label>
+                            <Badge variant="outline" className="text-xs">
+                              {firm.size}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">{firm.description}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600 mt-1">{firm.description}</p>
                     </div>
                   </div>
                 ))}
@@ -288,7 +299,26 @@ const MarketResearchAgent: React.FC = () => {
                   <p className="text-sm text-blue-800">
                     <strong>Research Configuration:</strong>
                     {selectedFirms.length > 0 && (
-                      <span className="block mt-1">• Following {selectedFirms.length} firm{selectedFirms.length > 1 ? 's' : ''}: {selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).join(', ')}</span>
+                      <div className="block mt-1">
+                        <span>• Following {selectedFirms.length} firm{selectedFirms.length > 1 ? 's' : ''}:</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          {selectedFirms.map(id => {
+                            const firm = TOP_TAX_FIRMS.find(f => f.id === id)
+                            return firm ? (
+                              <div key={id} className="flex items-center gap-1">
+                                <Image
+                                  src={`/${firm.id}-logo.png`}
+                                  alt={`${firm.name} logo`}
+                                  width={16}
+                                  height={16}
+                                  className="rounded object-contain"
+                                />
+                                <span className="text-xs">{firm.name}</span>
+                              </div>
+                            ) : null
+                          })}
+                        </div>
+                      </div>
                     )}
                     {selectedTheme && (
                       <span className="block mt-1">• Theme: {RESEARCH_THEMES.find(t => t.id === selectedTheme)?.name}</span>
@@ -313,9 +343,18 @@ const MarketResearchAgent: React.FC = () => {
                           {insight.category.toUpperCase()}
                         </Badge>
                         {insight.firm && (
-                          <Badge variant="outline" className="text-xs">
-                            {insight.firm}
-                          </Badge>
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src={`/${insight.firm.toLowerCase()}-logo.png`}
+                              alt={`${insight.firm} logo`}
+                              width={20}
+                              height={20}
+                              className="rounded object-contain"
+                            />
+                            <Badge variant="outline" className="text-xs">
+                              {insight.firm}
+                            </Badge>
+                          </div>
                         )}
                         {insight.theme && (
                           <Badge variant="secondary" className="text-xs">
