@@ -16,6 +16,7 @@ import {
   BarChart3,
   Globe,
   Clock,
+  CheckCircle,
   AlertCircle,
   Building2,
   Briefcase
@@ -77,7 +78,12 @@ const MarketResearchAgent: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<string>('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [insights, setInsights] = useState<MarketInsight[]>([])
-  const [activeTab, setActiveTab] = useState<'research' | 'analysis'>('research')
+  const [activeTab, setActiveTab] = useState<'research' | 'analysis' | 'inbox'>('research')
+  const [email, setEmail] = useState('')
+  const [scheduleDate, setScheduleDate] = useState('')
+  const [scheduleTime, setScheduleTime] = useState('')
+  const [isScheduling, setIsScheduling] = useState(false)
+  const [scheduleSuccess, setScheduleSuccess] = useState(false)
 
   const handleFirmSelection = (firmId: string, checked: boolean) => {
     if (checked) {
@@ -118,6 +124,70 @@ const MarketResearchAgent: React.FC = () => {
       alert('Failed to conduct market research. Please try again.')
     } finally {
       setIsAnalyzing(false)
+    }
+  }
+
+  const handleScheduleResearch = async () => {
+    if (selectedFirms.length === 0 || !selectedTheme) {
+      alert('Please select at least one firm and a research theme')
+      return
+    }
+
+    if (!email || !scheduleDate || !scheduleTime) {
+      alert('Please fill in all fields: email, date, and time')
+      return
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address')
+      return
+    }
+
+    // Validate date is in the future
+    const scheduledDateTime = new Date(`${scheduleDate}T${scheduleTime}`)
+    const now = new Date()
+    if (scheduledDateTime <= now) {
+      alert('Please select a future date and time')
+      return
+    }
+
+    setIsScheduling(true)
+    
+    try {
+      const response = await fetch('/api/market-research', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firms: selectedFirms,
+          theme: selectedTheme,
+          email: email,
+          scheduledFor: scheduledDateTime.toISOString(),
+          schedule: true,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to schedule market research')
+      }
+
+      setScheduleSuccess(true)
+      setEmail('')
+      setScheduleDate('')
+      setScheduleTime('')
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setScheduleSuccess(false)
+      }, 5000)
+    } catch (error) {
+      console.error('Error scheduling market research:', error)
+      alert('Failed to schedule market research. Please try again.')
+    } finally {
+      setIsScheduling(false)
     }
   }
 
@@ -179,6 +249,16 @@ const MarketResearchAgent: React.FC = () => {
           }`}
         >
           Market Analysis
+        </button>
+        <button
+          onClick={() => setActiveTab('inbox')}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === 'inbox'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          Send to Inbox
         </button>
       </div>
 
@@ -474,6 +554,183 @@ const MarketResearchAgent: React.FC = () => {
                     <p className="text-sm text-gray-600">Saturated market with established players</p>
                   </div>
                   <Badge className="bg-red-100 text-red-700">Low Opportunity</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === 'inbox' && (
+        <div className="space-y-6">
+          {/* Email Scheduling Form */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Schedule Market Research Report
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Email Input */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your.email@company.com"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500">
+                  Market research report will be sent to this email address
+                </p>
+              </div>
+
+              {/* Date and Time Selection */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="date" className="text-sm font-medium text-gray-700">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    id="date"
+                    value={scheduleDate}
+                    onChange={(e) => setScheduleDate(e.target.value)}
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="time" className="text-sm font-medium text-gray-700">
+                    Time
+                  </label>
+                  <input
+                    type="time"
+                    id="time"
+                    value={scheduleTime}
+                    onChange={(e) => setScheduleTime(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              {/* Schedule Button */}
+              <Button 
+                onClick={handleScheduleResearch}
+                disabled={selectedFirms.length === 0 || !selectedTheme || !email || !scheduleDate || !scheduleTime || isScheduling}
+                className="w-full h-12"
+                size="lg"
+              >
+                {isScheduling ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Scheduling Research...
+                  </>
+                ) : (
+                  <>
+                    <Clock className="w-4 h-4 mr-2" />
+                    Schedule Market Research Report
+                  </>
+                )}
+              </Button>
+
+              {/* Success Message */}
+              {scheduleSuccess && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <div>
+                      <p className="text-sm font-medium text-green-800">
+                        Research Scheduled Successfully!
+                      </p>
+                      <p className="text-xs text-green-600">
+                        Your market research report will be sent to your email at the scheduled time.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Configuration Summary */}
+              {(selectedFirms.length > 0 || selectedTheme) && (
+                <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-800 mb-2">
+                    <strong>Research Configuration:</strong>
+                  </p>
+                  {selectedFirms.length > 0 && (
+                    <div className="mb-2">
+                      <span className="text-xs text-blue-700">• Following {selectedFirms.length} firm{selectedFirms.length > 1 ? 's' : ''}:</span>
+                      <div className="flex items-center gap-2 mt-1">
+                        {selectedFirms.map(id => {
+                          const firm = TOP_TAX_FIRMS.find(f => f.id === id)
+                          return firm ? (
+                            <div key={id} className="flex items-center gap-1">
+                              <Image
+                                src={`/${firm.id}-logo.png`}
+                                alt={`${firm.name} logo`}
+                                width={16}
+                                height={16}
+                                className="rounded object-contain"
+                              />
+                              <span className="text-xs">{firm.name}</span>
+                            </div>
+                          ) : null
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  {selectedTheme && (
+                    <p className="text-xs text-blue-700">
+                      • Theme: {RESEARCH_THEMES.find(t => t.id === selectedTheme)?.name}
+                    </p>
+                  )}
+                  {email && (
+                    <p className="text-xs text-blue-700">
+                      • Email: {email}
+                    </p>
+                  )}
+                  {scheduleDate && scheduleTime && (
+                    <p className="text-xs text-blue-700">
+                      • Scheduled for: {new Date(`${scheduleDate}T${scheduleTime}`).toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Information Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="w-5 h-5" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 text-sm text-gray-600">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-medium text-blue-600">1</span>
+                  </div>
+                  <p>Select the tax firms you want to monitor and choose a research theme</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-medium text-blue-600">2</span>
+                  </div>
+                  <p>Enter your email address and choose when you want the report delivered</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-medium text-blue-600">3</span>
+                  </div>
+                  <p>Our AI agent will conduct the research at the scheduled time and email you a comprehensive report</p>
                 </div>
               </div>
             </CardContent>
