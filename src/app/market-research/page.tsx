@@ -324,7 +324,7 @@ Please conduct thorough research across multiple sources including company websi
                             alt={`${firm.name} logo`}
                             width={40}
                             height={40}
-                            className="rounded-md object-contain"
+                            className="object-contain"
                           />
                         </div>
                         <div className="flex-1">
@@ -435,7 +435,7 @@ Please conduct thorough research across multiple sources including company websi
                                   alt={`${firm.name} logo`}
                                   width={16}
                                   height={16}
-                                  className="rounded object-contain"
+                                  className="object-contain"
                                 />
                                 <span className="text-xs">{firm.name}</span>
                               </div>
@@ -473,7 +473,7 @@ Please conduct thorough research across multiple sources including company websi
                               alt={`${insight.firm} logo`}
                               width={20}
                               height={20}
-                              className="rounded object-contain"
+                              className="object-contain"
                             />
                             <Badge variant="outline" className="text-xs">
                               {insight.firm}
@@ -714,13 +714,13 @@ Please conduct thorough research across multiple sources including company websi
                           const firm = TOP_TAX_FIRMS.find(f => f.id === id)
                           return firm ? (
                             <div key={id} className="flex items-center gap-1">
-                              <Image
-                                src={`/${firm.id}-logo.png`}
-                                alt={`${firm.name} logo`}
-                                width={16}
-                                height={16}
-                                className="rounded object-contain"
-                              />
+                                                             <Image
+                                 src={`/${firm.id}-logo.png`}
+                                 alt={`${firm.name} logo`}
+                                 width={16}
+                                 height={16}
+                                 className="object-contain"
+                               />
                               <span className="text-xs">{firm.name}</span>
                             </div>
                           ) : null

@@ -1259,81 +1259,90 @@ export default function ProblemIdentificationPage() {
 
           {/* MVP Strategy Section */}
           <section id="mvp-strategy" className="space-y-6 scroll-mt-32">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Target className="w-6 h-6 text-purple-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  MVP Strategy
-                </h2>
+            <Collapsible.Root>
+              <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
+                <Collapsible.Trigger asChild>
+                  <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                    <div className="flex items-center gap-2">
+                      <Target className="w-6 h-6 text-purple-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                          MVP Strategy
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          Phased Approach to Product Development
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                  </button>
+                </Collapsible.Trigger>
+                
+                <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                  <div className="border-t border-gray-200/50 p-4">
+                    <div className="space-y-6">
+                      <div className="text-center bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/50 dark:to-blue-950/50 rounded-lg p-6">
+                        <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                          MVP Goal: Prove 75% Time Reduction in Tax Research
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Launch with 3 core features that deliver immediate value to tax professionals
+                        </p>
+                      </div>
+
+                      <div className="grid gap-4">
+                        {mvpFeatures.map((feature, index) => (
+                          <motion.div
+                            key={feature.title}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                          >
+                            <Card className={`border-l-4 ${
+                              feature.priority === 'P0 - Core' ? 'border-l-green-500' :
+                              feature.priority === 'P1 - Important' ? 'border-l-yellow-500' :
+                              'border-l-gray-400'
+                            } hover:shadow-md transition-all duration-200`}>
+                              <CardContent className="p-4">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex items-start gap-3 flex-1">
+                                    <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                                      {feature.icon}
+                                    </div>
+                                    <div className="flex-1">
+                                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                                        {feature.title}
+                                      </h4>
+                                      <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                        {feature.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col gap-2">
+                                    <Badge 
+                                      className={
+                                        feature.priority === 'P0 - Core' ? 'bg-green-100 text-green-700' :
+                                        feature.priority === 'P1 - Important' ? 'bg-yellow-100 text-yellow-700' :
+                                        'bg-gray-100 text-gray-700'
+                                      }
+                                    >
+                                      {feature.priority}
+                                    </Badge>
+                                    <Badge variant="outline" className="text-xs">
+                                      {feature.timeframe}
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Collapsible.Content>
               </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Phased Approach to Product Development
-              </p>
-            </div>
-
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  <div className="text-center bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/50 dark:to-blue-950/50 rounded-lg p-6">
-                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                      MVP Goal: Prove 75% Time Reduction in Tax Research
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Launch with 3 core features that deliver immediate value to tax professionals
-                    </p>
-                  </div>
-
-                  <div className="grid gap-4">
-                    {mvpFeatures.map((feature, index) => (
-                      <motion.div
-                        key={feature.title}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className={`border-l-4 ${
-                          feature.priority === 'P0 - Core' ? 'border-l-green-500' :
-                          feature.priority === 'P1 - Important' ? 'border-l-yellow-500' :
-                          'border-l-gray-400'
-                        } hover:shadow-md transition-all duration-200`}>
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex items-start gap-3 flex-1">
-                                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
-                                  {feature.icon}
-                                </div>
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                    {feature.title}
-                                  </h4>
-                                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                    {feature.description}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="flex flex-col gap-2">
-                                <Badge 
-                                  className={
-                                    feature.priority === 'P0 - Core' ? 'bg-green-100 text-green-700' :
-                                    feature.priority === 'P1 - Important' ? 'bg-yellow-100 text-yellow-700' :
-                                    'bg-gray-100 text-gray-700'
-                                  }
-                                >
-                                  {feature.priority}
-                                </Badge>
-                                <Badge variant="outline" className="text-xs">
-                                  {feature.timeframe}
-                                </Badge>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            </Collapsible.Root>
           </section>
 
           {/* AI Implementation Section */}
