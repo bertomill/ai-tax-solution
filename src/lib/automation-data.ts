@@ -144,3 +144,18 @@ export async function addTaxSolution(solution: Omit<TaxSolution, 'id' | 'created
     return null
   }
 }
+
+// Add AI Document Search opportunity
+export async function addAIDocumentSearchOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'AI Document Search',
+    volume: 85, // High value/time savings
+    complexity: 25, // Low complexity/risk
+    category: 'high-priority',
+    description: 'AI-powered search and retrieval across tax documents, regulations, and case law for rapid information access.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing enables intuitive search queries while vector embeddings provide accurate semantic matching across large document repositories.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}

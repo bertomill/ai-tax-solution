@@ -100,6 +100,11 @@ const navigationData: { sections: NavigationSection[] } = {
               title: "AI Tools Used",
               url: "/documentation#ai-tools",
               section: "ai-tools"
+            },
+            {
+              title: "Automation vs AI",
+              url: "/documentation#automation-vs-ai",
+              section: "automation-vs-ai"
             }
           ]
         },
@@ -180,9 +185,9 @@ const navigationData: { sections: NavigationSection[] } = {
           ]
         },
         {
-          title: "Automation Analysis",
+          title: "Market Research Agent",
           icon: <Zap className="size-4" />,
-          url: "/problem-identification",
+          url: "/market-research",
           badge: "Hot",
         },
         {
@@ -239,7 +244,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       sections = ["problem-identification", "user-analysis", "mvp-strategy", "ai-implementation"]
       itemToExpand = "Approach"
     } else if (pathname === "/documentation") {
-      sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons"]
+      sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons", "ai-tools", "automation-vs-ai"]
       itemToExpand = "Documentation"
     }
     

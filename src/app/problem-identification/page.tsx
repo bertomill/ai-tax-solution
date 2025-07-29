@@ -17,7 +17,9 @@ import {
   UserCheck,
   Layers,
   Shield,
-  ChevronDown
+  ChevronDown,
+  X,
+  Eye
 } from 'lucide-react'
 import AutomationChart from '@/components/ui/automation-chart'
 import * as Collapsible from '@radix-ui/react-collapsible'
@@ -115,6 +117,17 @@ interface AIComponent {
   implementation: string
   icon: React.ReactNode
   color: string
+}
+
+interface TaskDetail {
+  id: string
+  title: string
+  description: string
+  user: string
+  userJourney: string[]
+  department: string
+  frequency: string
+  aiClassification: string
 }
 
 export default function ProblemIdentificationPage() {
@@ -235,6 +248,549 @@ export default function ProblemIdentificationPage() {
     }
   ]
 
+  const taskDetails: TaskDetail[] = [
+    {
+      id: "01",
+      title: "Daily cash position reconciliation and tax allocation reporting",
+      description: "Reconcile daily cash positions across all accounts and allocate tax implications for various financial instruments and transactions. This involves analyzing cash flows, identifying tax-sensitive items, and preparing reports for management review.",
+      user: "Tax Operations Analyst",
+      userJourney: [
+        "Retrieve daily cash position data from treasury systems",
+        "Identify tax-sensitive transactions and instruments",
+        "Calculate tax allocations based on current regulations",
+        "Prepare reconciliation reports for management review",
+        "Submit final reports to accounting and compliance teams"
+      ],
+      department: "Operations",
+      frequency: "Daily",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "02",
+      title: "State and local tax filing preparation and submission",
+      description: "Prepare and submit state and local tax returns across multiple jurisdictions. This includes gathering supporting documentation, calculating tax liabilities, and ensuring compliance with varying state regulations.",
+      user: "State Tax Specialist",
+      userJourney: [
+        "Review state tax filing requirements and deadlines",
+        "Gather supporting documentation and financial data",
+        "Calculate state tax liabilities using tax software",
+        "Prepare state tax returns and supporting schedules",
+        "Submit returns electronically and maintain filing records"
+      ],
+      department: "Compliance",
+      frequency: "Monthly",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "03",
+      title: "Federal tax provision calculations and journal entry preparation",
+      description: "Calculate federal tax provisions for financial reporting and prepare corresponding journal entries. This involves analyzing temporary and permanent differences between book and tax accounting.",
+      user: "Tax Accountant",
+      userJourney: [
+        "Review financial statements and identify book-tax differences",
+        "Calculate deferred tax assets and liabilities",
+        "Determine current and deferred tax provisions",
+        "Prepare journal entries for tax provisions",
+        "Document calculations and maintain supporting workpapers"
+      ],
+      department: "Accounting",
+      frequency: "Monthly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "04",
+      title: "Quarterly estimated tax payment calculations and remittance",
+      description: "Calculate quarterly estimated tax payments based on projected annual income and ensure timely remittance to tax authorities. This helps avoid penalties and ensures proper cash flow management.",
+      user: "Tax Manager",
+      userJourney: [
+        "Review year-to-date financial results and projections",
+        "Calculate estimated tax liability for the quarter",
+        "Determine required estimated tax payment amount",
+        "Prepare payment documentation and authorization",
+        "Submit payment and maintain payment records"
+      ],
+      department: "Treasury",
+      frequency: "Quarterly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "05",
+      title: "Regulatory capital tax adjustment calculations (Basel III)",
+      description: "Calculate tax adjustments required for regulatory capital reporting under Basel III requirements. This involves analyzing the tax impact on capital ratios and ensuring compliance with banking regulations.",
+      user: "Regulatory Reporting Specialist",
+      userJourney: [
+        "Review regulatory capital calculations and requirements",
+        "Identify tax adjustments needed for Basel III compliance",
+        "Calculate tax impact on capital ratios",
+        "Prepare adjustment documentation and workpapers",
+        "Submit adjusted calculations to regulatory authorities"
+      ],
+      department: "Risk",
+      frequency: "Monthly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "06",
+      title: "Transfer pricing documentation review and update",
+      description: "Review and update transfer pricing documentation to ensure compliance with international tax regulations and maintain proper documentation for intercompany transactions.",
+      user: "International Tax Specialist",
+      userJourney: [
+        "Review existing transfer pricing documentation",
+        "Analyze intercompany transactions and pricing",
+        "Update documentation with current year data",
+        "Ensure compliance with OECD guidelines",
+        "Prepare documentation for tax authority review"
+      ],
+      department: "Tax",
+      frequency: "Annual",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "07",
+      title: "Municipal bond interest income tax exemption tracking",
+      description: "Track and monitor municipal bond interest income to ensure proper tax exemption treatment and compliance with state and federal regulations.",
+      user: "Fixed Income Analyst",
+      userJourney: [
+        "Monitor municipal bond portfolio holdings",
+        "Track interest income from municipal bonds",
+        "Verify tax-exempt status of bond issuers",
+        "Calculate tax-exempt income amounts",
+        "Report tax-exempt income for tax filings"
+      ],
+      department: "Operations",
+      frequency: "Daily",
+      aiClassification: "Classification"
+    },
+    {
+      id: "08",
+      title: "Foreign tax credit limitation calculations and optimization",
+      description: "Calculate foreign tax credit limitations and optimize credit utilization to minimize double taxation while maximizing tax efficiency.",
+      user: "International Tax Manager",
+      userJourney: [
+        "Review foreign income and taxes paid",
+        "Calculate foreign tax credit limitations",
+        "Analyze credit utilization opportunities",
+        "Optimize credit allocation across categories",
+        "Prepare foreign tax credit documentation"
+      ],
+      department: "Tax",
+      frequency: "Quarterly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "09",
+      title: "Intercompany transaction tax implications analysis",
+      description: "Analyze tax implications of intercompany transactions and ensure proper transfer pricing and documentation for tax compliance.",
+      user: "Transfer Pricing Specialist",
+      userJourney: [
+        "Review intercompany transaction documentation",
+        "Analyze tax implications of transactions",
+        "Ensure proper transfer pricing methodology",
+        "Prepare supporting documentation",
+        "Monitor compliance with tax regulations"
+      ],
+      department: "Tax",
+      frequency: "Weekly",
+      aiClassification: "Reasoning"
+    },
+    {
+      id: "10",
+      title: "FDIC premium tax deduction calculations and reporting",
+      description: "Calculate FDIC premium tax deductions and prepare required reporting for federal tax compliance and regulatory requirements.",
+      user: "Regulatory Tax Specialist",
+      userJourney: [
+        "Review FDIC premium payments and calculations",
+        "Calculate allowable tax deductions",
+        "Prepare deduction documentation",
+        "Submit required regulatory reports",
+        "Maintain compliance records"
+      ],
+      department: "Compliance",
+      frequency: "Quarterly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "11",
+      title: "State tax nexus monitoring and filing requirement assessment",
+      description: "Monitor state tax nexus requirements and assess filing obligations across multiple jurisdictions to ensure compliance with state tax laws.",
+      user: "State Tax Manager",
+      userJourney: [
+        "Review business activities in each state",
+        "Analyze nexus thresholds and requirements",
+        "Assess filing obligations and deadlines",
+        "Update compliance tracking systems",
+        "Prepare nexus analysis reports"
+      ],
+      department: "Compliance",
+      frequency: "Monthly",
+      aiClassification: "Classification"
+    },
+    {
+      id: "12",
+      title: "Loan loss provision tax vs. book difference reconciliation",
+      description: "Reconcile differences between tax and book loan loss provisions and prepare supporting documentation for tax compliance.",
+      user: "Tax Accountant",
+      userJourney: [
+        "Review loan loss provision calculations",
+        "Identify book vs. tax differences",
+        "Calculate tax adjustments required",
+        "Prepare reconciliation workpapers",
+        "Document supporting calculations"
+      ],
+      department: "Accounting",
+      frequency: "Monthly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "13",
+      title: "Securities gain/loss tax characterization and reporting",
+      description: "Characterize securities gains and losses for tax purposes and prepare required reporting for tax compliance.",
+      user: "Securities Tax Specialist",
+      userJourney: [
+        "Review securities transactions and dispositions",
+        "Characterize gains/losses as capital or ordinary",
+        "Calculate holding periods and tax implications",
+        "Prepare tax reporting documentation",
+        "Submit required tax forms and schedules"
+      ],
+      department: "Operations",
+      frequency: "Daily",
+      aiClassification: "Classification"
+    },
+    {
+      id: "14",
+      title: "Tax-exempt entity relationship compliance monitoring",
+      description: "Monitor compliance with tax-exempt entity relationship requirements and ensure proper documentation and reporting.",
+      user: "Compliance Specialist",
+      userJourney: [
+        "Review tax-exempt entity relationships",
+        "Monitor compliance requirements",
+        "Update documentation and records",
+        "Prepare compliance reports",
+        "Maintain audit trail for relationships"
+      ],
+      department: "Compliance",
+      frequency: "Ongoing",
+      aiClassification: "Classification"
+    },
+    {
+      id: "15",
+      title: "Branch vs. subsidiary tax election impact analysis",
+      description: "Analyze the tax implications of branch vs. subsidiary structures and evaluate optimal tax election strategies.",
+      user: "International Tax Manager",
+      userJourney: [
+        "Review current entity structure",
+        "Analyze branch vs. subsidiary implications",
+        "Evaluate tax election options",
+        "Calculate tax impact of different structures",
+        "Prepare recommendation reports"
+      ],
+      department: "Tax",
+      frequency: "Quarterly",
+      aiClassification: "Reasoning"
+    },
+    {
+      id: "16",
+      title: "Deferred tax asset/liability calculation and tracking",
+      description: "Calculate and track deferred tax assets and liabilities for financial reporting and tax planning purposes.",
+      user: "Tax Accountant",
+      userJourney: [
+        "Review temporary differences between book and tax",
+        "Calculate deferred tax assets and liabilities",
+        "Assess realizability of deferred tax assets",
+        "Update tracking systems and records",
+        "Prepare deferred tax reporting"
+      ],
+      department: "Accounting",
+      frequency: "Monthly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "17",
+      title: "Research and development tax credit calculation and documentation",
+      description: "Calculate research and development tax credits and prepare required documentation for tax compliance.",
+      user: "R&D Tax Specialist",
+      userJourney: [
+        "Review R&D activities and expenditures",
+        "Calculate qualified research expenses",
+        "Determine applicable tax credit amounts",
+        "Prepare supporting documentation",
+        "Submit tax credit claims and forms"
+      ],
+      department: "Tax",
+      frequency: "Annual",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "18",
+      title: "Alternative minimum tax calculation and planning",
+      description: "Calculate alternative minimum tax and develop strategies to minimize AMT impact through tax planning.",
+      user: "Tax Manager",
+      userJourney: [
+        "Review regular tax calculations",
+        "Calculate alternative minimum tax",
+        "Identify AMT preference items",
+        "Develop tax planning strategies",
+        "Prepare AMT analysis and recommendations"
+      ],
+      department: "Tax",
+      frequency: "Quarterly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "19",
+      title: "Tax basis tracking and calculation for investments",
+      description: "Track and calculate tax basis for various investment positions and ensure accurate gain/loss calculations.",
+      user: "Investment Tax Specialist",
+      userJourney: [
+        "Track investment purchases and sales",
+        "Calculate tax basis adjustments",
+        "Monitor wash sale rules and limitations",
+        "Update basis tracking systems",
+        "Prepare basis calculation reports"
+      ],
+      department: "Operations",
+      frequency: "Daily",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "20",
+      title: "Tax return review and quality assurance",
+      description: "Review completed tax returns for accuracy and completeness and perform quality assurance procedures.",
+      user: "Tax Manager",
+      userJourney: [
+        "Review completed tax return calculations",
+        "Verify supporting documentation",
+        "Check for completeness and accuracy",
+        "Perform quality assurance procedures",
+        "Approve final tax returns for filing"
+      ],
+      department: "Tax",
+      frequency: "Monthly",
+      aiClassification: "Classification"
+    },
+    {
+      id: "21",
+      title: "Tax audit support and documentation preparation",
+      description: "Prepare documentation and provide support for tax audits, including responding to information requests and defending tax positions.",
+      user: "Tax Manager",
+      userJourney: [
+        "Review audit requests and requirements",
+        "Gather and organize supporting documentation",
+        "Prepare responses to information requests",
+        "Coordinate with audit team and management",
+        "Maintain audit file and correspondence"
+      ],
+      department: "Tax",
+      frequency: "As needed",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "22",
+      title: "Tax law change impact analysis and implementation",
+      description: "Analyze the impact of new tax laws and regulations and implement necessary changes to tax processes and systems.",
+      user: "Tax Policy Specialist",
+      userJourney: [
+        "Monitor new tax legislation and regulations",
+        "Analyze impact on current tax positions",
+        "Develop implementation strategies",
+        "Update tax processes and systems",
+        "Train staff on new requirements"
+      ],
+      department: "Tax",
+      frequency: "As needed",
+      aiClassification: "Reasoning"
+    },
+    {
+      id: "23",
+      title: "Tax calendar management and deadline tracking",
+      description: "Manage tax calendar and track important deadlines for filings, payments, and compliance requirements.",
+      user: "Tax Coordinator",
+      userJourney: [
+        "Maintain comprehensive tax calendar",
+        "Track filing and payment deadlines",
+        "Send reminder notifications to team",
+        "Update calendar with new requirements",
+        "Coordinate with external advisors"
+      ],
+      department: "Operations",
+      frequency: "Daily",
+      aiClassification: "Classification"
+    },
+    {
+      id: "24",
+      title: "Tax software maintenance and updates",
+      description: "Maintain and update tax software systems, including data validation, system testing, and user training.",
+      user: "Tax Systems Specialist",
+      userJourney: [
+        "Monitor tax software updates and patches",
+        "Test system functionality and accuracy",
+        "Validate data integrity and calculations",
+        "Train users on new features",
+        "Maintain system documentation"
+      ],
+      department: "Operations",
+      frequency: "Monthly",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "25",
+      title: "Tax data validation and quality control",
+      description: "Validate tax data for accuracy and completeness and perform quality control procedures to ensure data integrity.",
+      user: "Tax Data Analyst",
+      userJourney: [
+        "Review source data for completeness",
+        "Validate calculations and formulas",
+        "Perform quality control checks",
+        "Identify and resolve data issues",
+        "Document validation procedures"
+      ],
+      department: "Operations",
+      frequency: "Weekly",
+      aiClassification: "Classification"
+    },
+    {
+      id: "26",
+      title: "Tax reporting automation and process improvement",
+      description: "Develop and implement automated tax reporting processes to improve efficiency and reduce manual errors.",
+      user: "Tax Process Specialist",
+      userJourney: [
+        "Analyze current reporting processes",
+        "Identify automation opportunities",
+        "Design automated workflows",
+        "Test and validate new processes",
+        "Implement and monitor improvements"
+      ],
+      department: "Operations",
+      frequency: "Ongoing",
+      aiClassification: "Transformation"
+    },
+    {
+      id: "27",
+      title: "Tax risk assessment and mitigation planning",
+      description: "Assess tax risks and develop mitigation strategies to minimize exposure and ensure compliance.",
+      user: "Tax Risk Manager",
+      userJourney: [
+        "Identify potential tax risks and exposures",
+        "Assess likelihood and impact of risks",
+        "Develop risk mitigation strategies",
+        "Monitor risk indicators and trends",
+        "Prepare risk assessment reports"
+      ],
+      department: "Risk",
+      frequency: "Quarterly",
+      aiClassification: "Reasoning"
+    },
+    {
+      id: "28",
+      title: "Tax training and knowledge management",
+      description: "Develop and deliver tax training programs and maintain knowledge management systems for tax team.",
+      user: "Tax Training Specialist",
+      userJourney: [
+        "Assess training needs and requirements",
+        "Develop training materials and programs",
+        "Deliver training sessions to staff",
+        "Maintain knowledge management systems",
+        "Evaluate training effectiveness"
+      ],
+      department: "Operations",
+      frequency: "Monthly",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "29",
+      title: "Tax document management and archiving",
+      description: "Manage tax document storage, organization, and archiving to ensure compliance with retention requirements.",
+      user: "Tax Document Specialist",
+      userJourney: [
+        "Organize and categorize tax documents",
+        "Implement document retention policies",
+        "Maintain secure document storage",
+        "Archive documents according to schedule",
+        "Ensure compliance with retention requirements"
+      ],
+      department: "Operations",
+      frequency: "Weekly",
+      aiClassification: "Classification"
+    },
+    {
+      id: "30",
+      title: "Tax communication and stakeholder management",
+      description: "Manage communication with tax stakeholders including management, auditors, and regulatory authorities.",
+      user: "Tax Communications Manager",
+      userJourney: [
+        "Prepare tax communications and reports",
+        "Coordinate with internal stakeholders",
+        "Manage external communications",
+        "Maintain communication records",
+        "Ensure timely and accurate reporting"
+      ],
+      department: "Operations",
+      frequency: "Weekly",
+      aiClassification: "Content Generation"
+    },
+    {
+      id: "31",
+      title: "Tax technology evaluation and implementation",
+      description: "Evaluate new tax technologies and implement solutions to improve efficiency and accuracy.",
+      user: "Tax Technology Manager",
+      userJourney: [
+        "Research new tax technology solutions",
+        "Evaluate potential benefits and costs",
+        "Develop implementation plans",
+        "Coordinate system integration",
+        "Monitor performance and ROI"
+      ],
+      department: "Operations",
+      frequency: "Quarterly",
+      aiClassification: "Reasoning"
+    },
+    {
+      id: "32",
+      title: "Tax compliance monitoring and reporting",
+      description: "Monitor tax compliance across all jurisdictions and prepare comprehensive compliance reports.",
+      user: "Tax Compliance Manager",
+      userJourney: [
+        "Monitor compliance across jurisdictions",
+        "Track filing and payment status",
+        "Identify compliance issues and risks",
+        "Prepare compliance reports",
+        "Coordinate remediation efforts"
+      ],
+      department: "Compliance",
+      frequency: "Monthly",
+      aiClassification: "Classification"
+    },
+    {
+      id: "33",
+      title: "Tax strategy development and planning",
+      description: "Develop comprehensive tax strategies and planning initiatives to optimize tax position and minimize liabilities.",
+      user: "Tax Strategy Director",
+      userJourney: [
+        "Analyze current tax position and opportunities",
+        "Develop strategic tax planning initiatives",
+        "Evaluate alternative tax strategies",
+        "Prepare strategy recommendations",
+        "Monitor implementation and results"
+      ],
+      department: "Tax",
+      frequency: "Quarterly",
+      aiClassification: "Reasoning"
+    }
+  ]
+
+  const [selectedTask, setSelectedTask] = useState<TaskDetail | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openTaskModal = (task: TaskDetail) => {
+    setSelectedTask(task)
+    setIsModalOpen(true)
+  }
+
+  const closeTaskModal = () => {
+    setIsModalOpen(false)
+    setSelectedTask(null)
+  }
 
   // Scroll to top on mount
   useEffect(() => {
@@ -304,19 +860,19 @@ export default function ProblemIdentificationPage() {
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-300">
                               <div>
                                 <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
-                                <p>Mapped end-to-end processes from document intake to compliance reporting</p>
+                                <p>Documented several day-to-day tax tasks</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Professional Interviews</h5>
-                                <p>Spoke with tax analysts, managers, and directors across multiple institutions</p>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">User Interviews</h5>
+                                <p>Spoke with my colleagues who work in tax</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">GenAI Research Reports</h5>
-                                <p>Conducted deep research reports with GenAI (OpenAI, Google) for industry insights</p>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Market Research</h5>
+                                <p>Conducted research on the market for tax automation tools and services</p>
                               </div>
                               <div>
                                 <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Volume & Complexity Scoring</h5>
-                                <p>Quantified each task on frequency (volume) and skill requirements (complexity)</p>
+                                <p>Quantified each task in terms of volume and complexity</p>
                               </div>
                             </div>
                           </div>
@@ -330,7 +886,6 @@ export default function ProblemIdentificationPage() {
                         <Collapsible.Trigger asChild>
                           <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
-                              <FileText className="w-4 h-4 text-blue-600" />
                               <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                 List of Day-to-Day Tax Tasks
                               </h4>
@@ -357,68 +912,99 @@ export default function ProblemIdentificationPage() {
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left">Task Description</th>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-24">Department</th>
                                     <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-20">Frequency</th>
+                                    <th className="text-xs font-medium text-gray-600 dark:text-gray-300 px-3 py-2 text-left w-12"></th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[0])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">01</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Daily cash position reconciliation and tax allocation reporting</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Daily cash position reconciliation and tax allocation reporting</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[1])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">02</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">State and local tax filing preparation and submission</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">State and local tax filing preparation and submission</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[2])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">03</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Federal tax provision calculations and journal entry preparation</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Federal tax provision calculations and journal entry preparation</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Accounting</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[3])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">04</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Quarterly estimated tax payment calculations and remittance</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Quarterly estimated tax payment calculations and remittance</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Treasury</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[4])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">05</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Regulatory capital tax adjustment calculations (Basel III)</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Regulatory capital tax adjustment calculations (Basel III)</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Risk</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Monthly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[5])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">06</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Transfer pricing documentation review and update</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Transfer pricing documentation review and update</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Annual</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[6])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">07</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Municipal bond interest income tax exemption tracking</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Municipal bond interest income tax exemption tracking</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Operations</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Daily</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[7])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">08</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Foreign tax credit limitation calculations and optimization</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Foreign tax credit limitation calculations and optimization</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[8])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">09</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">Intercompany transaction tax implications analysis</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Intercompany transaction tax implications analysis</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Tax</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Weekly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
-                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
+                                  <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50 cursor-pointer group" onClick={() => openTaskModal(taskDetails[9])}>
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">10</td>
-                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2">FDIC premium tax deduction calculations and reporting</td>
+                                    <td className="text-xs text-gray-700 dark:text-gray-300 px-3 py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FDIC premium tax deduction calculations and reporting</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Compliance</td>
                                     <td className="text-xs text-gray-600 dark:text-gray-400 px-3 py-2">Quarterly</td>
+                                    <td className="px-3 py-2">
+                                      <Eye className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
+                                    </td>
                                   </tr>
                                   <tr className="hover:bg-gray-50/50 dark:hover:bg-gray-700/50 border-b border-gray-100/50">
                                     <td className="font-mono text-xs text-gray-500 px-3 py-2">11</td>
@@ -569,19 +1155,17 @@ export default function ProblemIdentificationPage() {
                       </div>
                     </Collapsible.Root>
                   </div>
-
-                  {/* Collapsible Banking Tax Automation Opportunities Chart */}
+                  {/* Collapsible Tax Automation Opportunities Chart */}
                   <Collapsible.Root>
                     <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-6">
                       <Collapsible.Trigger asChild>
                         <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                           <div className="flex items-center gap-2">
-                            <TrendingUp className="w-4 h-4 text-green-600" />
                             <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                              Banking Tax Automation Opportunities Analysis
+                              Tax Automation Opportunities Analysis
                             </h4>
                             <Badge variant="outline" className="text-xs">
-                              Volume vs Complexity Chart
+                              Value vs Risk Chart
                             </Badge>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
@@ -600,108 +1184,75 @@ export default function ProblemIdentificationPage() {
                     </div>
                   </Collapsible.Root>
 
-                  {/* Collapsible Key Research Findings */}
-                  <Collapsible.Root>
-                    <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-200/50 rounded-lg">
-                      <Collapsible.Trigger asChild>
-                        <button className="w-full flex items-center justify-between p-6 text-left hover:bg-blue-100/50 dark:hover:bg-blue-900/20 transition-colors rounded-t-lg">
-                          <div className="flex items-center gap-2">
-                            <Target className="w-5 h-5 text-blue-600" />
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                              Key Research Findings
-                            </h4>
-                          </div>
-                          <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
-                        </button>
-                      </Collapsible.Trigger>
-                      
-                      <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
-                        <div className="border-t border-blue-200/50 p-6">
-                          <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>33 comprehensive tax activities</strong> identified and analyzed across banking operations and strategic functions</span>
-                            </li>
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>Strategic categorization</strong> applied: operational tasks for traditional automation, knowledge-intensive tasks for AI solutions</span>
-                            </li>
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>High-volume, low-complexity zone</strong> contains 7 prime automation candidates with 75%+ volume scores</span>
-                            </li>
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>AI solutions dominate</strong> interpretive tasks: document classification, regulatory analysis, and transaction monitoring</span>
-                            </li>
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>Traditional automation excels</strong> at structured tasks: calculations, data validation, and report generation</span>
-                            </li>
-                            <li className="flex items-start space-x-2">
-                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span><strong>Research methodology</strong> included workflow analysis, professional interviews, and volume/complexity scoring</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </Collapsible.Content>
-                    </div>
-                  </Collapsible.Root>
+
                 </div>
           </section>
 
           {/* User Analysis Section */}
           <section id="user-analysis" className="space-y-6 scroll-mt-32">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                User Analysis
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Understanding Our Users & Their Pain Points
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {userPersonas.map((persona, index) => (
-                <motion.div
-                  key={persona.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="space-y-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
-                      {persona.icon}
+            <Collapsible.Root>
+              <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
+                <Collapsible.Trigger asChild>
+                  <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                    <div className="space-y-1">
+                      <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                        User Analysis
+                      </h2>
+                      <p className="text-lg text-gray-600 dark:text-gray-300">
+                        Understanding Our Users & Their Pain Points
+                      </p>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
+                    <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                  </button>
+                </Collapsible.Trigger>
+                
+                <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                  <div className="border-t border-gray-200/50 p-4">
+                    <div className="space-y-6">
+                      {userPersonas.map((persona, index) => (
+                        <motion.div
+                          key={persona.title}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="space-y-4"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
+                              {persona.icon}
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
+                              <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-red-500" />
+                                Current Pain Points
+                              </h4>
+                              <ul className="space-y-1">
+                                {persona.painPoints.map((pain, i) => (
+                                  <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
+                                    • {pain}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
+                              <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-red-500" />
-                        Current Pain Points
-                      </h4>
-                      <ul className="space-y-1">
-                        {persona.painPoints.map((pain, i) => (
-                          <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
-                            • {pain}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                      <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
-                      <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                </Collapsible.Content>
+              </div>
+            </Collapsible.Root>
           </section>
 
           {/* MVP Strategy Section */}
@@ -880,6 +1431,90 @@ export default function ProblemIdentificationPage() {
       
       {/* Fixed On This Page Sidebar */}
       <OnThisPageSidebar className="fixed top-8 right-8 z-50 w-64 hidden xl:block" />
+
+      {/* Task Detail Modal */}
+      {isModalOpen && selectedTask && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    Task #{selectedTask.id}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {selectedTask.department} • {selectedTask.frequency}
+                  </p>
+                </div>
+                <button
+                  onClick={closeTaskModal}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    {selectedTask.title}
+                  </h4>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                    {selectedTask.description}
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                      Primary User
+                    </h5>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      {selectedTask.user}
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                      Department
+                    </h5>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      {selectedTask.department}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                      AI Classification
+                    </h5>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                      {selectedTask.aiClassification}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-3">
+                    User Journey ({selectedTask.userJourney.length} steps)
+                  </h5>
+                  <div className="space-y-2">
+                    {selectedTask.userJourney.map((step, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
+                        <div className="flex-shrink-0 w-6 h-6 bg-gray-600 text-white rounded-full flex items-center justify-center text-xs font-medium">
+                          {index + 1}
+                        </div>
+                        <p className="text-gray-700 dark:text-gray-300 text-sm">
+                          {step}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 

@@ -32,7 +32,8 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
     { id: 'efficiency', title: 'Efficiency Gains' },
     { id: 'insights', title: 'Strategic Insights' },
     { id: 'practical-lessons', title: 'Practical Lessons' },
-    { id: 'ai-tools', title: 'AI Tools Used' }
+    { id: 'ai-tools', title: 'AI Tools Used' },
+    { id: 'automation-vs-ai', title: 'Automation vs AI Framework' }
   ]
 
   useEffect(() => {
@@ -693,6 +694,199 @@ const DocumentationPage: React.FC = () => {
                     </table>
                   </div>
                 </section>
+              </motion.section>
+
+              {/* Automation vs AI Strategic Decision Framework */}
+              <motion.section
+                id="automation-vs-ai"
+                className="mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Automation vs AI: Strategic Decision Framework
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    Strategic analysis of when to use traditional automation versus AI based on input predictability and output flexibility requirements
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                  {/* Traditional Automation Guidelines */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Traditional Automation</h3>
+                    <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                      <div>
+                        <strong>Use when:</strong> Inputs and outputs are predictable and structured
+                      </div>
+                      <div>
+                        <strong>Best for:</strong> Rule-based processes with clear logic
+                      </div>
+                      <div>
+                        <strong>Advantage:</strong> Reliable, cost-effective, and currently working well
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI Guidelines */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">AI Solutions</h3>
+                    <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                      <div>
+                        <strong>Use when:</strong> Inputs/outputs are unpredictable and require flexibility
+                      </div>
+                      <div>
+                        <strong>Best for:</strong> Research, interpretation, and human-like interaction
+                      </div>
+                      <div>
+                        <strong>Advantage:</strong> Handles unstructured data and complex reasoning
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Solutions Breakdown */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                  {/* Traditional Automation Solutions */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                      Traditional Automation Solutions
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                      Structured, rule-based processes with predictable patterns
+                    </p>
+                    <div className="space-y-4">
+                      <div className="border-b border-gray-200 pb-4">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-2">Tax Document Processing</h4>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                          Automated extraction and categorization of structured tax documents with consistent formats
+                        </p>
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Why Automation:</strong> Documents follow predictable patterns and require consistent processing
+                          </p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Business Value:</strong> Reduces manual data entry by 80% and improves accuracy
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">OCR Processing</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Data Extraction</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Validation</span>
+                        </div>
+                      </div>
+
+                      <div className="border-b border-gray-200 pb-4">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-2">Compliance Monitoring</h4>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                          Automated tracking of filing deadlines and regulatory requirements across jurisdictions
+                        </p>
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Why Automation:</strong> Clear rules and predictable calendar-based requirements
+                          </p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Business Value:</strong> Prevents missed deadlines and reduces compliance risk
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Deadline Tracking</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Alert System</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Reporting</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* AI Solutions */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                      AI-Powered Solutions
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                      Complex reasoning, research, and flexible interpretation tasks
+                    </p>
+                    <div className="space-y-4">
+                      <div className="border-b border-gray-200 pb-4">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-2">Tax Research Assistant</h4>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                          AI-powered research tool that processes complex tax queries and provides contextual answers
+                        </p>
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Why AI:</strong> Requires understanding of complex tax concepts and flexible interpretation
+                          </p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Business Value:</strong> Accelerates research by 90% and improves answer quality
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Semantic Search</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Context Analysis</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Source Attribution</span>
+                        </div>
+                      </div>
+
+                      <div className="border-b border-gray-200 pb-4">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-2">Business User Tax Advisor</h4>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                          Conversational interface that provides expert tax guidance through natural language interaction
+                        </p>
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Why AI:</strong> Requires natural language understanding and flexible response generation
+                          </p>
+                          <p className="text-xs text-gray-700 dark:text-gray-300">
+                            <strong>Business Value:</strong> Democratizes access to tax expertise and reduces consultation time
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-1 mt-3">
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Natural Language</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Expert Knowledge</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Conversational</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key AI Use Cases Highlight */}
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    Highlighted AI Use Cases for Tax Functions
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">Tax Research Assistant</h4>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        AI processes vast volumes of tax regulations, case law, and guidance documents to provide instant, 
+                        contextualized research answers. Perfect for handling unpredictable research queries that require 
+                        flexible interpretation and reasoning.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Regulation Analysis</span>
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Case Law Research</span>
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Contextual Answers</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">Business User Tax Advisor</h4>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        Conversational AI interface that connects business users directly with tax expertise through 
+                        natural language. Eliminates the need to search through massive document repositories, 
+                        providing instant expert-level guidance.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Natural Language</span>
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Expert Knowledge</span>
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Instant Access</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.section>
             </div>
 

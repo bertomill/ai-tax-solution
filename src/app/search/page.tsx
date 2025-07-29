@@ -4,28 +4,9 @@ import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
-  Brain, 
-  Clock, 
-  TrendingUp, 
-  Shield, 
-  Zap, 
-  Target, 
-  FileText, 
-  Search,
-  CheckCircle2,
-  AlertTriangle,
-  BarChart3,
-  Users,
-  DollarSign,
-  Lightbulb,
   ArrowRight,
-  Database,
-  MessageSquare,
   ChevronDown
 } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { RAGSearch } from '@/components/rag-search'
 import { DocumentSidebar } from '@/components/document-sidebar'
 import * as Collapsible from '@radix-ui/react-collapsible'
@@ -34,22 +15,17 @@ interface PainPoint {
   title: string
   description: string
   timeImpact: string
-  icon: React.ReactNode
 }
 
 interface SolutionFeature {
   title: string
   description: string
   timeSaved: string
-  icon: React.ReactNode
-  color: string
 }
 
 interface Metric {
   category: string
   items: { label: string; value: string; improvement?: string }[]
-  icon: React.ReactNode
-  color: string
 }
 
 interface OnThisPageSection {
@@ -99,9 +75,6 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   return (
     <div className={`${className} bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto`}>
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200/50 dark:border-gray-700/50">
-        <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
-          <FileText className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-        </div>
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-gray-100">On this page</h3>
           <p className="text-xs text-gray-500 dark:text-gray-400">Navigate solution sections</p>
@@ -156,26 +129,22 @@ function SearchPageContent() {
     {
       title: "Time-Intensive Research Process",
       description: "Tax professionals spend 4-6 hours researching complex questions that should take 30 minutes",
-      timeImpact: "4-6 hours per question",
-      icon: <Clock className="w-5 h-5" />
+      timeImpact: "4-6 hours per question"
     },
     {
       title: "Information Overload & Fragmentation",
       description: "Tax code spans 70,000+ pages with constant updates across multiple systems",
-      timeImpact: "2-4 hours multi-source searching",
-      icon: <Database className="w-5 h-5" />
+      timeImpact: "2-4 hours multi-source searching"
     },
     {
       title: "High Risk of Missing Critical Information",
       description: "Regulatory changes happen frequently with limited notification",
-      timeImpact: "30-60 minutes quality review",
-      icon: <AlertTriangle className="w-5 h-5" />
+      timeImpact: "30-60 minutes quality review"
     },
     {
       title: "Inefficient Knowledge Transfer",
       description: "Senior professionals' expertise isn't captured systematically",
-      timeImpact: "1-2 hours documentation",
-      icon: <Users className="w-5 h-5" />
+      timeImpact: "1-2 hours documentation"
     }
   ]
 
@@ -183,38 +152,28 @@ function SearchPageContent() {
     {
       title: "Intelligent Query Processing",
       description: "Natural language AI understands complex tax questions instantly",
-      timeSaved: "30 minutes → Instant",
-      icon: <Brain className="w-5 h-5" />,
-      color: "bg-gray-900 dark:bg-gray-700"
+      timeSaved: "30 minutes → Instant"
     },
     {
       title: "Unified Knowledge Search",
       description: "Single search across all authoritative sources simultaneously",
-      timeSaved: "2-4 hours → 5 minutes",
-      icon: <Search className="w-5 h-5" />,
-      color: "bg-gray-800 dark:bg-gray-600"
+      timeSaved: "2-4 hours → 5 minutes"
     },
     {
       title: "Context-Aware Results",
       description: "AI provides jurisdiction-specific, entity-specific guidance",
-      timeSaved: "1-2 hours → Immediate",
-      icon: <Target className="w-5 h-5" />,
-      color: "bg-gray-700 dark:bg-gray-500"
+      timeSaved: "1-2 hours → Immediate"
     },
     {
       title: "Professional Documentation",
       description: "AI generates client-ready memos with proper legal formatting",
-      timeSaved: "1-2 hours → 10 minutes",
-      icon: <FileText className="w-5 h-5" />,
-      color: "bg-gray-900 dark:bg-gray-700"
+      timeSaved: "1-2 hours → 10 minutes"
     }
   ]
 
   const successMetrics: Metric[] = [
     {
       category: "Efficiency Gains",
-      icon: <TrendingUp className="w-5 h-5" />,
-      color: "text-green-600",
       items: [
         { label: "Research time reduction", value: "75-85%" },
         { label: "Client response time", value: "Same day", improvement: "vs. 3-5 days" },
@@ -223,8 +182,6 @@ function SearchPageContent() {
     },
     {
       category: "Quality Improvements",
-      icon: <Shield className="w-5 h-5" />,
-      color: "text-blue-600",
       items: [
         { label: "Source comprehensiveness", value: "95%", improvement: "vs. 60-70%" },
         { label: "Regulatory change detection", value: "Real-time", improvement: "vs. weeks/months delay" },
@@ -233,8 +190,6 @@ function SearchPageContent() {
     },
     {
       category: "Business Impact",
-      icon: <DollarSign className="w-5 h-5" />,
-      color: "text-purple-600",
       items: [
         { label: "Billable hour optimization", value: "40-60%", improvement: "more advisory time" },
         { label: "Client satisfaction", value: "Higher", improvement: "faster, comprehensive responses" },
@@ -276,10 +231,7 @@ function SearchPageContent() {
                   transition={{ duration: 0.6 }}
                   className="mb-6"
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1.5 bg-gray-900 dark:bg-gray-700 rounded-lg">
-                      <Lightbulb className="w-5 h-5 text-white" />
-                    </div>
+                  <div className="mb-2">
                     <h2 className="text-2xl font-bold text-black dark:text-gray-100">
                       AI Tax Research Platform
                     </h2>
@@ -289,42 +241,23 @@ function SearchPageContent() {
                   </p>
                 </motion.div>
 
-                {/* Design Tabs */}
-                <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-8">
-                    <TabsTrigger value="overview" className="text-lg py-3">
-                      <MessageSquare className="w-5 h-5 mr-2" />
-                      Solution Overview
-                    </TabsTrigger>
-                    <TabsTrigger value="specification" className="text-lg py-3">
-                      <BarChart3 className="w-5 h-5 mr-2" />
-                      Technical Specification
-                    </TabsTrigger>
-                  </TabsList>
-
-                  {/* Solution Overview */}
-                  <TabsContent value="overview" className="space-y-8">
+                {/* Solution Overview */}
+                <div className="space-y-8">
                     {/* Problem Statement */}
-                    <Card id="core-problem" className="border-red-200/50 bg-red-50/50 dark:bg-red-950/20">
-                      <CardHeader>
-                        <CardTitle className="text-red-700 dark:text-red-300 flex items-center gap-2">
-                          <AlertTriangle className="w-6 h-6" />
-                          The Core Problem
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                          Tax professionals spend <strong>60-80% of their time</strong> on research and compliance tasks 
-                          rather than strategic advisory work. The current tax research process is fragmented, 
-                          time-intensive, and prone to missing critical information.
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <div id="core-problem" className="space-y-4">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        The Core Problem
+                      </h3>
+                      <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                        Tax professionals spend <strong>60-80% of their time</strong> on research and compliance tasks 
+                        rather than strategic advisory work. The current tax research process is fragmented, 
+                        time-intensive, and prone to missing critical information.
+                      </p>
+                    </div>
 
                     {/* Current Pain Points */}
-                    <div id="pain-points">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-                        <Clock className="w-6 h-6 text-red-500" />
+                    <div id="pain-points" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         Current Pain Points
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -334,36 +267,27 @@ function SearchPageContent() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: index * 0.1 }}
+                            className="space-y-3"
                           >
-                            <Card className="h-full hover:shadow-lg transition-shadow">
-                              <CardContent className="p-6">
-                                <div className="flex items-start gap-3 mb-3">
-                                  <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg text-red-600 dark:text-red-400">
-                                    {pain.icon}
-                                  </div>
-                                  <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                      {pain.title}
-                                    </h4>
-                                    <Badge variant="destructive" className="mb-3">
-                                      {pain.timeImpact}
-                                    </Badge>
-                                  </div>
-                                </div>
-                                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                                  {pain.description}
-                                </p>
-                              </CardContent>
-                            </Card>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                {pain.title}
+                              </h4>
+                              <div className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                {pain.timeImpact}
+                              </div>
+                              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                {pain.description}
+                              </p>
+                            </div>
                           </motion.div>
                         ))}
                       </div>
                     </div>
 
                     {/* AI Solution */}
-                    <div id="ai-solution">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-                        <Zap className="w-6 h-6 text-blue-500" />
+                    <div id="ai-solution" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         Our AI Solution: Transformed User Journey
                       </h3>
                       <div className="grid md:grid-cols-2 gap-6">
@@ -373,45 +297,33 @@ function SearchPageContent() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: index * 0.1 }}
+                            className="space-y-3"
                           >
-                            <Card className="h-full hover:shadow-lg transition-shadow border-green-200/50">
-                              <CardContent className="p-6">
-                                <div className="flex items-start gap-3 mb-3">
-                                  <div className={`p-2 ${feature.color} rounded-lg text-white`}>
-                                    {feature.icon}
-                                  </div>
-                                  <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                      {feature.title}
-                                    </h4>
-                                    <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-200 mb-3">
-                                      {feature.timeSaved}
-                                    </Badge>
-                                  </div>
-                                </div>
-                                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                                  {feature.description}
-                                </p>
-                              </CardContent>
-                            </Card>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                {feature.title}
+                              </h4>
+                              <div className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                {feature.timeSaved}
+                              </div>
+                              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                {feature.description}
+                              </p>
+                            </div>
                           </motion.div>
                         ))}
                       </div>
                     </div>
 
                     {/* Key Design Decision */}
-                    <Card id="professional-architecture" className="border-gray-200/50 bg-gray-50/50 dark:bg-gray-900/20">
+                    <div id="professional-architecture" className="space-y-6">
                       <Collapsible.Root open={isProfessionalArchOpen} onOpenChange={setIsProfessionalArchOpen}>
-                        <CardHeader>
+                        <div>
                           <Collapsible.Trigger asChild>
                             <button className="flex items-center justify-between w-full text-left group">
-                              <CardTitle className="text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                                <Shield className="w-6 h-6" />
-                                <div className="flex-1">
-                                  <div>Key Design Decision: Professional-Mediated Architecture</div>
-                                  <div className="text-sm font-normal text-gray-600/70 dark:text-gray-400/70">Click to expand</div>
-                                </div>
-                              </CardTitle>
+                              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                Key Design Decision: Professional-Mediated Architecture
+                              </h3>
                               <ChevronDown 
                                 className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
                                   isProfessionalArchOpen ? 'transform rotate-180' : ''
@@ -419,11 +331,11 @@ function SearchPageContent() {
                               />
                             </button>
                           </Collapsible.Trigger>
-                        </CardHeader>
+                        </div>
                         <Collapsible.Content>
-                          <CardContent className="space-y-6">
-                            <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 border-l-4 border-gray-800 dark:border-gray-600">
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                          <div className="space-y-6">
+                            <div className="space-y-4">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Strategic Choice: Tax Professional as Intermediary
                               </h4>
                               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -435,84 +347,38 @@ function SearchPageContent() {
 
                             <div className="grid md:grid-cols-3 gap-6">
                               <div className="space-y-3">
-                                <div className="flex items-center gap-2">
-                                  <Shield className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                  <h5 className="font-semibold text-gray-900 dark:text-gray-100">Compliance Safeguards</h5>
-                                </div>
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">Compliance Safeguards</h5>
                                 <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Professional Liability:</strong> Licensed professionals validate all advice</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Regulatory Compliance:</strong> Maintains attorney-client privilege</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Quality Control:</strong> Professional judgment filters AI responses</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Ethical Standards:</strong> Upholds professional conduct requirements</span>
-                                  </li>
+                                  <li><strong>Professional Liability:</strong> Licensed professionals validate all advice</li>
+                                  <li><strong>Regulatory Compliance:</strong> Maintains attorney-client privilege</li>
+                                  <li><strong>Quality Control:</strong> Professional judgment filters AI responses</li>
+                                  <li><strong>Ethical Standards:</strong> Upholds professional conduct requirements</li>
                                 </ul>
                               </div>
 
                               <div className="space-y-3">
-                                <div className="flex items-center gap-2">
-                                  <Users className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                  <h5 className="font-semibold text-gray-900 dark:text-gray-100">Trust & Relationships</h5>
-                                </div>
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">Trust & Relationships</h5>
                                 <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Client Confidence:</strong> Trusted advisor remains the source of truth</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Professional Relationships:</strong> Preserves advisor-client dynamics</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Context Awareness:</strong> Professional adds client-specific nuance</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Value Perception:</strong> Maintains premium professional positioning</span>
-                                  </li>
+                                  <li><strong>Client Confidence:</strong> Trusted advisor remains the source of truth</li>
+                                  <li><strong>Professional Relationships:</strong> Preserves advisor-client dynamics</li>
+                                  <li><strong>Context Awareness:</strong> Professional adds client-specific nuance</li>
+                                  <li><strong>Value Perception:</strong> Maintains premium professional positioning</li>
                                 </ul>
                               </div>
 
                               <div className="space-y-3">
-                                <div className="flex items-center gap-2">
-                                  <Database className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                  <h5 className="font-semibold text-gray-900 dark:text-gray-100">Security & Privacy</h5>
-                                </div>
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">Security & Privacy</h5>
                                 <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Data Protection:</strong> Sensitive client info stays within firm</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Access Control:</strong> Professional-grade authentication & audit trails</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                                                 <span><strong>Confidentiality:</strong> No direct client-AI interaction logs</span>
-                                  </li>
-                                  <li className="flex items-start gap-2">
-                                    <CheckCircle2 className="w-4 h-4 text-gray-600 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                                    <span><strong>Firm IP:</strong> Internal knowledge stays proprietary</span>
-                                  </li>
+                                  <li><strong>Data Protection:</strong> Sensitive client info stays within firm</li>
+                                  <li><strong>Access Control:</strong> Professional-grade authentication & audit trails</li>
+                                  <li><strong>Confidentiality:</strong> No direct client-AI interaction logs</li>
+                                  <li><strong>Firm IP:</strong> Internal knowledge stays proprietary</li>
                                 </ul>
                               </div>
                             </div>
 
-                            <div className="bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4">
-                              <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                                <Lightbulb className="w-5 h-5 text-amber-600" />
+                            <div className="space-y-4">
+                              <h5 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Why This Architecture Wins
                               </h5>
                               <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
@@ -522,24 +388,20 @@ function SearchPageContent() {
                                 while maintaining their role as the authoritative advisor and quality gatekeeper.
                               </p>
                             </div>
-                          </CardContent>
+                          </div>
                         </Collapsible.Content>
                       </Collapsible.Root>
-                    </Card>
+                    </div>
 
                     {/* Key Design Decision: Embedding Model Choice */}
-                    <Card id="embedding-model" className="border-gray-200/50 bg-gray-50/50 dark:bg-gray-900/20">
+                    <div id="embedding-model" className="space-y-6">
                       <Collapsible.Root open={isEmbeddingModelOpen} onOpenChange={setIsEmbeddingModelOpen}>
-                        <CardHeader>
+                        <div>
                           <Collapsible.Trigger asChild>
                             <button className="flex items-center justify-between w-full text-left group">
-                              <CardTitle className="text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                                <Brain className="w-6 h-6" />
-                                <div className="flex-1">
-                                  <div>Key Design Decision: OpenAI text-embedding-3-large with 1536 Dimensions</div>
-                                  <div className="text-sm font-normal text-gray-600/70 dark:text-gray-400/70">Click to expand</div>
-                                </div>
-                              </CardTitle>
+                              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                Key Design Decision: OpenAI text-embedding-3-large with 1536 Dimensions
+                              </h3>
                               <ChevronDown 
                                 className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
                                   isEmbeddingModelOpen ? 'transform rotate-180' : ''
@@ -547,50 +409,47 @@ function SearchPageContent() {
                               />
                             </button>
                           </Collapsible.Trigger>
-                        </CardHeader>
+                        </div>
                         <Collapsible.Content>
-                          <CardContent className="space-y-6">
-                            <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 border-l-4 border-gray-800 dark:border-gray-600">
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                          <div className="space-y-6">
+                            <div className="space-y-4">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Strategic Choice: Premium Embedding Model for Tax Domain Accuracy
                               </h4>
-                                                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                             I chose OpenAI&apos;s <strong>text-embedding-3-large</strong> model with <strong>1536 dimensions</strong> over 
-                             smaller alternatives to ensure maximum accuracy for complex tax document processing. This decision prioritizes 
-                             <strong>retrieval quality and semantic understanding</strong> over cost optimization, recognizing that in tax advisory, 
-                             precision directly impacts compliance and liability.
-                           </p>
-                        </div>
+                              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                I chose OpenAI&apos;s <strong>text-embedding-3-large</strong> model with <strong>1536 dimensions</strong> over 
+                                smaller alternatives to ensure maximum accuracy for complex tax document processing. This decision prioritizes 
+                                <strong>retrieval quality and semantic understanding</strong> over cost optimization, recognizing that in tax advisory, 
+                                precision directly impacts compliance and liability.
+                              </p>
+                            </div>
 
                         <div className="grid md:grid-cols-2 gap-6">
                           <div className="space-y-4">
-                            <div className="flex items-center gap-2">
-                              <TrendingUp className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                              <h5 className="font-semibold text-gray-900 dark:text-gray-100">Performance Advantages</h5>
-                            </div>
+                            <h5 className="font-semibold text-gray-900 dark:text-gray-100">Performance Advantages</h5>
                             <div className="space-y-3">
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">Multilingual Tax Content</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">+40% Accuracy</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">+40% Accuracy</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   MIRACL benchmark: 54.9% vs 44.0% for text-embedding-3-small
                                 </p>
                               </div>
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">English Tax Documents</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">+4% Accuracy</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">+4% Accuracy</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   MTEB benchmark: 64.6% vs 62.3% for text-embedding-3-small
                                 </p>
                               </div>
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">Complex Legal Language</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">Superior</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">Superior</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   Better understanding of tax terminology and regulatory context
@@ -600,33 +459,30 @@ function SearchPageContent() {
                           </div>
 
                           <div className="space-y-4">
-                            <div className="flex items-center gap-2">
-                              <Target className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                              <h5 className="font-semibold text-gray-900 dark:text-gray-100">Dimension Optimization</h5>
-                            </div>
+                            <h5 className="font-semibold text-gray-900 dark:text-gray-100">Dimension Optimization</h5>
                             <div className="space-y-3">
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">1536 vs 3072 Dimensions</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">50% Cost Savings</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">50% Cost Savings</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   Negligible accuracy loss with significant storage efficiency
                                 </p>
                               </div>
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">1536 vs 1024 Dimensions</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">+15% Quality</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">+15% Quality</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   Meaningful accuracy improvement for complex documents
                                 </p>
                               </div>
-                              <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                <div className="flex items-center justify-between mb-1">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
                                   <span className="text-sm font-medium">Database Compatibility</span>
-                                  <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">Native Support</Badge>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">Native Support</span>
                                 </div>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
                                   Matches existing Supabase vector schema without migration
@@ -636,9 +492,8 @@ function SearchPageContent() {
                           </div>
                         </div>
 
-                        <div className="bg-gray-100 dark:bg-gray-800/30 rounded-lg p-4">
-                          <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                            <Lightbulb className="w-5 h-5 text-amber-600" />
+                        <div className="space-y-4">
+                          <h5 className="font-semibold text-gray-900 dark:text-gray-100">
                             Trade-off Analysis & Decision Rationale
                           </h5>
                           <div className="grid md:grid-cols-3 gap-4 text-sm">
@@ -672,8 +527,8 @@ function SearchPageContent() {
                           </div>
                         </div>
 
-                        <div className="border-l-4 border-gray-700 dark:border-gray-500 bg-gray-50 dark:bg-gray-800/20 p-4">
-                          <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                        <div className="space-y-4">
+                          <h5 className="font-semibold text-gray-900 dark:text-gray-100">
                             Why This Choice Matters for Tax Advisory
                           </h5>
                           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
@@ -684,24 +539,20 @@ function SearchPageContent() {
                             This investment in accuracy pays dividends through <strong>reduced professional risk and enhanced client outcomes</strong>.
                           </p>
                         </div>
-                      </CardContent>
+                      </div>
                     </Collapsible.Content>
                   </Collapsible.Root>
-                </Card>
+                </div>
 
                     {/* Key Design Decision: LlamaIndex PDF Parsing */}
-                    <Card id="pdf-processing" className="border-gray-200/50 bg-gray-50/50 dark:bg-gray-900/20">
+                    <div id="pdf-processing" className="space-y-6">
                       <Collapsible.Root open={isLlamaIndexOpen} onOpenChange={setIsLlamaIndexOpen}>
-                        <CardHeader>
+                        <div>
                           <Collapsible.Trigger asChild>
                             <button className="flex items-center justify-between w-full text-left group">
-                              <CardTitle className="text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                                <FileText className="w-6 h-6" />
-                                <div className="flex-1">
-                                  <div>Key Design Decision: LlamaIndex for PDF Document Processing</div>
-                                  <div className="text-sm font-normal text-gray-600/70 dark:text-gray-400/70">Click to expand</div>
-                                </div>
-                              </CardTitle>
+                              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                Key Design Decision: LlamaIndex for PDF Document Processing
+                              </h3>
                               <ChevronDown 
                                 className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
                                   isLlamaIndexOpen ? 'transform rotate-180' : ''
@@ -709,11 +560,11 @@ function SearchPageContent() {
                               />
                             </button>
                           </Collapsible.Trigger>
-                        </CardHeader>
+                        </div>
                         <Collapsible.Content>
-                          <CardContent className="space-y-6">
-                            <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 border-l-4 border-gray-800 dark:border-gray-600">
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                          <div className="space-y-6">
+                            <div className="space-y-4">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Strategic Choice: LlamaIndex Over Traditional PDF Parsing Libraries
                               </h4>
                               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -727,33 +578,30 @@ function SearchPageContent() {
 
                             <div className="grid md:grid-cols-2 gap-6">
                               <div className="space-y-4">
-                                <div className="flex items-center gap-2">
-                                  <CheckCircle2 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                  <h5 className="font-semibold text-gray-900 dark:text-gray-100">Superior Text Extraction</h5>
-                                </div>
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">Superior Text Extraction</h5>
                                 <div className="space-y-3">
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">Complex Document Handling</span>
-                                      <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">95% Success Rate</Badge>
+                                      <span className="text-sm text-gray-500 dark:text-gray-400">95% Success Rate</span>
                                     </div>
                                     <p className="text-xs text-gray-600 dark:text-gray-400">
                                       Handles multi-column layouts, tables, and form documents reliably
                                     </p>
                                   </div>
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">Text Quality</span>
-                                      <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">Clean Output</Badge>
+                                      <span className="text-sm text-gray-500 dark:text-gray-400">Clean Output</span>
                                     </div>
                                     <p className="text-xs text-gray-600 dark:text-gray-400">
                                       Preserves text structure and eliminates binary corruption issues
                                     </p>
                                   </div>
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">Regulatory Documents</span>
-                                      <Badge className="bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">Specialized</Badge>
+                                      <span className="text-sm text-gray-500 dark:text-gray-400">Specialized</span>
                                     </div>
                                     <p className="text-xs text-gray-600 dark:text-gray-400">
                                       Optimized for legal and tax document formats from government sources
@@ -763,33 +611,30 @@ function SearchPageContent() {
                               </div>
 
                               <div className="space-y-4">
-                                <div className="flex items-center gap-2">
-                                  <AlertTriangle className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                                  <h5 className="font-semibold text-gray-900 dark:text-gray-100">Traditional Library Limitations</h5>
-                                </div>
+                                <h5 className="font-semibold text-gray-900 dark:text-gray-100">Traditional Library Limitations</h5>
                                 <div className="space-y-3">
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">PyPDF2 / pdf-parse</span>
-                                      <Badge variant="destructive">40% Failure Rate</Badge>
+                                      <span className="text-sm text-red-500 dark:text-red-400">40% Failure Rate</span>
                                     </div>
-                                                                         <p className="text-xs text-gray-600 dark:text-gray-400">
-                                       Frequently produced corrupted binary text like: &quot;/i Z$ * A 8 &#123; u A 9 W NV$&quot;
-                                     </p>
+                                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                                      Frequently produced corrupted binary text like: &quot;/i Z$ * A 8 &#123; u A 9 W NV$&quot;
+                                    </p>
                                   </div>
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">pdfplumber</span>
-                                      <Badge variant="destructive">Layout Issues</Badge>
+                                      <span className="text-sm text-red-500 dark:text-red-400">Layout Issues</span>
                                     </div>
                                     <p className="text-xs text-gray-600 dark:text-gray-400">
                                       Better than PyPDF2 but struggled with complex tax form layouts
                                     </p>
                                   </div>
-                                  <div className="bg-gray-50 dark:bg-gray-800/20 rounded-lg p-3">
-                                    <div className="flex items-center justify-between mb-1">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
                                       <span className="text-sm font-medium">Text Validation</span>
-                                      <Badge variant="destructive">Missing</Badge>
+                                      <span className="text-sm text-red-500 dark:text-red-400">Missing</span>
                                     </div>
                                     <p className="text-xs text-gray-600 dark:text-gray-400">
                                       No built-in mechanisms to detect corrupted text extraction
@@ -799,9 +644,8 @@ function SearchPageContent() {
                               </div>
                             </div>
 
-                            <div className="bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-lg p-4">
-                              <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
-                                <Lightbulb className="w-5 h-5 text-amber-600" />
+                            <div className="space-y-4">
+                              <h5 className="font-semibold text-gray-900 dark:text-gray-100">
                                 LlamaIndex Advantages for Tax Document Processing
                               </h5>
                               <div className="grid md:grid-cols-3 gap-4 text-sm">
@@ -835,8 +679,8 @@ function SearchPageContent() {
                               </div>
                             </div>
 
-                            <div className="border-l-4 border-purple-500 bg-purple-50 dark:bg-purple-900/20 p-4">
-                              <h5 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                            <div className="space-y-4">
+                              <h5 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Why This Choice Matters for Tax Research Quality
                               </h5>
                               <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
@@ -849,117 +693,73 @@ function SearchPageContent() {
                                 through meaningless binary corruption—a critical foundation for professional tax research accuracy.
                               </p>
                             </div>
-                          </CardContent>
+                          </div>
                         </Collapsible.Content>
                       </Collapsible.Root>
-                    </Card>
+                    </div>
 
                     {/* Value Proposition */}
-                    <Card id="value-proposition" className="border-blue-200/50 bg-blue-50/50 dark:bg-blue-950/20">
-                      <CardHeader>
-                        <CardTitle className="text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                          <TrendingUp className="w-6 h-6" />
-                          Value Proposition
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        <div className="grid md:grid-cols-3 gap-6">
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Tax Professionals</h4>
-                            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>10x Faster Research:</strong> Reduce 5-8 hour process to 15-30 minutes</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Higher Accuracy:</strong> AI catches changes humans miss</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Strategic Focus:</strong> More time for advisory work</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Consistent Quality:</strong> Junior staff access senior-level research</span>
-                              </li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Tax Firms</h4>
-                            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Increased Capacity:</strong> Handle 3-5x more client questions</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Improved Margins:</strong> Convert research to advisory hours</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Risk Reduction:</strong> Comprehensive search reduces failures</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Knowledge Scaling:</strong> Firm expertise becomes accessible</span>
-                              </li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Clients</h4>
-                            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Faster Responses:</strong> Answers during meetings</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Lower Costs:</strong> Reduced research time</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Better Outcomes:</strong> More thorough research</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span><strong>Proactive Guidance:</strong> AI identifies opportunities</span>
-                              </li>
-                            </ul>
-                          </div>
+                    <div id="value-proposition" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        Value Proposition
+                      </h3>
+                      <div className="grid md:grid-cols-3 gap-6">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Tax Professionals</h4>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li><strong>10x Faster Research:</strong> Reduce 5-8 hour process to 15-30 minutes</li>
+                            <li><strong>Higher Accuracy:</strong> AI catches changes humans miss</li>
+                            <li><strong>Strategic Focus:</strong> More time for advisory work</li>
+                            <li><strong>Consistent Quality:</strong> Junior staff access senior-level research</li>
+                          </ul>
                         </div>
-                      </CardContent>
-                    </Card>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Tax Firms</h4>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li><strong>Increased Capacity:</strong> Handle 3-5x more client questions</li>
+                            <li><strong>Improved Margins:</strong> Convert research to advisory hours</li>
+                            <li><strong>Risk Reduction:</strong> Comprehensive search reduces failures</li>
+                            <li><strong>Knowledge Scaling:</strong> Firm expertise becomes accessible</li>
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">For Clients</h4>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                            <li><strong>Faster Responses:</strong> Answers during meetings</li>
+                            <li><strong>Lower Costs:</strong> Reduced research time</li>
+                            <li><strong>Better Outcomes:</strong> More thorough research</li>
+                            <li><strong>Proactive Guidance:</strong> AI identifies opportunities</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
 
                     {/* Time Comparison */}
-                    <Card className="border-amber-200/50 bg-amber-50/50 dark:bg-amber-950/20">
-                      <CardContent className="p-6">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center gap-8 mb-4">
-                            <div className="text-center">
-                              <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">5-8 Hours</div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">Current Process</div>
-                            </div>
-                            <ArrowRight className="w-8 h-8 text-gray-400" />
-                            <div className="text-center">
-                              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">15-30 Minutes</div>
-                              <div className="text-sm text-gray-600 dark:text-gray-400">AI Solution</div>
-                            </div>
+                    <div className="space-y-6">
+                      <div className="text-center">
+                        <div className="flex items-center justify-center gap-8 mb-4">
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">5-8 Hours</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400">Current Process</div>
                           </div>
-                          <Badge className="bg-amber-100 text-amber-800 text-lg px-4 py-2">
-                            90%+ Time Reduction
-                          </Badge>
+                          <ArrowRight className="w-8 h-8 text-gray-400" />
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">15-30 Minutes</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400">AI Solution</div>
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
+                        <div className="text-lg text-gray-600 dark:text-gray-400">
+                          90%+ Time Reduction
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Technical Specification */}
-                  <TabsContent value="specification" className="space-y-8">
+                  <div className="space-y-8">
                     {/* Success Metrics */}
-                    <div id="success-metrics">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-                        <BarChart3 className="w-6 h-6 text-green-500" />
+                    <div id="success-metrics" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         Success Metrics
                       </h3>
                       <div className="grid md:grid-cols-3 gap-6">
@@ -969,140 +769,93 @@ function SearchPageContent() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: index * 0.1 }}
+                            className="space-y-4"
                           >
-                            <Card className="h-full">
-                              <CardHeader>
-                                <CardTitle className={`${metric.color} flex items-center gap-2`}>
-                                  {metric.icon}
-                                  {metric.category}
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent className="space-y-3">
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                                {metric.category}
+                              </h4>
+                              <div className="space-y-3">
                                 {metric.items.map((item, i) => (
-                                  <div key={i} className="flex justify-between items-start">
-                                    <div className="flex-1">
+                                  <div key={i} className="space-y-1">
+                                    <div className="flex justify-between items-start">
                                       <div className="font-medium text-gray-900 dark:text-gray-100">{item.label}</div>
-                                      {item.improvement && (
-                                        <div className="text-xs text-gray-500 dark:text-gray-400">{item.improvement}</div>
-                                      )}
+                                      <div className="text-sm text-gray-500 dark:text-gray-400">{item.value}</div>
                                     </div>
-                                    <Badge variant="outline" className="ml-2">
-                                      {item.value}
-                                    </Badge>
+                                    {item.improvement && (
+                                      <div className="text-xs text-gray-500 dark:text-gray-400">{item.improvement}</div>
+                                    )}
                                   </div>
                                 ))}
-                              </CardContent>
-                            </Card>
+                              </div>
+                            </div>
                           </motion.div>
                         ))}
                       </div>
                     </div>
 
                     {/* Implementation Roadmap */}
-                    <div id="implementation-roadmap">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-                        <Target className="w-6 h-6 text-blue-500" />
+                    <div id="implementation-roadmap" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         Implementation Roadmap
                       </h3>
                       <div className="space-y-6">
-                        <Card className="border-blue-200/50">
-                          <CardHeader>
-                            <CardTitle className="text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                              <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                              Phase 1: Core Research Engine
-                              <Badge className="bg-blue-100 text-blue-700">Month 1-3</Badge>
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span>Deploy AI-powered search across federal tax authorities</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span>Enable natural language querying for common tax questions</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span>Provide authoritative source citations and confidence scoring</span>
-                              </li>
-                            </ul>
-                          </CardContent>
-                        </Card>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Phase 1: Core Research Engine</h4>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Month 1-3</div>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
+                            <li>Deploy AI-powered search across federal tax authorities</li>
+                            <li>Enable natural language querying for common tax questions</li>
+                            <li>Provide authoritative source citations and confidence scoring</li>
+                          </ul>
+                        </div>
 
-                        <Card className="border-purple-200/50">
-                          <CardHeader>
-                            <CardTitle className="text-purple-700 dark:text-purple-300 flex items-center gap-2">
-                              <div className="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                              Phase 2: Advanced Features
-                              <Badge className="bg-purple-100 text-purple-700">Month 4-6</Badge>
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span>Add state and international tax coverage</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span>Implement professional memo generation</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                                <span>Enable firm-specific knowledge integration</span>
-                              </li>
-                            </ul>
-                          </CardContent>
-                        </Card>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Phase 2: Advanced Features</h4>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Month 4-6</div>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
+                            <li>Add state and international tax coverage</li>
+                            <li>Implement professional memo generation</li>
+                            <li>Enable firm-specific knowledge integration</li>
+                          </ul>
+                        </div>
 
-                        <Card className="border-green-200/50">
-                          <CardHeader>
-                            <CardTitle className="text-green-700 dark:text-green-300 flex items-center gap-2">
-                              <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                              Phase 3: Strategic Advisory
-                              <Badge className="bg-green-100 text-green-700">Month 7-12</Badge>
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span>Develop proactive compliance monitoring</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span>Add tax planning scenario analysis</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span>Create client-facing research interfaces</span>
-                              </li>
-                            </ul>
-                          </CardContent>
-                        </Card>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Phase 3: Strategic Advisory</h4>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Month 7-12</div>
+                          </div>
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-11">
+                            <li>Develop proactive compliance monitoring</li>
+                            <li>Add tax planning scenario analysis</li>
+                            <li>Create client-facing research interfaces</li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
 
                     {/* Final Value Statement */}
-                    <Card className="border-gradient-to-r from-blue-200 to-purple-200 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-950/20 dark:to-purple-950/20">
-                      <CardContent className="p-6">
-                        <div className="text-center">
-                          <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                            Transform Tax Research Into Strategic Advantage
-                          </h4>
-                          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                            This solution transforms tax research from a time-intensive bottleneck into a strategic advantage, 
-                            enabling tax professionals to focus on high-value advisory work while delivering faster, 
-                            more comprehensive client service.
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
+                    <div className="space-y-4">
+                      <div className="text-center">
+                        <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                          Transform Tax Research Into Strategic Advantage
+                        </h4>
+                        <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                          This solution transforms tax research from a time-intensive bottleneck into a strategic advantage, 
+                          enabling tax professionals to focus on high-value advisory work while delivering faster, 
+                          more comprehensive client service.
+                        </p>
+                      </div>
+                    </div>
                   </div>
+                </div>
                 )}
               </motion.div>
             </div>

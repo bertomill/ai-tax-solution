@@ -15,7 +15,7 @@ import {
   Info
 } from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
-import { getAutomationOpportunities, type AutomationOpportunity } from '@/lib/automation-data'
+import { getAutomationOpportunities, addAIDocumentSearchOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
 
 const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
@@ -41,6 +41,22 @@ const AutomationChart: React.FC = () => {
     fetchData()
   }, [])
 
+  const handleAddDocumentSearch = async () => {
+    try {
+      const result = await addAIDocumentSearchOpportunity()
+      if (result) {
+        // Refresh the data
+        const opportunities = await getAutomationOpportunities()
+        setAutomationOpportunities(opportunities)
+        alert('✅ AI Document Search added successfully!')
+      } else {
+        alert('❌ Failed to add AI Document Search')
+      }
+    } catch (error) {
+      console.error('Error adding AI Document Search:', error)
+      alert('❌ Error adding AI Document Search')
+    }
+  }
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -165,94 +181,71 @@ const AutomationChart: React.FC = () => {
     const effort = getImplementationEffort(opportunity.complexity)
 
     return (
-      <div className="space-y-4 max-w-80">
+      <div className="space-y-3 max-w-80">
         {/* Header */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-start justify-between">
             <div className="flex-1 pr-3">
-              <h4 className="font-bold text-gray-900 text-base leading-tight">{opportunity.name}</h4>
-              <p className="text-sm text-gray-600 mt-1 leading-relaxed">{opportunity.description}</p>
+              <h4 className="font-semibold text-gray-900 text-sm leading-tight">{opportunity.name}</h4>
+              <p className="text-xs text-gray-600 mt-1 leading-relaxed">{opportunity.description}</p>
             </div>
-            <div className={`w-4 h-4 rounded-full ${getCategoryColor(opportunity.category)} shadow-sm`} />
+            <div className={`w-3 h-3 rounded-full ${getCategoryColor(opportunity.category)}`} />
           </div>
         </div>
 
         {/* Metrics */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3 border border-blue-200/30">
-            <div className="flex items-center space-x-2 mb-1">
-              <TrendingUp className="w-4 h-4 text-blue-600" />
-              <span className="text-xs font-medium text-gray-700">Volume</span>
-            </div>
-            <div className="text-xl font-bold text-blue-700">{opportunity.volume}%</div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-gray-700">Volume</span>
+            <span className="font-bold text-blue-700">{opportunity.volume}%</span>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-3 border border-purple-200/30">
-            <div className="flex items-center space-x-2 mb-1">
-              <Target className="w-4 h-4 text-purple-600" />
-              <span className="text-xs font-medium text-gray-700">Complexity</span>
-            </div>
-            <div className="text-xl font-bold text-purple-700">{opportunity.complexity}%</div>
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-gray-700">Complexity</span>
+            <span className="font-bold text-purple-700">{opportunity.complexity}%</span>
           </div>
         </div>
 
         {/* Recommendation */}
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 rounded-xl p-4 border border-gray-200/30">
-          <div className="flex items-center space-x-2 mb-2">
-            {recommendation.icon}
-            <span className={`font-semibold ${recommendation.color}`}>{recommendation.type}</span>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">{recommendation.description}</p>
+        <div className="space-y-2">
+          <span className={`text-xs font-semibold ${recommendation.color}`}>{recommendation.type}</span>
+          <p className="text-xs text-gray-600 leading-relaxed">{recommendation.description}</p>
         </div>
 
         {/* ROI & Timeline */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <DollarSign className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-gray-700">Estimated ROI</span>
-            </div>
-            <Badge variant="secondary" className="text-green-700 bg-green-100">
-              {roi.value}
-            </Badge>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-gray-700">Estimated ROI</span>
+            <span className="text-green-700 font-medium">{roi.value}</span>
           </div>
           
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-medium text-gray-700">ROI Timeline</span>
-            </div>
-            <span className="text-sm text-gray-600">{roi.timeline}</span>
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-gray-700">ROI Timeline</span>
+            <span className="text-gray-600">{roi.timeline}</span>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Zap className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium text-gray-700">Implementation</span>
-            </div>
-            <Badge variant="outline" className={
-              effort.level === 'Low' ? 'text-green-700 border-green-300' :
-              effort.level === 'Medium' ? 'text-yellow-700 border-yellow-300' :
-              'text-red-700 border-red-300'
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-gray-700">Implementation</span>
+            <span className={
+              effort.level === 'Low' ? 'text-green-700' :
+              effort.level === 'Medium' ? 'text-yellow-700' :
+              'text-red-700'
             }>
               {effort.level} ({effort.timeline})
-            </Badge>
+            </span>
           </div>
         </div>
 
         {/* Implementation Details */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-xl p-4 border border-blue-200/30">
-          <div className="flex items-center space-x-2 mb-2">
-            <Info className="w-4 h-4 text-blue-600" />
-            <span className="font-semibold text-blue-700">Implementation Approach</span>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">{effort.description}</p>
+        <div className="space-y-2">
+          <span className="text-xs font-semibold text-blue-700">Implementation Approach</span>
+          <p className="text-xs text-gray-600 leading-relaxed">{effort.description}</p>
         </div>
 
         {/* Category Badge */}
         <div className="pt-2 border-t border-gray-200">
-          <Badge className={`${getCategoryColor(opportunity.category)} text-white border-0`}>
+          <span className={`text-xs px-2 py-1 rounded ${getCategoryColor(opportunity.category)} text-white`}>
             {getCategoryBadge(opportunity.category)}
-          </Badge>
+          </span>
         </div>
       </div>
     )
@@ -294,62 +287,62 @@ const AutomationChart: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span className="text-xl font-semibold">Banking Tax Automation Opportunities</span>
-            <Badge variant="outline" className="text-sm">
-              Research Analysis
-            </Badge>
-          </CardTitle>
-          <p className="text-gray-600 text-sm">
-            Volume vs Complexity analysis of potential AI automation opportunities in banking tax functions
+      <div>
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-semibold text-gray-900 dark:text-gray-100">Tax AI Opportunities</span>
+          </div>
+          <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+            Potential Value/Time Savings vs Complexity/Risk analysis of AI opportunities in tax functions
           </p>
           <div className="flex items-center space-x-2 mt-2">
             <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-            <span className="text-xs text-blue-600 font-medium">Click on any data point for detailed analysis</span>
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Click on any data point for detailed analysis</span>
           </div>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div className="relative">
             {/* Chart Container */}
-            <div className="relative w-full h-96 bg-gradient-to-br from-blue-50 to-purple-50 border border-gray-200 rounded-lg p-6">
+            <div className="relative w-full h-96 rounded-lg p-6">
               {/* Axes */}
               <div className="absolute bottom-6 left-6 right-6 h-px bg-gray-300"></div>
               <div className="absolute bottom-6 left-6 top-6 w-px bg-gray-300"></div>
               
               {/* Axis Labels */}
               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm font-medium text-gray-700">
-                Volume →
+                Potential Value/Time Savings →
               </div>
               <div className="absolute left-2 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-medium text-gray-700">
-                Complexity →
+                Complexity/Risk →
               </div>
 
               {/* Quadrant Labels */}
               <div className="absolute top-8 right-8 text-xs text-gray-500 font-medium">
-                High Volume<br/>High Complexity
+                High Value<br/>High Risk
               </div>
               <div className="absolute top-8 left-8 text-xs text-gray-500 font-medium">
-                Low Volume<br/>High Complexity
+                Low Value<br/>High Risk
               </div>
               <div className="absolute bottom-8 left-8 text-xs text-gray-500 font-medium">
-                Low Volume<br/>Low Complexity
+                Low Value<br/>Low Risk
               </div>
               <div className="absolute bottom-8 right-8 text-xs text-gray-500 font-medium">
-                High Volume<br/>Low Complexity
+                High Value<br/>Low Risk
               </div>
 
               {/* Data Points */}
               {automationOpportunities.map((opportunity) => {
                 const x = 6 + (opportunity.volume / 100) * (100 - 12)
                 const y = 6 + ((100 - opportunity.complexity) / 100) * (100 - 12)
+                const isSelectedSolution = opportunity.name === 'AI Document Search'
                 
                 return (
                   <Popover key={opportunity.id}>
                     <PopoverTrigger asChild>
                       <button
-                        className={`absolute w-4 h-4 rounded-full border-2 ${getCategoryColor(opportunity.category)} transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 hover:shadow-lg hover:shadow-blue-200/50 transition-all duration-200 z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-110`}
+                        className={`absolute w-4 h-4 rounded-full border-2 ${getCategoryColor(opportunity.category)} transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 hover:shadow-lg hover:shadow-blue-200/50 transition-all duration-200 z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-110 ${
+                          isSelectedSolution ? 'ring-4 ring-purple-400 ring-opacity-60 shadow-lg shadow-purple-200 animate-pulse' : ''
+                        }`}
                         style={{
                           left: `${x}%`,
                           top: `${y}%`,
@@ -387,97 +380,68 @@ const AutomationChart: React.FC = () => {
             </div>
 
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Legend and Opportunities List */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Interactive Legend */}
-        <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg">Legend</CardTitle>
-            <p className="text-sm text-gray-600">Click to view opportunities</p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Solution Type Breakdown */}
+        <div>
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Legend</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Click to view opportunities</p>
+          </div>
+          <div className="space-y-4">
             <div className="space-y-2">
-              <h5 className="text-sm font-medium text-gray-900">Solution Types</h5>
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-purple-500 rounded"></div>
-                    <span>AI Solutions</span>
-                  </div>
-                  <span className="font-medium">
-                    {automationOpportunities.filter(op => op.solution_type === 'ai' && op.category === selectedCategory).length}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                    <span>Traditional Automation</span>
-                  </div>
-                  <span className="font-medium">
-                    {automationOpportunities.filter(op => op.solution_type === 'automation' && op.category === selectedCategory).length}
-                  </span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="border-t pt-3 space-y-3">
-              <h5 className="text-sm font-medium text-gray-900">Priority Categories</h5>
+              <h5 className="text-sm font-medium text-gray-900 dark:text-gray-100">Priority Categories</h5>
               <button
                 onClick={() => setSelectedCategory('high-priority')}
-                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-green-50 ${
-                  selectedCategory === 'high-priority' ? 'bg-green-100 border border-green-200' : ''
+                className={`w-full text-left p-1 text-xs transition-colors ${
+                  selectedCategory === 'high-priority' ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-600"></div>
-                <span className="text-sm font-medium">High Volume, Low Complexity</span>
+                High Value, Low Risk
               </button>
               <button
                 onClick={() => setSelectedCategory('medium-priority')}
-                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-yellow-50 ${
-                  selectedCategory === 'medium-priority' ? 'bg-yellow-100 border border-yellow-200' : ''
+                className={`w-full text-left p-1 text-xs transition-colors ${
+                  selectedCategory === 'medium-priority' ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                <div className="w-4 h-4 rounded-full bg-yellow-500 border-2 border-yellow-600"></div>
-                <span className="text-sm font-medium">Medium Priority</span>
+                Medium Priority
               </button>
               <button
                 onClick={() => setSelectedCategory('low-priority')}
-                className={`w-full flex items-center space-x-3 p-2 rounded-lg transition-all duration-200 hover:bg-red-50 ${
-                  selectedCategory === 'low-priority' ? 'bg-red-100 border border-red-200' : ''
+                className={`w-full text-left p-1 text-xs transition-colors ${
+                  selectedCategory === 'low-priority' ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                <div className="w-4 h-4 rounded-full bg-red-500 border-2 border-red-600"></div>
-                <span className="text-sm font-medium">Low Volume, High Complexity</span>
+                Low Value, High Risk
               </button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Dynamic Opportunities List */}
-        <Card className="lg:col-span-2 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center space-x-2">
+        <div className="lg:col-span-2">
+          <div className="mb-4">
+            <div className="flex items-center space-x-2">
               <div className={`w-3 h-3 rounded-full ${getCategoryDisplayData(selectedCategory).dotColor}`}></div>
-              <span>{getCategoryDisplayData(selectedCategory).title}</span>
-            </CardTitle>
-            <p className="text-sm text-gray-600">{getCategoryDisplayData(selectedCategory).subtitle}</p>
-          </CardHeader>
-          <CardContent>
+              <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">{getCategoryDisplayData(selectedCategory).title}</span>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{getCategoryDisplayData(selectedCategory).subtitle}</p>
+          </div>
+          <div>
             <div className="space-y-3">
               {automationOpportunities
                 .filter(op => op.category === selectedCategory)
                 .slice(0, 12)
                 .map((opportunity) => {
-                  const displayData = getCategoryDisplayData(selectedCategory)
                   return (
-                    <div key={opportunity.id} className={`flex items-start justify-between p-3 ${displayData.bgColor} rounded-lg border ${displayData.borderColor}`}>
+                    <div key={opportunity.id} className="flex items-start justify-between p-2 border-b border-gray-200/50 last:border-b-0">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-medium text-gray-900">{opportunity.name}</h4>
+                          <h4 className="font-medium text-gray-900 dark:text-gray-100 text-sm">{opportunity.name}</h4>
                           <Badge 
                             className={`text-xs ${
                               opportunity.solution_type === 'ai' 
@@ -485,11 +449,11 @@ const AutomationChart: React.FC = () => {
                                 : 'bg-blue-100 text-blue-700 hover:bg-blue-100'
                             }`}
                           >
-                            {opportunity.solution_type === 'ai' ? '🤖 AI' : '⚙️ Automation'}
+                            {opportunity.solution_type === 'ai' ? 'AI' : 'Automation'}
                           </Badge>
                         </div>
-                        <p className="text-xs text-gray-600 mt-1">{opportunity.description}</p>
-                        <p className="text-xs text-gray-500 mt-1 italic">{opportunity.solution_reasoning}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-tight">{opportunity.description}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 italic leading-tight">{opportunity.solution_reasoning}</p>
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <Badge variant="secondary" className="text-xs">
@@ -508,8 +472,8 @@ const AutomationChart: React.FC = () => {
                 </div>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* Automation vs AI Analysis */}
