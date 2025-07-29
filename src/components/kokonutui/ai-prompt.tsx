@@ -7,6 +7,23 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAutoResizeTextarea } from '@/hooks/use-auto-resize-textarea'
 
+// Speech Recognition type definitions
+interface SpeechRecognitionEvent {
+  results: {
+    [index: number]: {
+      [index: number]: {
+        transcript: string
+      }
+    }
+    length: number
+  }
+  resultIndex: number
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string
+}
+
 
 interface AIModel {
   id: string
@@ -59,12 +76,34 @@ export function AIPrompt({
   const [isRecording, setIsRecording] = useState(false)
   const [speechSupported, setSpeechSupported] = useState(false)
   const textareaRef = useAutoResizeTextarea(input)
-  const recognitionRef = useRef<any>(null)
+  const recognitionRef = useRef<{ start: () => void; stop: () => void } | null>(null)
 
   // Check for speech recognition support
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      const windowWithSpeech = window as unknown as { 
+        SpeechRecognition?: new() => { 
+          continuous: boolean
+          interimResults: boolean 
+          lang: string
+          start: () => void
+          stop: () => void
+          onresult: ((event: SpeechRecognitionEvent) => void) | null
+          onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
+          onend: (() => void) | null
+        }
+        webkitSpeechRecognition?: new() => { 
+          continuous: boolean
+          interimResults: boolean 
+          lang: string
+          start: () => void
+          stop: () => void
+          onresult: ((event: SpeechRecognitionEvent) => void) | null
+          onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
+          onend: (() => void) | null
+        }
+      }
+      const SpeechRecognitionClass = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition
       setSpeechSupported(!!SpeechRecognitionClass)
       
       if (SpeechRecognitionClass) {
@@ -73,7 +112,7 @@ export function AIPrompt({
         recognition.interimResults = true
         recognition.lang = 'en-US'
         
-        recognition.onresult = (event: any) => {
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
           let transcript = ''
           for (let i = event.resultIndex; i < event.results.length; i++) {
             transcript += event.results[i][0].transcript
@@ -89,7 +128,7 @@ export function AIPrompt({
           setIsRecording(false)
         }
         
-        recognition.onerror = (event: any) => {
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
           console.error('Speech recognition error:', event.error)
           setIsRecording(false)
         }

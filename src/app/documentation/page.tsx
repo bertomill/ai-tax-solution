@@ -1,24 +1,14 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 import { 
-  Brain, 
-  TrendingUp, 
-  Lightbulb, 
-  Target, 
   CheckCircle,
-  Eye,
-  Rocket,
   ExternalLink,
-  Database,
-  Network,
-  Zap,
   FileText
 } from 'lucide-react'
 import { getDocumentationSections, type DocumentationSection } from '@/lib/documentation-data'
@@ -116,11 +106,10 @@ const DocumentationPage: React.FC = () => {
     fetchData()
   }, [])
 
-  const efficiencySection = sections.find(s => s.category === 'efficiency')
   const insightsSection = sections.find(s => s.category === 'insights')
   const practicalLessonsSection = sections.find(s => s.category === 'practical-lessons')
 
-  const createSectionContent = (section: DocumentationSection, colorTheme: 'green' | 'purple' | 'orange', icon: React.ReactElement) => {
+  const createSectionContent = (section: DocumentationSection) => {
     if (!section) return null
     
     return (
@@ -274,75 +263,37 @@ const DocumentationPage: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Target className="w-5 h-5 text-blue-600" />
-                          Our Platform&apos;s AI Integration
+                        <h4 className="font-semibold text-gray-900">
+                          AI Integration Selections
                         </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Natural Language Processing</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Advanced semantic search and conversational chat interfaces for tax research
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Machine Learning</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Embedding models for document similarity and retrieval-augmented generation (RAG)
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Expert Systems</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Rule-based automation for categorizing tax opportunities and compliance workflows
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                        <ul className="space-y-3">
+                          <li className="text-gray-700">
+                            <strong>Natural Language Processing:</strong> Advanced semantic search and conversational chat interfaces for tax research
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Machine Learning:</strong> Embedding models for document similarity and retrieval-augmented generation (RAG)
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Expert Systems:</strong> Rule-based automation for categorizing tax opportunities and compliance workflows
+                          </li>
+                        </ul>
                       </div>
 
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Lightbulb className="w-5 h-5 text-purple-600" />
+                        <h4 className="font-semibold text-gray-900">
                           Strategic AI Positioning
                         </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-start space-x-3 p-3 bg-purple-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Beyond ChatGPT</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Multi-modal AI approach combining text, document, and structured data processing
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-purple-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Domain-Specific Intelligence</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Specialized models trained on tax and regulatory content for professional accuracy
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-purple-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-purple-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Human-AI Collaboration</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Professional-mediated architecture ensuring compliance and maintaining expert oversight
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                        <ul className="space-y-3">
+                          <li className="text-gray-700">
+                            <strong>Beyond ChatGPT:</strong> Multi-modal AI approach combining text, document, and structured data processing
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Domain-Specific Intelligence:</strong> Specialized models trained on tax and regulatory content for professional accuracy
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Human-AI Collaboration:</strong> Professional-mediated architecture ensuring compliance and maintaining expert oversight
+                          </li>
+                        </ul>
                       </div>
                     </div>
 
@@ -415,105 +366,99 @@ const DocumentationPage: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <CheckCircle className="w-5 h-5 text-green-600" />
+                        <h4 className="font-semibold text-gray-900">
                           Technical Advantages
                         </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Source Attribution</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Every answer includes references to specific tax documents and sections
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Dynamic Knowledge Base</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Easily updated with new tax regulations and professional firm knowledge
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Context Preservation</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Maintains conversation history for follow-up questions and clarifications
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                        <ul className="space-y-3">
+                          <li className="text-gray-700">
+                            <strong>Source Attribution:</strong> Every answer includes references to specific tax documents and sections
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Dynamic Knowledge Base:</strong> Easily updated with new tax regulations and professional firm knowledge
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Context Preservation:</strong> Maintains conversation history for follow-up questions and clarifications
+                          </li>
+                        </ul>
                       </div>
 
                       <div className="space-y-4">
-                        <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Lightbulb className="w-5 h-5 text-blue-600" />
+                        <h4 className="font-semibold text-gray-900">
                           Best Practices for Users
                         </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Specific Questions</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Ask about specific tax codes, regulations, or compliance requirements
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Natural Language</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Use conversational language - the system understands context and synonyms
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
-                            <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <h5 className="font-medium text-gray-900">Document Expansion</h5>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Upload firm-specific documents to enhance the knowledge base
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                        <ul className="space-y-3">
+                          <li className="text-gray-700">
+                            <strong>Specific Questions:</strong> Ask about specific tax codes, regulations, or compliance requirements
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Natural Language:</strong> Use conversational language - the system understands context and synonyms
+                          </li>
+                          <li className="text-gray-700">
+                            <strong>Document Expansion:</strong> Upload firm-specific documents to enhance the knowledge base
+                          </li>
+                        </ul>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-lg p-4 border border-green-300/50">
-                      <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center gap-2">
-                        <Target className="w-5 h-5" />
-                        Why RAG is Essential for Tax Research
-                      </h4>
-                      <p className="text-sm text-green-700 dark:text-green-300 leading-relaxed">
-                        Tax law requires precise, verifiable information with clear source attribution. Our RAG implementation 
-                        ensures that every answer is grounded in authoritative tax documentation, providing the accuracy and 
-                        traceability that tax professionals need for client advice and compliance work.
-                      </p>
-                    </div>
+                    <p className="text-gray-700 leading-relaxed">
+                      Tax law requires precise, verifiable information with clear source attribution. Our RAG implementation 
+                      ensures that every answer is grounded in authoritative tax documentation, providing the accuracy and 
+                      traceability that tax professionals need for client advice and compliance work.
+                    </p>
                 </div>
               </motion.section>
 
               {/* Existing Documentation Sections */}
               <div className="space-y-12">
                 {/* Efficiency Section */}
-                {efficiencySection && (
-                  <motion.section
-                    id="efficiency"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    {createSectionContent(efficiencySection, 'green', <TrendingUp className="size-6" />)}
-                  </motion.section>
-                )}
+                <motion.section
+                  id="efficiency"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <section className="mb-16">
+                    <div className="mb-6">
+                      <h2 className="flex items-center space-x-3 text-2xl font-bold text-gray-900">
+                        <span>Efficiency Gains</span>
+                        <Badge variant="outline" className="text-xs ml-2">
+                          efficiency
+                        </Badge>
+                      </h2>
+                      <p className="text-gray-600 mt-2">
+                        How AI transforms tax workflows and unlocks productivity improvements
+                      </p>
+                    </div>
+                    
+                    <div className="prose prose-sm max-w-none">
+                      <p className="text-gray-700 leading-relaxed">
+                        AI can significantly improve efficiency in tax functions by automating repetitive tasks, 
+                        accelerating research processes, and reducing manual data entry. This allows tax professionals 
+                        to focus on higher-value activities like strategic planning and client consultation.
+                      </p>
+                    </div>
+                    
+                    <Separator className="my-8" />
+                    
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900">Key Efficiency Benefits</h4>
+                      <ul className="space-y-3">
+                        <li className="text-gray-700">
+                          <strong>Automated Research:</strong> AI quickly finds relevant tax information across multiple sources
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Document Processing:</strong> Intelligent extraction and categorization of tax documents
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Compliance Monitoring:</strong> Automated tracking of regulatory changes and deadlines
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Client Communication:</strong> Faster response times and more accurate information delivery
+                        </li>
+                      </ul>
+                    </div>
+                  </section>
+                </motion.section>
 
                 {/* Insights Section */}
                 {insightsSection && (
@@ -523,7 +468,7 @@ const DocumentationPage: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    {createSectionContent(insightsSection, 'purple', <Eye className="size-6" />)}
+                    {createSectionContent(insightsSection)}
                   </motion.section>
                 )}
 
@@ -535,7 +480,7 @@ const DocumentationPage: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    {createSectionContent(practicalLessonsSection, 'orange', <Lightbulb className="size-6" />)}
+                    {createSectionContent(practicalLessonsSection)}
                   </motion.section>
                 )}
               </div>

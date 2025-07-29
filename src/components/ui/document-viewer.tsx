@@ -75,7 +75,7 @@ export function DocumentViewer({ isOpen, onClose, document, userId }: DocumentVi
     } finally {
       setLoading(false)
     }
-  }, [document.storagePath])
+  }, [document.storagePath, document.fileType, userId])
 
   useEffect(() => {
     if (isOpen && document.storagePath) {

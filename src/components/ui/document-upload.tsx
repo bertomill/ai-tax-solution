@@ -79,23 +79,6 @@ export function DocumentUpload({
     setIsDragOver(false)
   }, [])
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
-    
-    const files = Array.from(e.dataTransfer.files)
-    if (files.length > 0) {
-      handleFileUpload(files[0])
-    }
-  }, [handleFileUpload])
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files && files.length > 0) {
-      handleFileUpload(files[0])
-    }
-  }
-
   const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true)
     setError(null)
@@ -184,6 +167,23 @@ export function DocumentUpload({
       onUploadError?.()
     }
   }, [userId, onUploadStart, onUploadProgress, onUploadSuccess, onUploadError, fetchUserDocuments])
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragOver(false)
+    
+    const files = Array.from(e.dataTransfer.files)
+    if (files.length > 0) {
+      handleFileUpload(files[0])
+    }
+  }, [handleFileUpload])
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      handleFileUpload(files[0])
+    }
+  }
 
   const handleTextSubmit = async () => {
     if (!pastedText.trim()) {
