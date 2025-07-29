@@ -880,6 +880,73 @@ export default function ProblemIdentificationPage() {
                       </div>
                     </Collapsible.Root>
 
+                    {/* User Analysis Section */}
+                    <section id="user-analysis" className="space-y-6 scroll-mt-32 mb-6">
+                      <Collapsible.Root>
+                        <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
+                          <Collapsible.Trigger asChild>
+                            <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                  User Analysis
+                                </h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                  Understanding Our Users & Their Pain Points
+                                </p>
+                              </div>
+                              <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                            </button>
+                          </Collapsible.Trigger>
+                          
+                          <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                            <div className="border-t border-gray-200/50 p-4">
+                              <div className="space-y-6">
+                                {userPersonas.map((persona, index) => (
+                                  <motion.div
+                                    key={persona.title}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="space-y-4"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
+                                        {persona.icon}
+                                      </div>
+                                      <div>
+                                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
+                                        <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="space-y-4">
+                                      <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                                          <CheckCircle className="w-4 h-4 text-red-500" />
+                                          Current Pain Points
+                                        </h4>
+                                        <ul className="space-y-1">
+                                          {persona.painPoints.map((pain, i) => (
+                                            <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
+                                              • {pain}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                                        <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </div>
+                          </Collapsible.Content>
+                        </div>
+                      </Collapsible.Root>
+                    </section>
+
                     {/* Collapsible Raw Task List */}
                     <Collapsible.Root>
                       <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-6">
@@ -1188,72 +1255,7 @@ export default function ProblemIdentificationPage() {
                 </div>
           </section>
 
-          {/* User Analysis Section */}
-          <section id="user-analysis" className="space-y-6 scroll-mt-32">
-            <Collapsible.Root>
-              <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
-                <Collapsible.Trigger asChild>
-                  <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                        User Analysis
-                      </h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Understanding Our Users & Their Pain Points
-                      </p>
-                    </div>
-                    <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
-                  </button>
-                </Collapsible.Trigger>
-                
-                <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
-                  <div className="border-t border-gray-200/50 p-4">
-                    <div className="space-y-6">
-                      {userPersonas.map((persona, index) => (
-                        <motion.div
-                          key={persona.title}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="space-y-4"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
-                              {persona.icon}
-                            </div>
-                            <div>
-                              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
-                              <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-4">
-                            <div>
-                              <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-red-500" />
-                                Current Pain Points
-                              </h4>
-                              <ul className="space-y-1">
-                                {persona.painPoints.map((pain, i) => (
-                                  <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
-                                    • {pain}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
-                              <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </Collapsible.Content>
-              </div>
-            </Collapsible.Root>
-          </section>
+
 
           {/* MVP Strategy Section */}
           <section id="mvp-strategy" className="space-y-6 scroll-mt-32">
