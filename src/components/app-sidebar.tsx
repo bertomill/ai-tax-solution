@@ -263,6 +263,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const [activeSection, setActiveSection] = React.useState<string>("")
   const [expandedItems, setExpandedItems] = React.useState<string[]>([])
+  const [searchQuery, setSearchQuery] = React.useState<string>("")
 
   // Handle logout functionality
   const handleLogout = () => {
@@ -296,6 +297,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         : [...prev, itemTitle]
     )
   }
+
+  // Filter navigation data based on search query
+  const filteredNavigationData = React.useMemo(() => {
+    if (!searchQuery.trim()) {
+      return navigationData
+    }
+
+    const query = searchQuery.toLowerCase().trim()
+    
+    return {
+      sections: navigationData.sections.map(section => ({
+        ...section,
+        items: section.items.filter(item => {
+          // Check if main item matches
+          const itemMatches = item.title.toLowerCase().includes(query)
+          
+          // Check if any sub-item matches
+          const subItemMatches = item.subItems?.some(subItem => 
+            subItem.title.toLowerCase().includes(query)
+          ) || false
+          
+          return itemMatches || subItemMatches
+        }).map(item => ({
+          ...item,
+          // If searching, show matching sub-items and expand the parent
+          subItems: item.subItems?.filter(subItem => 
+            item.title.toLowerCase().includes(query) || 
+            subItem.title.toLowerCase().includes(query)
+          )
+        }))
+      })).filter(section => section.items.length > 0)
+    }
+  }, [searchQuery])
+
+  // Auto-expand items when searching
+  React.useEffect(() => {
+    if (searchQuery.trim()) {
+      const itemsToExpand = filteredNavigationData.sections.flatMap(section => 
+        section.items
+          .filter(item => item.subItems && item.subItems.length > 0)
+          .map(item => item.title)
+      )
+      setExpandedItems(itemsToExpand)
+    }
+  }, [searchQuery, filteredNavigationData])
 
   // Effect to listen for scroll events and update active section
   React.useEffect(() => {
@@ -368,6 +414,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <div className="relative px-2 animate-in slide-in-from-left-2 duration-300 delay-100">
             <SidebarInput
               placeholder="Search sections..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-8 transition-all duration-200 focus:ring-2 focus:ring-blue-500/20"
             />
             <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 opacity-50 select-none" />
@@ -376,8 +424,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       
       <SidebarContent>
+        {/* No results message */}
+        {searchQuery.trim() && filteredNavigationData.sections.length === 0 && state === "expanded" && (
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+            <Search className="size-8 mx-auto mb-2 opacity-30" />
+            <p>No sections found</p>
+            <p className="text-xs mt-1">Try a different search term</p>
+          </div>
+        )}
+        
         {/* Navigation Sections */}
-        {navigationData.sections.map((section) => (
+        {filteredNavigationData.sections.map((section) => (
           <SidebarGroup key={section.title}>
             {state === "expanded" && (
               <SidebarGroupLabel>{section.title}</SidebarGroupLabel>

@@ -39,6 +39,7 @@
     "pdf-parse": "^1.1.1",
     "pdf-text-reader": "^5.1.0",
     "pdfjs-dist": "^5.4.54",
+    "pdfkit": "^0.17.1",
     "prisma": "^6.12.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",

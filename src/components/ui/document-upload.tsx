@@ -168,10 +168,35 @@ export function DocumentUpload({
     }
   }, [userId, onUploadStart, onUploadProgress, onUploadSuccess, onUploadError, fetchUserDocuments])
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragOver(false)
     
+    // Check if this is a demo file being dropped
+    const demoFileName = e.dataTransfer.getData('application/x-demo-file')
+    if (demoFileName === 'Canadian_Tax_Residency_Criteria.pdf') {
+      try {
+        // Fetch the demo PDF file from the public directory
+        const response = await fetch('/Canadian_Tax_Residency_Criteria.pdf')
+        if (response.ok) {
+          const blob = await response.blob()
+          // Create a File object from the blob with proper typing
+          const file = Object.assign(blob, {
+            name: 'Canadian_Tax_Residency_Criteria.pdf',
+            lastModified: Date.now(),
+            webkitRelativePath: ''
+          }) as File
+          handleFileUpload(file)
+          return
+        }
+      } catch (error) {
+        console.error('Error fetching demo file:', error)
+        setError('Failed to load demo file')
+        return
+      }
+    }
+    
+    // Handle regular file drops
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
       handleFileUpload(files[0])
@@ -435,20 +460,54 @@ export function DocumentUpload({
                 </div>
 
                                 {/* Demo File */}
-                <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                      draggable="true"
-                     onDragStart={(e) => {
-                       e.dataTransfer.setData('text/plain', '/Fun_Facts_About_Robert.pdf')
+                     onDragStart={async (e) => {
                        e.dataTransfer.effectAllowed = 'copy'
-                     }}
-                     onClick={() => {
-                       window.open('/Fun_Facts_About_Robert.pdf', '_blank')
+                       // Set both the file path and a flag to indicate this is a demo file
+                       e.dataTransfer.setData('text/plain', '/Canadian_Tax_Residency_Criteria.pdf')
+                       e.dataTransfer.setData('application/x-demo-file', 'Canadian_Tax_Residency_Criteria.pdf')
                      }}>
                   <FileText className="w-5 h-5 text-blue-500" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                      Fun_Facts_About_Robert.pdf
+                      Canadian_Tax_Residency_Criteria.pdf
                     </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Guide for determining tax residency status
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => window.open('/Canadian_Tax_Residency_Criteria.pdf', '_blank')}
+                      className="text-xs px-2 py-1 text-blue-600 hover:text-blue-800 border border-blue-300 hover:border-blue-400 rounded transition-colors"
+                      title="View PDF"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/Canadian_Tax_Residency_Criteria.pdf')
+                          if (response.ok) {
+                            const blob = await response.blob()
+                            const file = Object.assign(blob, {
+                              name: 'Canadian_Tax_Residency_Criteria.pdf',
+                              lastModified: Date.now(),
+                              webkitRelativePath: ''
+                            }) as File
+                            handleFileUpload(file)
+                          }
+                        } catch (error) {
+                          console.error('Error uploading demo file:', error)
+                          setError('Failed to upload demo file')
+                        }
+                      }}
+                      className="text-xs px-2 py-1 text-green-600 hover:text-green-800 border border-green-300 hover:border-green-400 rounded transition-colors"
+                      title="Upload for processing"
+                    >
+                      Upload
+                    </button>
                   </div>
                 </div>
               </div>

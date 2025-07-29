@@ -42,9 +42,11 @@ export function ConversationalRAG() {
     }
   })
 
-  // Auto-scroll to bottom when new messages arrive
+  // Auto-scroll to bottom only when user sends a message, not during AI response
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > 0 && messages[messages.length - 1].role === 'user') {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   // Function to speak text using text-to-speech
