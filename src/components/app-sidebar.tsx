@@ -155,11 +155,7 @@ const navigationData: { sections: NavigationSection[] } = {
               url: "/problem-identification#mvp-strategy",
               section: "mvp-strategy"
             },
-            {
-              title: "AI Implementation",
-              url: "/problem-identification#ai-implementation",
-              section: "ai-implementation"
-            }
+
           ]
         },
       ],
@@ -244,7 +240,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       sections = ["assignment-overview", "interview-process", "expectations"]
       itemToExpand = "Interview Format"
     } else if (pathname === "/problem-identification") {
-      sections = ["problem-identification", "user-analysis", "mvp-strategy", "ai-implementation"]
+      sections = ["problem-identification", "user-analysis", "mvp-strategy"]
       itemToExpand = "Approach"
     } else if (pathname === "/documentation") {
       sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons", "ai-tools", "automation-vs-ai"]

@@ -39,8 +39,7 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   const sections: OnThisPageSection[] = [
     { id: 'problem-identification', title: 'Problem Identification' },
     { id: 'user-analysis', title: 'User Analysis' },
-    { id: 'mvp-strategy', title: 'MVP Strategy' },
-    { id: 'ai-implementation', title: 'AI Implementation' }
+    { id: 'mvp-strategy', title: 'MVP Strategy' }
   ]
 
   useEffect(() => {
@@ -110,14 +109,7 @@ interface MVPFeature {
   icon: React.ReactNode
 }
 
-interface AIComponent {
-  title: string
-  description: string
-  technology: string
-  implementation: string
-  icon: React.ReactNode
-  color: string
-}
+
 
 interface TaskDetail {
   id: string
@@ -213,40 +205,7 @@ export default function ProblemIdentificationPage() {
     }
   ]
 
-  const aiComponents: AIComponent[] = [
-    {
-      title: "Embedding Model",
-      description: "OpenAI text-embedding-3-large for high-quality semantic search across tax documents",
-      technology: "OpenAI API",
-      implementation: "1536-dimensional vectors stored in Supabase with pgvector",
-      icon: <Database className="w-5 h-5" />,
-      color: "from-blue-500 to-purple-600"
-    },
-    {
-      title: "Document Processing",
-      description: "LlamaIndex for reliable PDF text extraction and intelligent chunking strategies",
-      technology: "LlamaIndex",
-      implementation: "Python backend with async processing and quality validation",
-      icon: <FileText className="w-5 h-5" />,
-      color: "from-green-500 to-teal-600"
-    },
-    {
-      title: "RAG System",
-      description: "Retrieval-Augmented Generation for contextual responses with source attribution",
-      technology: "OpenAI GPT-4",
-      implementation: "Vector similarity search + context injection + response generation",
-      icon: <Brain className="w-5 h-5" />,
-      color: "from-purple-500 to-pink-600"
-    },
-    {
-      title: "Real-time Updates",
-      description: "Automated monitoring and ingestion of new regulatory publications",
-      technology: "Scheduled Workers",
-      implementation: "Daily crawlers + change detection + automatic reprocessing",
-      icon: <Zap className="w-5 h-5" />,
-      color: "from-orange-500 to-red-600"
-    }
-  ]
+
 
   const taskDetails: TaskDetail[] = [
     {
@@ -1342,98 +1301,7 @@ export default function ProblemIdentificationPage() {
             </Collapsible.Root>
           </section>
 
-          {/* AI Implementation Section */}
-          <section id="ai-implementation" className="space-y-6 scroll-mt-32">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Brain className="w-6 h-6 text-blue-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  AI Implementation
-                </h2>
-              </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Technical Architecture & AI Integration Strategy
-              </p>
-            </div>
 
-            <div className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                {aiComponents.map((component, index) => (
-                  <motion.div
-                    key={component.title}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200 h-full">
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-3">
-                          <div className={`p-3 bg-gradient-to-r ${component.color} rounded-lg text-white`}>
-                            {component.icon}
-                          </div>
-                          <div>
-                            <h3 className="text-lg font-semibold">{component.title}</h3>
-                            <Badge variant="outline" className="mt-1">{component.technology}</Badge>
-                          </div>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                          {component.description}
-                        </p>
-                        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                          <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-xs uppercase tracking-wide">
-                            Implementation
-                          </h5>
-                          <p className="text-gray-600 dark:text-gray-300 text-sm">
-                            {component.implementation}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-
-              <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200/50">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-blue-600" />
-                    System Architecture Overview
-                  </h3>
-                  <div className="grid md:grid-cols-3 gap-6 text-sm">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Data Layer</h4>
-                      <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-                        <li>• Supabase PostgreSQL with pgvector</li>
-                        <li>• 1536-dimensional embeddings storage</li>
-                        <li>• Document metadata & versioning</li>
-                        <li>• User activity & analytics tracking</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Processing Layer</h4>
-                      <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-                        <li>• LlamaIndex document processing</li>
-                        <li>• OpenAI embedding generation</li>
-                        <li>• Semantic search & ranking</li>
-                        <li>• RAG response generation</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Interface Layer</h4>
-                      <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-                        <li>• Next.js professional dashboard</li>
-                        <li>• Real-time search interface</li>
-                        <li>• Document upload & management</li>
-                        <li>• Analytics & reporting tools</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
         </div>
       </main>
       
