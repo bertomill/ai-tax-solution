@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useTheme } from '@/lib/theme-provider'
 
 interface AIModel {
   id: string
@@ -52,19 +53,19 @@ const aiModels: AIModel[] = [
 
 const themeOptions = [
   {
-    id: 'light',
+    id: 'light' as const,
     name: 'Light',
     icon: <Sun className="w-4 h-4" />,
     description: 'Clean, bright interface'
   },
   {
-    id: 'dark', 
+    id: 'dark' as const, 
     name: 'Dark',
     icon: <Moon className="w-4 h-4" />,
     description: 'Easy on the eyes'
   },
   {
-    id: 'system',
+    id: 'system' as const,
     name: 'System',
     icon: <Monitor className="w-4 h-4" />,
     description: 'Follow device preference'
@@ -72,7 +73,7 @@ const themeOptions = [
 ]
 
 export default function PreferencesPage() {
-  const [theme, setTheme] = useState('system')
+  const { theme, setTheme } = useTheme()
   const [defaultModel, setDefaultModel] = useState('claude')
   const [isSaving, setIsSaving] = useState(false)
 
@@ -83,7 +84,6 @@ export default function PreferencesPage() {
     
     // Save to localStorage for now
     localStorage.setItem('userPreferences', JSON.stringify({
-      theme,
       defaultModel
     }))
     
@@ -95,7 +95,6 @@ export default function PreferencesPage() {
     const saved = localStorage.getItem('userPreferences')
     if (saved) {
       const preferences = JSON.parse(saved)
-      setTheme(preferences.theme || 'system')
       setDefaultModel(preferences.defaultModel || 'claude')
     }
   }, [])

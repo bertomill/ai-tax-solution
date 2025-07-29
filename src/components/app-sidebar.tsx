@@ -188,13 +188,11 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Market Research Agent",
           icon: <Zap className="size-4" />,
           url: "/market-research",
-          badge: "Hot",
         },
         {
           title: "Tax Research & Compliance",
           icon: <Check className="size-4" />,
           url: "/tax-research",
-          badge: "New",
         },
       ],
     },
