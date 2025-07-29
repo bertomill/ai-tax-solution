@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Send, ChevronDown, Paperclip, Sparkles, Brain, Zap, Mic, MicOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -56,7 +56,53 @@ export function AIPrompt({
   const [selectedModel, setSelectedModel] = useState(aiModels[0])
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
   const textareaRef = useAutoResizeTextarea(input)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+
+  // Check for speech recognition support
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      setSpeechSupported(!!SpeechRecognition)
+      
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition()
+        recognition.continuous = true
+        recognition.interimResults = true
+        recognition.lang = 'en-US'
+        
+        recognition.onresult = (event) => {
+          let transcript = ''
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript
+          }
+          
+          if (transcript.trim()) {
+            setInput(transcript)
+            onChange?.(transcript)
+          }
+        }
+        
+        recognition.onend = () => {
+          setIsRecording(false)
+        }
+        
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error)
+          setIsRecording(false)
+        }
+        
+        recognitionRef.current = recognition
+      }
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+    }
+  }, [onChange])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
@@ -80,14 +126,27 @@ export function AIPrompt({
   }
 
   const handleMicrophoneClick = () => {
+    if (!speechSupported) {
+      alert('Speech recognition is not supported in your browser. Please use Chrome or Edge for voice input.')
+      return
+    }
+
     if (isRecording) {
       // Stop recording
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
       setIsRecording(false)
-      // Add speech recognition logic here in the future
     } else {
       // Start recording
-      setIsRecording(true)
-      // Add speech recognition logic here in the future
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.start()
+          setIsRecording(true)
+        } catch (error) {
+          console.error('Error starting speech recognition:', error)
+        }
+      }
     }
   }
 
@@ -125,11 +184,15 @@ export function AIPrompt({
                 variant="ghost"
                 size="sm"
                 onClick={handleMicrophoneClick}
+                disabled={!speechSupported}
+                title={speechSupported ? (isRecording ? 'Stop recording' : 'Start voice input') : 'Voice input not supported in this browser'}
                 className={cn(
                   "h-8 w-8 p-0 transition-colors",
-                  isRecording 
-                    ? "text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-950/20" 
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  !speechSupported 
+                    ? "text-gray-300 dark:text-gray-600 cursor-not-allowed"
+                    : isRecording 
+                      ? "text-red-500 hover:text-red-600 bg-red-50 dark:bg-red-950/20" 
+                      : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 )}
               >
                 {isRecording ? (

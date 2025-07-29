@@ -12,7 +12,6 @@ import {
   Clock,
   Search
 } from 'lucide-react'
-import Footer from '@/components/ui/footer'
 import Link from 'next/link'
 
 interface StatCard {
@@ -192,7 +191,6 @@ const ModernHomepage: React.FC = () => {
           </Card>
         </div>
       </main>
-      <Footer />
     </div>
   )
 }

@@ -21,7 +21,6 @@ import {
   ChevronDown
 } from 'lucide-react'
 import AutomationChart from '@/components/ui/automation-chart'
-import Footer from '@/components/ui/footer'
 import * as Collapsible from '@radix-ui/react-collapsible'
 
 interface TabItem {
@@ -211,8 +210,11 @@ export default function ProblemIdentificationPage() {
     setActiveTab(sectionId)
   }
 
-  // Handle scroll spy for active tab
+  // Handle scroll spy for active tab and scroll to top on mount
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+
     const handleScroll = () => {
       const sections = ['problem-identification', 'user-analysis', 'mvp-strategy', 'ai-implementation']
       const scrollPosition = window.scrollY + 150
@@ -238,13 +240,15 @@ export default function ProblemIdentificationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
       {/* Page Header */}
-      <div className="text-center py-8 px-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-          Approach
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">
-          Comprehensive Problem Analysis & Solution Strategy
-        </p>
+      <div className="py-8 px-4">
+        <div className="max-w-6xl mx-auto space-y-3">
+          <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-300">
+            Approach
+          </h1>
+          <p className="text-base text-black dark:text-gray-300">
+            Comprehensive Problem Analysis & Solution Strategy
+          </p>
+        </div>
       </div>
 
       {/* Sticky Tab Navigation */}
@@ -889,7 +893,6 @@ export default function ProblemIdentificationPage() {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   )
 } 

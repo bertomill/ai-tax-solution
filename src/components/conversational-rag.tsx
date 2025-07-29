@@ -15,6 +15,14 @@ import { nanoid } from 'nanoid'
 export function ConversationalRAG() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [showWelcome, setShowWelcome] = React.useState(true)
+  const [speechSupported, setSpeechSupported] = React.useState(false)
+
+  // Check for speech synthesis support
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSpeechSupported(!!window.speechSynthesis)
+    }
+  }, [])
   
   const {
     messages,
@@ -41,6 +49,21 @@ export function ConversationalRAG() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Function to speak text using text-to-speech
+  const speakText = (text: string) => {
+    if (speechSupported && window.speechSynthesis) {
+      // Cancel any existing speech
+      window.speechSynthesis.cancel()
+      
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.rate = 0.9
+      utterance.pitch = 1
+      utterance.volume = 0.8
+      
+      window.speechSynthesis.speak(utterance)
+    }
+  }
 
   // Convert useChat messages to our Message type
   const chatMessages: Message[] = messages.map(msg => ({
@@ -87,7 +110,7 @@ export function ConversationalRAG() {
       {/* Action Buttons */}
       {messages.length > 0 && (
         <motion.div
-          className="flex items-center justify-center gap-2 py-3 border-b border-gray-200 dark:border-gray-700"
+          className="flex items-center justify-center gap-2 py-2 border-b border-gray-200 dark:border-gray-700"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -125,16 +148,16 @@ export function ConversationalRAG() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="h-full flex items-center justify-center p-4"
+              className="h-full flex items-center justify-center p-2"
             >
               <Card className="w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-blue-200/50">
-                <CardHeader className="text-center">
+                <CardHeader className="text-center pb-3">
                   <CardTitle className="flex items-center justify-center gap-2 text-blue-700 dark:text-blue-300">
                     <Sparkles className="w-5 h-5" />
                     Welcome to Your AI Tax Research Assistant
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 pt-0">
                   <p className="text-gray-600 dark:text-gray-300 text-center">
                     I&apos;m here to help you research tax law, regulations, and compliance requirements. 
                     Ask me anything about tax codes, deductions, filing procedures, or specific tax scenarios.
@@ -158,15 +181,6 @@ export function ConversationalRAG() {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg p-3 border border-blue-200/50">
-                    <h4 className="font-semibold text-blue-800 dark:text-blue-200 text-sm mb-1">
-                      💡 How this works:
-                    </h4>
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
-                      I search through comprehensive tax code documentation and regulatory materials to provide 
-                      accurate, contextual answers. I maintain conversation history so you can ask follow-up questions naturally.
-                    </p>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -183,6 +197,8 @@ export function ConversationalRAG() {
                 <ChatMessage
                   key={message.id}
                   message={message}
+                  onSpeak={message.role === 'assistant' ? () => speakText(message.content) : undefined}
+                  speechSupported={speechSupported}
                 />
               ))}
               

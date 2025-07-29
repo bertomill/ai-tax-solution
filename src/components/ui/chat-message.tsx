@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
-import { Bot, User } from 'lucide-react'
+import { Bot, User, Volume2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { motion } from 'framer-motion'
@@ -14,9 +15,11 @@ export interface Message {
 interface ChatMessageProps {
   message: Message
   isLoading?: boolean
+  onSpeak?: () => void
+  speechSupported?: boolean
 }
 
-export function ChatMessage({ message, isLoading }: ChatMessageProps) {
+export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: ChatMessageProps) {
   const isUser = message.role === 'user'
 
   return (
@@ -98,15 +101,31 @@ export function ChatMessage({ message, isLoading }: ChatMessageProps) {
           )}
         </div>
 
-        {/* Timestamp */}
-        {message.createdAt && (
-          <span className="text-xs text-gray-500 dark:text-gray-400 px-2">
-            {message.createdAt.toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })}
-          </span>
-        )}
+        {/* Action Bar */}
+        <div className="flex items-center gap-2 px-2">
+          {/* Timestamp */}
+          {message.createdAt && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {message.createdAt.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })}
+            </span>
+          )}
+          
+          {/* Speak Button for Assistant Messages */}
+          {!isUser && onSpeak && speechSupported && !isLoading && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onSpeak}
+              className="h-6 w-6 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              title="Read aloud"
+            >
+              <Volume2 className="w-3 h-3" />
+            </Button>
+          )}
+        </div>
       </div>
     </motion.div>
   )

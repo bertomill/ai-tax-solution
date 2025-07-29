@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -17,7 +17,6 @@ import {
   FileText,
   CheckCircle
 } from 'lucide-react'
-import Footer from '@/components/ui/footer'
 
 interface InterviewStep {
   number: string
@@ -33,32 +32,7 @@ interface Expectation {
   icon: React.ReactNode
 }
 
-interface TabItem {
-  id: string
-  label: string
-  icon: React.ReactNode
-}
-
 export default function InterviewFormatPage() {
-  const [activeTab, setActiveTab] = useState<string>('assignment-overview')
-
-  const tabs: TabItem[] = [
-    {
-      id: 'assignment-overview',
-      label: 'Assignment Overview',
-      icon: <FileText className="w-4 h-4" />
-    },
-    {
-      id: 'interview-process',
-      label: 'Interview Process',
-      icon: <Users className="w-4 h-4" />
-    },
-    {
-      id: 'expectations',
-      label: 'What We&apos;re Looking For',
-      icon: <Target className="w-4 h-4" />
-    }
-  ]
 
   const interviewSteps: InterviewStep[] = [
     {
@@ -141,92 +115,28 @@ export default function InterviewFormatPage() {
     }
   ]
 
-  // Smooth scroll to section
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const offset = 120 // Account for sticky header
-      const elementPosition = element.offsetTop - offset
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      })
-    }
-    setActiveTab(sectionId)
-  }
 
-  // Handle scroll spy for active tab
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['assignment-overview', 'interview-process', 'expectations']
-      const scrollPosition = window.scrollY + 150
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveTab(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Initial check
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
       {/* Page Header */}
-      <div className="text-center py-8 px-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+      <div className="text-left py-8 px-4 max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
           Interview Format
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">
+        <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
           Complete Interview Guide & Expectations
         </p>
       </div>
 
-      {/* Sticky Tab Navigation */}
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex space-x-1 p-1">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => scrollToSection(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 relative ${
-                  activeTab === tab.id
-                    ? 'text-blue-700 bg-blue-100'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                {tab.icon}
-                <span className="hidden sm:inline">{tab.label}</span>
-                {activeTab === tab.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-blue-100 rounded-lg -z-10"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
         <div className="max-w-4xl mx-auto space-y-12">
           
           {/* Assignment Overview Section */}
-          <section id="assignment-overview" className="space-y-6 scroll-mt-32">
+          <section id="assignment-overview" className="space-y-6 scroll-mt-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <FileText className="w-6 h-6 text-blue-600" />
@@ -282,7 +192,7 @@ export default function InterviewFormatPage() {
           </section>
 
           {/* Interview Process Section */}
-          <section id="interview-process" className="space-y-6 scroll-mt-32">
+          <section id="interview-process" className="space-y-6 scroll-mt-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Users className="w-6 h-6 text-purple-600" />
@@ -344,7 +254,7 @@ export default function InterviewFormatPage() {
           </section>
 
           {/* Expectations Section */}
-          <section id="expectations" className="space-y-6 scroll-mt-32">
+          <section id="expectations" className="space-y-6 scroll-mt-8">
             <div className="text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <Target className="w-6 h-6 text-green-600" />
@@ -394,7 +304,6 @@ export default function InterviewFormatPage() {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   )
 } 

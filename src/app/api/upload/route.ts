@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { documentProcessor } from '@/lib/document-processing'
+import { storeDocument, initializeStorage } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,12 +42,32 @@ export async function POST(request: NextRequest) {
       // Create a filename from the title
       const fileName = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`
 
+      // Initialize storage if needed
+      await initializeStorage()
+
+      // Store text content as a file in Supabase storage
+      const textBuffer = Buffer.from(text, 'utf-8')
+      const storageResult = await storeDocument(
+        textBuffer,
+        fileName,
+        userId || 'anonymous',
+        'txt'
+      )
+
+      if (!storageResult.success) {
+        return NextResponse.json(
+          { error: `Failed to store document: ${storageResult.error}` },
+          { status: 500 }
+        )
+      }
+
       // Process text as document
       const result = await documentProcessor.processTextDocument(
         text,
         fileName,
         title,
-        userId
+        userId,
+        storageResult.storagePath
       )
 
       if (!result.success) {
@@ -65,6 +86,7 @@ export async function POST(request: NextRequest) {
         fileType: 'txt',
         uploadedAt: new Date().toISOString(),
         totalChunks: result.chunksProcessed,
+        storagePath: storageResult.storagePath,
       })
     }
 
@@ -102,12 +124,31 @@ export async function POST(request: NextRequest) {
     // Convert to buffer
     const buffer = Buffer.from(await file.arrayBuffer())
 
-    // Process document
+    // Initialize storage if needed
+    await initializeStorage()
+
+    // Store original file in Supabase storage
+    const storageResult = await storeDocument(
+      buffer,
+      file.name,
+      userId || 'anonymous',
+      fileExtension
+    )
+
+    if (!storageResult.success) {
+      return NextResponse.json(
+        { error: `Failed to store document: ${storageResult.error}` },
+        { status: 500 }
+      )
+    }
+
+    // Process document for search/embedding
     const result = await documentProcessor.processDocument(
       buffer,
       file.name,
       fileExtension,
-      userId
+      userId,
+      storageResult.storagePath // Pass storage path to processor
     )
 
     if (!result.success) {
@@ -122,6 +163,11 @@ export async function POST(request: NextRequest) {
       message: `Successfully processed ${result.chunksProcessed} chunks`,
       documentId: result.documentId,
       chunksProcessed: result.chunksProcessed,
+      fileName: file.name,
+      fileType: fileExtension,
+      uploadedAt: new Date().toISOString(),
+      totalChunks: result.chunksProcessed,
+      storagePath: storageResult.storagePath,
     })
 
   } catch (error) {

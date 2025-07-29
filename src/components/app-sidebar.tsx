@@ -12,6 +12,7 @@ import {
   BookOpen,
   ChevronRight,
   ChevronDown,
+  Settings,
 } from "lucide-react"
 
 import {
@@ -30,6 +31,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarFooter,
 } from "@/components/ui/sidebar"
 
 // TypeScript interfaces for navigation data
@@ -387,6 +389,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              asChild
+              tooltip={state === "collapsed" ? "Preferences" : undefined}
+              className="group relative transition-all duration-200 hover:bg-gray-50 hover:text-gray-700 border-t border-gray-200 dark:border-gray-700"
+            >
+              <a href="/preferences" className="flex items-center gap-3 py-3">
+                <div className="transition-transform duration-200 group-hover:scale-110">
+                  <Settings className="size-4" />
+                </div>
+                {state === "expanded" && (
+                  <span className="font-medium transition-all duration-200">Preferences</span>
+                )}
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
       
       <SidebarRail />
     </Sidebar>

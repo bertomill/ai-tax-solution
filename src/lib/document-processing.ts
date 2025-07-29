@@ -18,6 +18,7 @@ export interface DocumentChunk {
     userId?: string
     section?: string
     category?: string
+    storagePath?: string
   }
 }
 
@@ -115,7 +116,8 @@ export class DocumentProcessor {
     text: string,
     fileName: string,
     title: string,
-    userId?: string
+    userId?: string,
+    storagePath?: string
   ): Promise<ProcessingResult> {
     try {
       console.log(`Processing text document: ${title}`)
@@ -169,6 +171,7 @@ export class DocumentProcessor {
           userId,
           category: 'pasted_text',
           section: title,
+          storagePath,
         }
 
         // Retry logic for network issues
@@ -226,7 +229,8 @@ export class DocumentProcessor {
     buffer: Buffer,
     fileName: string,
     fileType: string,
-    userId?: string
+    userId?: string,
+    storagePath?: string
   ): Promise<ProcessingResult> {
     try {
       console.log(`Processing document: ${fileName} (${fileType})`)
@@ -272,6 +276,7 @@ export class DocumentProcessor {
           fileType,
           uploadedAt: new Date().toISOString(),
           userId,
+          storagePath,
         }
 
         // Retry logic for network issues
@@ -1029,6 +1034,7 @@ Look for tasks that meet these criteria:
           fileType: string
           uploadedAt: string
           totalChunks: number
+          storagePath?: string
         }>, curr) => {
           const fileName = curr.metadata.fileName
           if (!acc.find(doc => doc.fileName === fileName)) {
@@ -1037,6 +1043,7 @@ Look for tasks that meet these criteria:
               fileType: curr.metadata.fileType,
               uploadedAt: curr.metadata.uploadedAt,
               totalChunks: curr.metadata.totalChunks,
+              storagePath: curr.metadata.storagePath,
             })
           }
           return acc
