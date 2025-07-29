@@ -16,7 +16,213 @@ import {
   FileText
 } from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
-import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, addCommunicationDraftingOpportunity, addTaxComplianceScenariosOpportunity, addInternalAISearchOpportunity, addTaxComplianceSimulationOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
+
+// **HARDCODED DATA**: This replaces the Supabase data fetching to work on networks that block external connections
+// Each data point represents a tax automation/AI opportunity plotted by Volume (value/time savings) vs Complexity (risk/difficulty)
+interface AutomationOpportunity {
+  id: string
+  name: string
+  volume: number // Represents potential value/time savings (0-100%)
+  complexity: number // Represents implementation complexity/risk (0-100%)
+  category: 'high-priority' | 'medium-priority' | 'low-priority'
+  description: string
+  solution_type: 'ai' | 'automation'
+  solution_reasoning: string
+  created_at?: string
+  updated_at?: string
+}
+
+// **HARDCODED AUTOMATION OPPORTUNITIES**: These data points are plotted on the chart
+// High-priority opportunities (High Value, Low Risk) - Best candidates for implementation
+// Medium-priority opportunities (Moderate value/risk balance)
+// Low-priority opportunities (High Risk or Low Value) - Require careful evaluation
+const HARDCODED_OPPORTUNITIES: AutomationOpportunity[] = [
+  // HIGH PRIORITY OPPORTUNITIES (High Value, Low Risk - Bottom Right Quadrant)
+  {
+    id: '1',
+    name: 'AI Document Search',
+    volume: 85, // High value/time savings - saves hours of manual document searching
+    complexity: 25, // Low complexity/risk - well-established AI technology
+    category: 'high-priority',
+    description: 'AI-powered search and retrieval across tax documents, regulations, and case law for rapid information access.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing enables intuitive search queries while vector embeddings provide accurate semantic matching across large document repositories.'
+  },
+  {
+    id: '2',
+    name: 'Tax Trends Market Research',
+    volume: 88, // Very high value - automates time-consuming research tasks
+    complexity: 20, // Very low complexity - leverages existing AI capabilities
+    category: 'high-priority',
+    description: 'AI-powered analysis of tax trends, market developments, and regulatory changes to provide strategic insights for tax planning and compliance.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing and data analysis capabilities enable automated monitoring of tax trends, regulatory updates, and market developments across multiple sources.'
+  },
+  {
+    id: '3',
+    name: 'Communication Drafting',
+    volume: 75, // High value - automates routine communication tasks
+    complexity: 15, // Very low complexity - template-based AI generation
+    category: 'high-priority',
+    description: 'AI-assisted drafting of client communications, tax letters, and regulatory responses with automated tone adjustment and compliance checking.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language generation and template-based systems enable rapid creation of professional communications while ensuring consistency and compliance.'
+  },
+  {
+    id: '4',
+    name: 'Tax Compliance Scenarios',
+    volume: 82, // High value - improves analysis speed and accuracy
+    complexity: 18, // Low complexity - rule-based analysis
+    category: 'high-priority',
+    description: 'AI-powered analysis of tax cases to identify risks and compliance considerations through structured scenario modeling and regulatory framework analysis.',
+    solution_type: 'ai',
+    solution_reasoning: 'Rule-based analysis combined with natural language processing enables systematic evaluation of tax scenarios and identification of compliance risks.'
+  },
+  {
+    id: '5',
+    name: 'Internal AI Search',
+    volume: 82, // High value - significantly improves knowledge access
+    complexity: 28, // Low complexity - similar to document search but internal
+    category: 'high-priority',
+    description: 'AI-powered search and retrieval across internal tax documents, templates, procedures, and knowledge bases for rapid information access and knowledge sharing.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing and vector embeddings enable intuitive search queries across internal document repositories, providing quick access to organizational knowledge.'
+  },
+  {
+    id: '6',
+    name: 'Tax Compliance Simulation',
+    volume: 76, // High value - enables better decision making
+    complexity: 32, // Medium complexity - requires predictive modeling
+    category: 'high-priority',
+    description: 'AI-powered simulation and modeling of tax compliance scenarios to predict outcomes, identify risks, and optimize tax strategies before implementation.',
+    solution_type: 'ai',
+    solution_reasoning: 'Machine learning and predictive modeling enable sophisticated simulation of tax scenarios, allowing for risk assessment and strategy optimization.'
+  },
+  {
+    id: '7',
+    name: 'Automated Tax Form Population',
+    volume: 90, // Very high value - eliminates manual data entry
+    complexity: 35, // Medium complexity - requires integration with multiple systems
+    category: 'high-priority',
+    description: 'Automated extraction and population of tax forms from client data sources, reducing manual data entry and improving accuracy.',
+    solution_type: 'automation',
+    solution_reasoning: 'Rule-based automation can systematically extract data from structured sources and populate standard tax forms, eliminating manual errors and saving significant time.'
+  },
+  {
+    id: '8',
+    name: 'Basic Tax Calculation Automation',
+    volume: 80, // High value - eliminates repetitive calculations
+    complexity: 20, // Low complexity - straightforward rule implementation
+    category: 'high-priority',
+    description: 'Automated calculation of standard tax computations including depreciation, deductions, and basic tax liability calculations.',
+    solution_type: 'automation',
+    solution_reasoning: 'Tax calculations follow well-defined rules that can be easily automated, providing consistent results and freeing up professional time for complex analysis.'
+  },
+
+  // MEDIUM PRIORITY OPPORTUNITIES (Balanced value/risk)
+  {
+    id: '9',
+    name: 'Client Risk Assessment AI',
+    volume: 70, // Good value - improves risk management
+    complexity: 45, // Medium complexity - requires sophisticated modeling
+    category: 'medium-priority',
+    description: 'AI-powered assessment of client tax compliance risks based on historical data, industry patterns, and regulatory changes.',
+    solution_type: 'ai',
+    solution_reasoning: 'Machine learning algorithms can analyze patterns in client data and regulatory requirements to identify potential compliance risks and recommend preventive measures.'
+  },
+  {
+    id: '10',
+    name: 'Automated Deadline Tracking',
+    volume: 65, // Moderate value - prevents missed deadlines
+    complexity: 25, // Low complexity - calendar and notification system
+    category: 'medium-priority',
+    description: 'Automated tracking and notification system for tax deadlines, filing requirements, and compliance milestones across multiple jurisdictions.',
+    solution_type: 'automation',
+    solution_reasoning: 'Calendar-based automation with rule engines can track complex deadline requirements and send timely notifications, reducing the risk of missed deadlines.'
+  },
+  {
+    id: '11',
+    name: 'Tax Code Change Monitoring',
+    volume: 72, // Good value - keeps team updated on changes
+    complexity: 40, // Medium complexity - requires natural language processing
+    category: 'medium-priority',
+    description: 'Automated monitoring and summarization of tax code changes, new regulations, and court decisions relevant to client portfolios.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing can monitor regulatory sources and identify relevant changes, automatically categorizing and summarizing impacts for different client types.'
+  },
+  {
+    id: '12',
+    name: 'Expense Categorization AI',
+    volume: 68, // Moderate value - improves data processing efficiency
+    complexity: 35, // Medium complexity - requires training on tax categories
+    category: 'medium-priority',
+    description: 'AI-powered categorization of business expenses into appropriate tax categories with confidence scoring and exception handling.',
+    solution_type: 'ai',
+    solution_reasoning: 'Machine learning models can learn from historical categorizations to automatically classify expenses, reducing manual review time while maintaining accuracy through confidence scoring.'
+  },
+
+  // LOW PRIORITY OPPORTUNITIES (High Risk or Lower Value)
+  {
+    id: '13',
+    name: 'Complex Tax Strategy Optimization',
+    volume: 85, // High potential value
+    complexity: 90, // Very high complexity - requires expert-level AI
+    category: 'low-priority',
+    description: 'AI-powered optimization of complex multi-jurisdictional tax strategies considering regulatory constraints and business objectives.',
+    solution_type: 'ai',
+    solution_reasoning: 'While potentially valuable, complex tax strategy optimization requires sophisticated AI that can understand nuanced tax law interactions and business contexts, presenting significant implementation risks.'
+  },
+  {
+    id: '14',
+    name: 'Audit Defense Automation',
+    volume: 60, // Moderate value - not frequent but important
+    complexity: 80, // High complexity - requires expert knowledge
+    category: 'low-priority',
+    description: 'Automated preparation of audit defense documentation and response strategies based on historical audit outcomes and regulatory precedents.',
+    solution_type: 'ai',
+    solution_reasoning: 'Audit defense requires deep expertise and nuanced understanding of regulatory relationships, making full automation risky without significant human oversight.'
+  },
+  {
+    id: '15',
+    name: 'Tax Court Case Prediction',
+    volume: 45, // Lower value - specialized use case
+    complexity: 85, // Very high complexity - requires legal AI expertise
+    category: 'low-priority',
+    description: 'AI-powered prediction of tax court case outcomes based on case facts, historical precedents, and judge characteristics.',
+    solution_type: 'ai',
+    solution_reasoning: 'Legal outcome prediction requires sophisticated AI with deep understanding of legal precedents and judicial behavior, making it complex and risky to implement accurately.'
+  },
+  {
+    id: '16',
+    name: 'Basic Data Entry Automation',
+    volume: 40, // Lower value - limited scope
+    complexity: 15, // Low complexity - simple automation
+    category: 'low-priority',
+    description: 'Automated data entry for routine tax preparation tasks including basic client information and standard deductions.',
+    solution_type: 'automation',
+    solution_reasoning: 'While easy to implement, basic data entry automation provides limited value compared to more comprehensive solutions and may not justify investment costs.'
+  },
+  {
+    id: '17',
+    name: 'Client Interview Scheduling',
+    volume: 35, // Lower value - administrative task
+    complexity: 20, // Low complexity - standard scheduling automation
+    category: 'low-priority',
+    description: 'Automated scheduling system for client interviews and consultations with calendar integration and reminder notifications.',
+    solution_type: 'automation',
+    solution_reasoning: 'Scheduling automation is straightforward to implement but provides limited business value compared to core tax process improvements.'
+  },
+  {
+    id: '18',
+    name: 'Advanced AI Tax Advisory',
+    volume: 95, // Very high potential value
+    complexity: 95, // Extremely high complexity - essentially requires AI tax expert
+    category: 'low-priority',
+    description: 'Comprehensive AI tax advisor capable of providing strategic tax planning advice across complex scenarios and multiple jurisdictions.',
+    solution_type: 'ai',
+    solution_reasoning: 'While potentially transformative, creating an AI system capable of expert-level tax advisory requires breakthrough AI capabilities and presents significant liability and accuracy risks.'
+  }
+]
 
 const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
@@ -24,147 +230,77 @@ const AutomationChart: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>('high-priority')
 
+  // **LOAD HARDCODED DATA**: This simulates the async data loading but uses local data
   useEffect(() => {
-    const fetchData = async () => {
+    const loadHardcodedData = async () => {
       try {
         setLoading(true)
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
+        // Simulate a brief loading time to maintain the user experience
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Load the hardcoded opportunities data
+        setAutomationOpportunities(HARDCODED_OPPORTUNITIES)
         setError(null)
       } catch (err) {
-        console.error('Error fetching automation opportunities:', err)
+        console.error('Error loading hardcoded opportunities:', err)
         setError('Failed to load automation opportunities')
       } finally {
         setLoading(false)
       }
     }
 
-    fetchData()
+    loadHardcodedData()
   }, [])
 
+  // **NOTE**: The following add functions are disabled since we're using hardcoded data
+  // In a production environment with database access, these would allow adding new opportunities
   const handleAddDocumentSearch = async () => {
-    try {
-      const result = await addAIDocumentSearchOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ AI Document Search added successfully!')
-      } else {
-        alert('❌ Failed to add AI Document Search')
-      }
-    } catch (error) {
-      console.error('Error adding AI Document Search:', error)
-      alert('❌ Error adding AI Document Search')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
   const handleAddTaxTrendsMarketResearch = async () => {
-    try {
-      const result = await addTaxTrendsMarketResearchOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ Tax Trends Market Research added successfully!')
-      } else {
-        alert('❌ Failed to add Tax Trends Market Research')
-      }
-    } catch (error) {
-      console.error('Error adding Tax Trends Market Research:', error)
-      alert('❌ Error adding Tax Trends Market Research')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
   const handleAddCommunicationDrafting = async () => {
-    try {
-      const result = await addCommunicationDraftingOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ Communication Drafting added successfully!')
-      } else {
-        alert('❌ Failed to add Communication Drafting')
-      }
-    } catch (error) {
-      console.error('Error adding Communication Drafting:', error)
-      alert('❌ Error adding Communication Drafting')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
   const handleAddTaxComplianceScenarios = async () => {
-    try {
-      const result = await addTaxComplianceScenariosOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ Tax Compliance Scenarios added successfully!')
-      } else {
-        alert('❌ Failed to add Tax Compliance Scenarios')
-      }
-    } catch (error) {
-      console.error('Error adding Tax Compliance Scenarios:', error)
-      alert('❌ Error adding Tax Compliance Scenarios')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
   const handleAddInternalAISearch = async () => {
-    try {
-      const result = await addInternalAISearchOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ Internal AI Search added successfully!')
-      } else {
-        alert('❌ Failed to add Internal AI Search')
-      }
-    } catch (error) {
-      console.error('Error adding Internal AI Search:', error)
-      alert('❌ Error adding Internal AI Search')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
   const handleAddTaxComplianceSimulation = async () => {
-    try {
-      const result = await addTaxComplianceSimulationOpportunity()
-      if (result) {
-        // Refresh the data
-        const opportunities = await getAutomationOpportunities()
-        setAutomationOpportunities(opportunities)
-        alert('✅ Tax Compliance Simulation added successfully!')
-      } else {
-        alert('❌ Failed to add Tax Compliance Simulation')
-      }
-    } catch (error) {
-      console.error('Error adding Tax Compliance Simulation:', error)
-      alert('❌ Error adding Tax Compliance Simulation')
-    }
+    alert('ℹ️ Using hardcoded data - add functionality disabled')
   }
 
+  // **COLOR CODING**: Different colors represent different priority categories based on value vs complexity analysis
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'high-priority':
+      case 'high-priority': // High value, low risk - green (go ahead)
         return 'bg-green-500 border-green-600'
-      case 'medium-priority':
+      case 'medium-priority': // Balanced value/risk - yellow (proceed with caution)
         return 'bg-yellow-500 border-yellow-600'
-      case 'low-priority':
+      case 'low-priority': // High risk or low value - red (careful evaluation needed)
         return 'bg-red-500 border-red-600'
       default:
         return 'bg-gray-500 border-gray-600'
     }
   }
 
+  // **CATEGORY LABELS**: Human-readable descriptions of what each priority level means
   const getCategoryBadge = (category: string) => {
     switch (category) {
       case 'high-priority':
-        return 'High Volume, Low Complexity'
+        return 'High Volume, Low Complexity' // Best automation candidates
       case 'medium-priority':
-        return 'Medium Priority'
+        return 'Medium Priority' // Moderate automation potential
       case 'low-priority':
-        return 'Low Volume, High Complexity'
+        return 'Low Volume, High Complexity' // Requires careful evaluation
       default:
         return 'Unknown'
     }
