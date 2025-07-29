@@ -22,7 +22,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 
 interface Experience {
   title: string
@@ -208,13 +207,13 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  I'm a passionate technology consultant specializing in AI-driven solutions for tax and financial services. 
+                  I&apos;m a passionate technology consultant specializing in AI-driven solutions for tax and financial services. 
                   With over 6 years of experience in tax operations and technology, I focus on transforming manual, 
                   time-intensive processes into efficient, automated workflows.
                 </p>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   My expertise lies in identifying strategic automation opportunities, particularly in tax research and 
-                  compliance functions. I've successfully implemented RAG-based search systems that reduce research time 
+                  compliance functions. I&apos;ve successfully implemented RAG-based search systems that reduce research time 
                   by 75-85%, enabling tax professionals to focus on high-value advisory work rather than manual document processing.
                 </p>
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -374,12 +373,12 @@ export default function AboutPage() {
             <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200/50">
               <CardContent className="p-8 text-center">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                  Let's Connect
+                  Let&apos;s Connect
                 </h3>
                 <p className="text-gray-700 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
                   Interested in discussing AI automation opportunities in tax and financial services? 
-                  I'd love to connect and explore how strategic technology implementation can transform 
-                  your organization's efficiency.
+                  I&apos;d love to connect and explore how strategic technology implementation can transform 
+                  your organization&apos;s efficiency.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button className="flex items-center gap-2">

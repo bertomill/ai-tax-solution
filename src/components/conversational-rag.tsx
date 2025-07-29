@@ -3,12 +3,10 @@
 import React, { useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageSquare, Sparkles, RefreshCw, FileText } from 'lucide-react'
+import { Sparkles, RefreshCw, FileText } from 'lucide-react'
 import { ChatMessage, type Message } from '@/components/ui/chat-message'
-import { ChatInput } from '@/components/ui/chat-input'
 import { AIPrompt } from '@/components/kokonutui/ai-prompt'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AILoadingState } from '@/components/ui/ai-loading-state'
 import { nanoid } from 'nanoid'
 
