@@ -803,7 +803,7 @@ export default function ProblemIdentificationPage() {
 
                     {/* Collapsible Research Methodology */}
                     <Collapsible.Root>
-                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-12">
+                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                         <Collapsible.Trigger asChild>
                           <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
@@ -841,7 +841,7 @@ export default function ProblemIdentificationPage() {
                     </Collapsible.Root>
 
                     {/* User Analysis Section */}
-                    <section id="user-analysis" className="space-y-6 scroll-mt-32 mb-12">
+                    <section id="user-analysis" className="space-y-6 scroll-mt-32 mb-8">
                       <Collapsible.Root>
                         <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
                           <Collapsible.Trigger asChild>
@@ -909,7 +909,7 @@ export default function ProblemIdentificationPage() {
 
                     {/* Collapsible Raw Task List */}
                     <Collapsible.Root>
-                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-12">
+                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                         <Collapsible.Trigger asChild>
                           <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
@@ -1184,7 +1184,7 @@ export default function ProblemIdentificationPage() {
                   </div>
                   {/* Collapsible Tax Automation Opportunities Chart */}
                   <Collapsible.Root>
-                    <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-12">
+                    <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                       <Collapsible.Trigger asChild>
                         <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                           <div className="flex items-center gap-2">
@@ -1218,7 +1218,7 @@ export default function ProblemIdentificationPage() {
 
 
           {/* MVP Strategy Section */}
-          <section id="mvp-strategy" className="space-y-6 scroll-mt-32 mb-12">
+          <section id="mvp-strategy" className="space-y-6 scroll-mt-32 mb-8">
             <Collapsible.Root>
               <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
                 <Collapsible.Trigger asChild>
@@ -1303,7 +1303,7 @@ export default function ProblemIdentificationPage() {
           </section>
 
           {/* Enterprise Scale Rollout Section */}
-          <section id="enterprise-rollout" className="space-y-6 scroll-mt-32 mb-12">
+          <section id="enterprise-rollout" className="space-y-6 scroll-mt-32 mb-8">
             <Collapsible.Root>
               <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
                 <Collapsible.Trigger asChild>
