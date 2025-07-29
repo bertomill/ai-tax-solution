@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -25,8 +25,36 @@ import {
   Download,
   X,
   Lightbulb,
-  Phone
+  Phone,
+  Users,
+  Briefcase,
+  BarChart3,
+  Handshake,
+  Scale,
+  Crown,
+  GraduationCap,
+  ChevronDown,
+  ChevronUp,
+  Mic,
+  MicOff
 } from 'lucide-react'
+
+// Speech Recognition type definitions
+interface SpeechRecognitionEvent {
+  results: {
+    [index: number]: {
+      [index: number]: {
+        transcript: string
+      }
+    }
+    length: number
+  }
+  resultIndex: number
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string
+}
 
 interface CommunicationTemplate {
   id: string
@@ -37,18 +65,18 @@ interface CommunicationTemplate {
   template: string
 }
 
-interface ClientInfo {
+interface Persona {
+  id: string
   name: string
-  company: string
-  email: string
-  phone: string
-  preferredCommunication: 'email' | 'letter' | 'phone'
+  description: string
+  characteristics: string[]
+  icon: string
+  color: string
 }
 
 interface DraftedCommunication {
   id: string
   templateId: string
-  clientInfo: ClientInfo
   subject: string
   content: string
   tone: string
@@ -56,6 +84,45 @@ interface DraftedCommunication {
   timestamp: string
   status: 'draft' | 'reviewed' | 'sent'
 }
+
+interface AIModel {
+  id: string
+  name: string
+  description: string
+}
+
+const aiModels: AIModel[] = [
+  {
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    description: 'OpenAI\'s most advanced model'
+  },
+  {
+    id: 'gpt-4-turbo',
+    name: 'GPT-4 Turbo',
+    description: 'Fast and efficient model'
+  },
+  {
+    id: 'claude-3-5-sonnet',
+    name: 'Claude 3.5 Sonnet',
+    description: 'Anthropic\'s latest model'
+  },
+  {
+    id: 'claude-3-opus',
+    name: 'Claude 3 Opus',
+    description: 'Most capable Claude model'
+  },
+  {
+    id: 'gemini-1.5-pro',
+    name: 'Gemini 1.5 Pro',
+    description: 'Google\'s advanced model'
+  },
+  {
+    id: 'gemini-1.5-flash',
+    name: 'Gemini 1.5 Flash',
+    description: 'Fast and efficient Gemini'
+  }
+]
 
 const COMMUNICATION_TEMPLATES: CommunicationTemplate[] = [
   {
@@ -177,15 +244,62 @@ Best regards,
   }
 ]
 
+// Persona data - these represent different types of users who might be drafting communications
+const PERSONAS: Persona[] = [
+  {
+    id: 'non-technical-business',
+    name: 'Non-Technical Business User',
+    description: 'Business professional with limited technical knowledge, prefers simple language and clear explanations',
+    characteristics: ['Prefers simple language', 'Needs clear explanations', 'Focuses on business outcomes', 'Avoids technical jargon'],
+    icon: 'Briefcase',
+    color: 'blue'
+  },
+  {
+    id: 'tax-professional',
+    name: 'Tax Professional',
+    description: 'Experienced tax advisor with deep technical knowledge and professional communication style',
+    characteristics: ['Uses technical terminology', 'Professional tone', 'Detailed explanations', 'Compliance-focused'],
+    icon: 'BarChart3',
+    color: 'green'
+  },
+  {
+    id: 'client-relations',
+    name: 'Client Relations Specialist',
+    description: 'Focuses on building relationships and maintaining client satisfaction through friendly communication',
+    characteristics: ['Relationship-focused', 'Friendly tone', 'Client-centric approach', 'Follow-up oriented'],
+    icon: 'Handshake',
+    color: 'purple'
+  },
+  {
+    id: 'compliance-officer',
+    name: 'Compliance Officer',
+    description: 'Ensures all communications meet regulatory requirements and maintain proper documentation',
+    characteristics: ['Compliance-focused', 'Formal tone', 'Documentation-heavy', 'Risk-averse'],
+    icon: 'Scale',
+    color: 'red'
+  },
+  {
+    id: 'senior-partner',
+    name: 'Senior Partner',
+    description: 'High-level executive communication with strategic focus and authority',
+    characteristics: ['Strategic focus', 'Authoritative tone', 'High-level perspective', 'Decision-making emphasis'],
+    icon: 'Crown',
+    color: 'gold'
+  },
+  {
+    id: 'junior-staff',
+    name: 'Junior Staff Member',
+    description: 'New team member learning the ropes and building professional communication skills',
+    characteristics: ['Learning-focused', 'Supportive tone', 'Team collaboration', 'Growth-oriented'],
+    icon: 'GraduationCap',
+    color: 'orange'
+  }
+]
+
 const CommunicationDrafting: React.FC = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>('')
-  const [clientInfo, setClientInfo] = useState<ClientInfo>({
-    name: '',
-    company: '',
-    email: '',
-    phone: '',
-    preferredCommunication: 'email'
-  })
+  const [selectedPersona, setSelectedPersona] = useState<string>('tax-professional') // Default to tax professional
+
   const [subject, setSubject] = useState('')
   const [customContent, setCustomContent] = useState('')
   const [selectedTone, setSelectedTone] = useState<string>('professional')
@@ -198,6 +312,97 @@ const CommunicationDrafting: React.FC = () => {
   const [showPrompt, setShowPrompt] = useState(false)
   const [isEditingPrompt, setIsEditingPrompt] = useState(false)
   const [customPrompt, setCustomPrompt] = useState('')
+  
+  // Persona expansion state
+  const [expandedPersonas, setExpandedPersonas] = useState<Set<string>>(new Set())
+  
+  // AI Model selection
+  const [selectedModel, setSelectedModel] = useState<AIModel>(aiModels[0])
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false)
+  
+  // Audio input functionality
+  const [isRecording, setIsRecording] = useState(false)
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const recognitionRef = useRef<{ start: () => void; stop: () => void } | null>(null)
+
+  // Check for speech recognition support
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const windowWithSpeech = window as unknown as { 
+        SpeechRecognition?: new() => { 
+          continuous: boolean
+          interimResults: boolean 
+          lang: string
+          start: () => void
+          stop: () => void
+          onresult: ((event: SpeechRecognitionEvent) => void) | null
+          onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
+          onend: (() => void) | null
+        }
+        webkitSpeechRecognition?: new() => { 
+          continuous: boolean
+          interimResults: boolean 
+          lang: string
+          start: () => void
+          stop: () => void
+          onresult: ((event: SpeechRecognitionEvent) => void) | null
+          onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
+          onend: (() => void) | null
+        }
+      }
+      const SpeechRecognitionClass = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition
+      setSpeechSupported(!!SpeechRecognitionClass)
+      
+      if (SpeechRecognitionClass) {
+        const recognition = new SpeechRecognitionClass()
+        recognition.continuous = true
+        recognition.interimResults = true
+        recognition.lang = 'en-US'
+        
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+          let transcript = ''
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript
+          }
+          
+          if (transcript.trim()) {
+            setCustomContent(transcript)
+          }
+        }
+        
+        recognition.onend = () => {
+          setIsRecording(false)
+        }
+        
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+          console.error('Speech recognition error:', event.error)
+          setIsRecording(false)
+        }
+        
+        recognitionRef.current = recognition
+      }
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+    }
+  }, [])
+
+  // Close AI model dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (isModelDropdownOpen) {
+        setIsModelDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isModelDropdownOpen])
 
   const handleTemplateSelection = (templateId: string) => {
     setSelectedTemplate(templateId)
@@ -209,8 +414,8 @@ const CommunicationDrafting: React.FC = () => {
   }
 
   const handleGenerateCommunication = async () => {
-    if (!selectedTemplate || !clientInfo.name) {
-      alert('Please select a template and enter client information')
+    if (!selectedTemplate || !selectedPersona) {
+      alert('Please select a template and choose a persona')
       return
     }
 
@@ -243,8 +448,7 @@ const CommunicationDrafting: React.FC = () => {
       const newDraft: DraftedCommunication = {
         id: Date.now().toString(),
         templateId: selectedTemplate,
-        clientInfo,
-        subject: subject || `Communication for ${clientInfo.name}`,
+        subject: subject || `Communication Draft`,
         content: data.content,
         tone: selectedTone,
         category: COMMUNICATION_TEMPLATES.find(t => t.id === selectedTemplate)?.category || 'email',
@@ -264,15 +468,19 @@ const CommunicationDrafting: React.FC = () => {
 
   const generateCommunicationPrompt = () => {
     const template = COMMUNICATION_TEMPLATES.find(t => t.id === selectedTemplate)
+    const persona = PERSONAS.find(p => p.id === selectedPersona)
     
-    const basePrompt = `You are a professional tax advisor's communication assistant. Generate a ${template?.category} communication with the following specifications:
+    const basePrompt = `You are a professional tax advisor's communication assistant using ${selectedModel.name}. Generate a ${template?.category} communication with the following specifications:
+
+PERSONA CONTEXT:
+You are writing as a ${persona?.name}. ${persona?.description}
+
+Key characteristics to incorporate:
+${persona?.characteristics.map(char => `- ${char}`).join('\n')}
 
 CLIENT INFORMATION:
-- Name: ${clientInfo.name}
-- Company: ${clientInfo.company || 'Individual Client'}
-- Email: ${clientInfo.email}
-- Phone: ${clientInfo.phone}
-- Preferred Communication: ${clientInfo.preferredCommunication}
+- Use generic client information or placeholders as needed
+- Focus on the communication structure and content
 
 COMMUNICATION DETAILS:
 - Template: ${template?.name}
@@ -280,16 +488,18 @@ COMMUNICATION DETAILS:
 - Tone: ${selectedTone}
 - Subject: ${subject}
 
-TEMPLATE CONTENT:
+INSTRUCTIONS:
 ${customContent}
 
-INSTRUCTIONS:
+GENERATION GUIDELINES:
 1. Personalize the template with the client information provided
 2. Maintain a ${selectedTone} tone throughout
 3. Ensure the communication is professional and appropriate for a tax services context
 4. Replace all placeholder variables (e.g., [CLIENT_NAME], [YOUR_NAME]) with appropriate content
 5. Keep the structure and format appropriate for a ${template?.category}
 6. Make sure the content is clear, actionable, and professional
+7. Write the communication from the perspective of the selected persona (${persona?.name})
+8. Incorporate the persona's characteristics and communication style
 
 Please generate the complete communication ready for review and sending.`
 
@@ -315,10 +525,60 @@ Please generate the complete communication ready for review and sending.`
     const element = document.createElement('a')
     const file = new Blob([draft.content], { type: 'text/plain' })
     element.href = URL.createObjectURL(file)
-    element.download = `${draft.clientInfo.name}_${draft.category}_${new Date(draft.timestamp).toLocaleDateString()}.txt`
+    element.download = `${draft.category}_${new Date(draft.timestamp).toLocaleDateString()}.txt`
     document.body.appendChild(element)
     element.click()
     document.body.removeChild(element)
+  }
+
+  const togglePersonaExpansion = (personaId: string) => {
+    setExpandedPersonas(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(personaId)) {
+        newSet.delete(personaId)
+      } else {
+        newSet.add(personaId)
+      }
+      return newSet
+    })
+  }
+
+  const getPersonaIcon = (iconName: string) => {
+    const iconMap: { [key: string]: React.ComponentType<{ className?: string }> } = {
+      Briefcase,
+      BarChart3,
+      Handshake,
+      Scale,
+      Crown,
+      GraduationCap
+    }
+    const IconComponent = iconMap[iconName]
+    return IconComponent ? <IconComponent className="w-5 h-5" /> : null
+  }
+
+  const handleMicrophoneClick = () => {
+    if (!speechSupported) {
+      alert('Speech recognition is not supported in your browser. Please use Chrome or Edge for voice input.')
+      return
+    }
+
+    if (isRecording) {
+      // Stop recording
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+      setIsRecording(false)
+    } else {
+      // Start recording
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.start()
+          setIsRecording(true)
+        } catch (error) {
+          console.error('Error starting speech recognition:', error)
+        }
+      }
+    }
   }
 
   return (
@@ -365,6 +625,97 @@ Please generate the complete communication ready for review and sending.`
 
       {activeTab === 'communications' && (
         <div className="space-y-6">
+                    {/* Persona Selection */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Select Communication Persona
+              </h3>
+              <p className="text-sm text-gray-600">
+                Choose the persona that best represents your role or communication style. This will influence how the AI generates your communication.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {PERSONAS.map((persona) => {
+                const isExpanded = expandedPersonas.has(persona.id)
+                const isSelected = selectedPersona === persona.id
+                
+                return (
+                  <div 
+                    key={persona.id} 
+                    className={`border rounded-lg transition-colors ${
+                      isSelected 
+                        ? 'bg-blue-50 border-blue-200' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    {/* Header - Always visible */}
+                    <div 
+                      className="flex items-center justify-between p-4 cursor-pointer"
+                      onClick={() => setSelectedPersona(persona.id)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          id={persona.id}
+                          name="persona"
+                          value={persona.id}
+                          checked={isSelected}
+                          onChange={(e) => e.stopPropagation()}
+                          className="mt-1"
+                        />
+                        <div className="flex items-center gap-2">
+                          {getPersonaIcon(persona.icon)}
+                          <span className="font-medium text-gray-900">{persona.name}</span>
+                          <Badge 
+                            variant="outline" 
+                            className={`text-xs ${
+                              isSelected 
+                                ? 'border-blue-300 text-blue-700' 
+                                : ''
+                            }`}
+                          >
+                            {persona.color}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      {/* Expand/Collapse button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          togglePersonaExpansion(persona.id)
+                        }}
+                        className="p-1 hover:bg-gray-100 rounded transition-colors"
+                      >
+                        {isExpanded ? (
+                          <ChevronUp className="w-4 h-4 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-500" />
+                        )}
+                      </button>
+                    </div>
+                    
+                    {/* Expandable content */}
+                    {isExpanded && (
+                      <div className="px-4 pb-4 border-t border-gray-100">
+                        <p className="text-sm text-gray-600 mb-3 mt-3">{persona.description}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {persona.characteristics.map((char, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {char}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
           {/* Template Selection */}
           <Card>
             <CardHeader>
@@ -412,84 +763,7 @@ Please generate the complete communication ready for review and sending.`
             </CardContent>
           </Card>
 
-          {/* Client Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                Client Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="clientName" className="text-sm font-medium text-gray-700">
-                    Client Name *
-                  </label>
-                  <Input
-                    id="clientName"
-                    value={clientInfo.name}
-                    onChange={(e) => setClientInfo(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="John Smith"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="clientCompany" className="text-sm font-medium text-gray-700">
-                    Company (Optional)
-                  </label>
-                  <Input
-                    id="clientCompany"
-                    value={clientInfo.company}
-                    onChange={(e) => setClientInfo(prev => ({ ...prev, company: e.target.value }))}
-                    placeholder="ABC Corp"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="clientEmail" className="text-sm font-medium text-gray-700">
-                    Email Address
-                  </label>
-                  <Input
-                    id="clientEmail"
-                    type="email"
-                    value={clientInfo.email}
-                    onChange={(e) => setClientInfo(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="john@example.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="clientPhone" className="text-sm font-medium text-gray-700">
-                    Phone Number
-                  </label>
-                  <Input
-                    id="clientPhone"
-                    value={clientInfo.phone}
-                    onChange={(e) => setClientInfo(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="(555) 123-4567"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="preferredCommunication" className="text-sm font-medium text-gray-700">
-                  Preferred Communication Method
-                </label>
-                <Select 
-                  value={clientInfo.preferredCommunication} 
-                  onValueChange={(value: 'email' | 'letter' | 'phone') => 
-                    setClientInfo(prev => ({ ...prev, preferredCommunication: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="letter">Formal Letter</SelectItem>
-                    <SelectItem value="phone">Phone Call Follow-up</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
+
 
           {/* Communication Details */}
           <Card>
@@ -529,15 +803,86 @@ Please generate the complete communication ready for review and sending.`
               </div>
               <div className="space-y-2">
                 <label htmlFor="customContent" className="text-sm font-medium text-gray-700">
-                  Template Content (Editable)
+                  Instructions Prompt
                 </label>
-                <Textarea
-                  id="customContent"
-                  value={customContent}
-                  onChange={(e) => setCustomContent(e.target.value)}
-                  placeholder="Template content will appear here..."
-                  className="min-h-[200px] text-sm font-mono"
-                />
+                <div className="relative">
+                  <Textarea
+                    id="customContent"
+                    value={customContent}
+                    onChange={(e) => setCustomContent(e.target.value)}
+                    placeholder="Enter your instructions for the AI to generate the communication..."
+                    className="min-h-[200px] text-sm font-mono pr-12"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleMicrophoneClick}
+                    disabled={!speechSupported}
+                    title={speechSupported ? (isRecording ? 'Stop recording' : 'Start voice input') : 'Voice input not supported in this browser'}
+                    className={`absolute top-2 right-2 h-8 w-8 p-0 transition-colors ${
+                      !speechSupported 
+                        ? "text-gray-300 cursor-not-allowed"
+                        : isRecording 
+                          ? "text-red-500 hover:text-red-600 bg-red-50" 
+                          : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    {isRecording ? (
+                      <div className="animate-pulse">
+                        <MicOff className="w-4 h-4" />
+                      </div>
+                    ) : (
+                      <Mic className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+              
+              {/* AI Model Selection */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  AI Model
+                </label>
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors w-full text-left"
+                  >
+                    <span className="text-sm font-medium text-gray-700">
+                      {selectedModel.name}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${
+                      isModelDropdownOpen ? "rotate-180" : ""
+                    }`} />
+                  </button>
+
+                  {isModelDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                      {aiModels.map((model) => (
+                        <button
+                          key={model.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedModel(model)
+                            setIsModelDropdownOpen(false)
+                          }}
+                          className={`w-full flex flex-col items-start px-3 py-2 text-left hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                            selectedModel.id === model.id ? "bg-gray-50" : ""
+                          }`}
+                        >
+                          <span className="text-sm font-medium text-gray-700">
+                            {model.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {model.description}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -548,7 +893,7 @@ Please generate the complete communication ready for review and sending.`
               <div className="flex gap-3">
                 <Button 
                   onClick={handleGenerateCommunication}
-                  disabled={!selectedTemplate || !clientInfo.name || isGenerating}
+                  disabled={!selectedTemplate || !selectedPersona || isGenerating}
                   className="flex-1 h-12"
                   size="lg"
                 >
@@ -569,7 +914,7 @@ Please generate the complete communication ready for review and sending.`
                 <Sheet open={showPrompt} onOpenChange={setShowPrompt}>
                   <SheetTrigger asChild>
                     <Button
-                      disabled={!selectedTemplate || !clientInfo.name}
+                      disabled={!selectedTemplate || !selectedPersona}
                       variant="outline"
                       className="h-12 px-4"
                     >
@@ -728,7 +1073,7 @@ Please generate the complete communication ready for review and sending.`
                             </span>
                           </div>
                           <p className="text-sm text-gray-600 mt-1">
-                            To: {draft.clientInfo.name} {draft.clientInfo.company && `(${draft.clientInfo.company})`}
+                            Subject: {draft.subject}
                           </p>
                         </div>
                         <div className="flex gap-2">

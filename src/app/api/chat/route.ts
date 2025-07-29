@@ -39,15 +39,28 @@ export async function POST(req: NextRequest) {
     const contextSections = ragResults.results.map((result, index) => {
       const fileName = result.metadata.fileName || 'Unknown Document'
       const section = result.metadata.section || 'General'
-      const chunkInfo = `${result.metadata.chunk_index}/${result.metadata.total_chunks}`
-      return `[Source ${index + 1}] (${fileName} - ${section}, Chunk ${chunkInfo}): ${result.content}`
+      return `[Source ${index + 1}] (${fileName} - ${section}): ${result.content}`
     }).join('\n\n')
+
+    // Debug logging to see what's being passed to the AI
+    console.log('🔍 RAG Results found:', ragResults.results.length)
+    console.log('📄 Context sections length:', contextSections.length)
+    console.log('📄 First 500 chars of context:', contextSections.substring(0, 500))
+    console.log('📄 Sample result content:', ragResults.results[0]?.content?.substring(0, 200))
+    
+    // Check if we have valid content
+    const hasValidContent = ragResults.results.length > 0 && 
+      ragResults.results.some(result => result.content && result.content.trim().length > 10)
+    
+    console.log('✅ Has valid content:', hasValidContent)
+    if (!hasValidContent) {
+      console.log('⚠️ No valid content found in RAG results')
+    }
 
     // Prepare citation information with proper URLs
     const citations = ragResults.results.map((result, index) => {
       const fileName = result.metadata.fileName || 'Unknown Document'
       const section = result.metadata.section || 'General'
-      const chunkInfo = `${result.metadata.chunk_index}/${result.metadata.total_chunks}`
       const documentUrl = generateDocumentUrl(result.metadata.storagePath, fileName)
       
       return {
@@ -55,8 +68,6 @@ export async function POST(req: NextRequest) {
         source: result.metadata.source,
         fileName: fileName,
         section: section,
-        chunk_index: result.metadata.chunk_index,
-        total_chunks: result.metadata.total_chunks,
         similarity: result.similarity,
         content_preview: result.content.slice(0, 100) + '...',
         documentUrl: documentUrl
@@ -70,6 +81,8 @@ export async function POST(req: NextRequest) {
 
     // Enhanced system prompt for conversational RAG
     const systemPrompt = `You are an AI assistant specialized in tax research and interview preparation. You have access to comprehensive documentation about interview processes, tax automation opportunities, and technical implementation details.
+
+**CRITICAL INSTRUCTION:** You MUST use the retrieved context below to answer the user's question. If you have retrieved context, you MUST provide information from it. Do NOT say you don't have information when context is provided.
 
 **Your role:**
 - Provide accurate, helpful responses based on the retrieved context
@@ -98,15 +111,26 @@ When referencing information from the context, always include citations in this 
 7. End your response with a "Sources:" section listing all cited sources with their details
 
 **Available Sources:**
-${citations.map(c => `[Source ${c.id}]: ${c.fileName} - ${c.section} (Chunk ${c.chunk_index}/${c.total_chunks})`).join('\n')}
+${citations.map(c => `[Source ${c.id}]: ${c.fileName} - ${c.section} (${c.documentUrl})`).join('\n')}
+
+**IMPORTANT RULES:**
+- If you have retrieved context above, you MUST use it to answer the question
+- Do NOT say "the retrieved context does not contain specific information" when context is provided
+- If the context is relevant but incomplete, acknowledge what you found and suggest what additional information might be needed
+- Always cite your sources using [Source X] format
 
 **Important:** When you include the "Sources:" section at the end of your response, format it exactly like this example:
 
 Sources:
-1. [Source 1]: inside-indirect-tax-april-2025.pdf - European Union (Chunk 10/130)
-2. [Source 2]: ca-federal-and-provincial-territorial-tax-rates.pdf - Corporate Tax Rates (Chunk 4/12)
+1. [Source 1]: inside-indirect-tax-april-2025.pdf - European Union (/api/view-document?storagePath=demo-user/1234567890_inside-indirect-tax-april-2025.pdf&userId=demo-user)
+2. [Source 2]: ca-federal-and-provincial-territorial-tax-rates.pdf - Corporate Tax Rates (/api/view-document?storagePath=demo-user/1234567890_ca-federal-and-provincial-territorial-tax-rates.pdf&userId=demo-user)
 
-Do NOT include [object Object] or any technical metadata. Only show the filename, section, and chunk information.`
+Include the full URL in parentheses for each source so users can click to view the original documents.`
+
+    // Debug: Log the system prompt length and content preview
+    console.log('🤖 System prompt length:', systemPrompt.length)
+    console.log('🤖 System prompt preview (first 1000 chars):', systemPrompt.substring(0, 1000))
+    console.log('🤖 Context sections in prompt:', contextSections ? 'Present' : 'Missing')
 
     // Create the streaming response
     const result = await streamText({

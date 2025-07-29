@@ -224,9 +224,10 @@ export function formatSearchResults(results: SearchResult[]): string {
   return results
     .map((result, index) => {
       const { metadata, content, similarity } = result
+      const fileName = metadata.fileName || metadata.source
       return `
 **Result ${index + 1}** (Relevance: ${(similarity * 100).toFixed(1)}%)
-*Section: ${metadata.section}*
+*Source: ${fileName} - ${metadata.section || 'General'}*
 
 ${content}
 
@@ -270,8 +271,9 @@ export async function generateRAGResponse(
     const relevantContent = context
       .map((result, index) => {
         const { metadata, content, similarity } = result
+        const fileName = metadata.fileName || metadata.source
         return `**Source ${index + 1}** (Relevance: ${(similarity * 100).toFixed(1)}%)
-From: ${metadata.section || metadata.source}
+From: ${fileName} - ${metadata.section || 'General'}
 Content: ${content}`
       })
       .join('\n\n')
@@ -286,14 +288,20 @@ Content: ${content}`
     // Fallback to basic template if OpenAI fails
     if (context.length > 0) {
       const relevantContent = context
-        .map(result => `From "${result.metadata.section || result.metadata.source}": ${result.content}`)
+        .map(result => {
+          const fileName = result.metadata.fileName || result.metadata.source
+          return `From "${fileName} - ${result.metadata.section || 'General'}": ${result.content}`
+        })
         .join('\n\n')
       
       return `Based on the available information:
 
 ${relevantContent}
 
-The most relevant sections are: ${context.map(r => r.metadata.section || r.metadata.source).join(', ')}.`
+The most relevant sources are: ${context.map(r => {
+  const fileName = r.metadata.fileName || r.metadata.source
+  return `${fileName} - ${r.metadata.section || 'General'}`
+}).join(', ')}.`
     } else {
       return 'I could not find specific information related to your query in the available content. Please try rephrasing your question or adding more context.'
     }

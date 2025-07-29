@@ -352,83 +352,106 @@ export function DocumentUpload({
 
             {/* File Upload Tab */}
             <TabsContent value="upload">
-          <div
-            className={`
-              relative border-2 border-dashed rounded-xl p-4 text-center transition-all duration-200
-              ${isDragOver 
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20' 
-                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
-              }
-              ${isUploading ? 'pointer-events-none opacity-60' : 'cursor-pointer'}
-            `}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => {
-              if (!isUploading) {
-                document.getElementById('file-input')?.click()
-              }
-            }}
-          >
-            <input
-              id="file-input"
-              type="file"
-              className="hidden"
-              accept=".pdf,.docx,.doc,.txt,.md"
-              onChange={handleFileSelect}
-              disabled={isUploading}
-            />
-
-            <AnimatePresence mode="wait">
-              {isUploading ? (
-                <motion.div
-                  key="uploading"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="flex flex-col items-center gap-4"
-                >
-                  <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      Processing...
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 px-2 text-center">
-                      {uploadProgress}
-                    </p>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="upload"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="flex flex-col items-center gap-4"
-                >
-                  <div className={`
-                    p-3 rounded-full transition-colors duration-200
+              <div className="space-y-4">
+                {/* Main Upload Area */}
+                <div
+                  className={`
+                    relative border-2 border-dashed rounded-xl p-4 text-center transition-all duration-200
                     ${isDragOver 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20' 
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                     }
-                  `}>
-                    <Upload className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-                      Drop or click to upload
+                    ${isUploading ? 'pointer-events-none opacity-60' : 'cursor-pointer'}
+                  `}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => {
+                    if (!isUploading) {
+                      document.getElementById('file-input')?.click()
+                    }
+                  }}
+                >
+                  <input
+                    id="file-input"
+                    type="file"
+                    className="hidden"
+                    accept=".pdf,.docx,.doc,.txt,.md"
+                    onChange={handleFileSelect}
+                    disabled={isUploading}
+                  />
+                  
+                  
+
+                  <AnimatePresence mode="wait">
+                    {isUploading ? (
+                      <motion.div
+                        key="uploading"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex flex-col items-center gap-4"
+                      >
+                        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            Processing...
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 px-2 text-center">
+                            {uploadProgress}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="upload"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="flex flex-col items-center gap-4"
+                      >
+                        <div className={`
+                          p-3 rounded-full transition-colors duration-200
+                          ${isDragOver 
+                            ? 'bg-blue-500 text-white' 
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                          }
+                        `}>
+                          <Upload className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                            Drop or click to upload
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
+                            PDF, DOCX, TXT, MD
+                            <br />
+                            Up to 10MB
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                                {/* Demo File */}
+                <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                     draggable="true"
+                     onDragStart={(e) => {
+                       e.dataTransfer.setData('text/plain', '/Fun_Facts_About_Robert.pdf')
+                       e.dataTransfer.effectAllowed = 'copy'
+                     }}
+                     onClick={() => {
+                       window.open('/Fun_Facts_About_Robert.pdf', '_blank')
+                     }}>
+                  <FileText className="w-5 h-5 text-blue-500" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                      Fun_Facts_About_Robert.pdf
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
-                      PDF, DOCX, TXT, MD
-                      <br />
-                      Up to 10MB
-                    </p>
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                </div>
+              </div>
             </TabsContent>
 
             {/* Paste Text Tab */}

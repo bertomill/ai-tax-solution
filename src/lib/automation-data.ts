@@ -204,3 +204,33 @@ export async function addTaxComplianceScenariosOpportunity(): Promise<Automation
 
   return await addAutomationOpportunity(opportunity)
 }
+
+// Add Internal AI Search opportunity
+export async function addInternalAISearchOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'Internal AI Search',
+    volume: 82, // High value/time savings
+    complexity: 28, // Low complexity/risk
+    category: 'high-priority',
+    description: 'AI-powered search and retrieval across internal tax documents, templates, procedures, and knowledge bases for rapid information access and knowledge sharing.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language processing and vector embeddings enable intuitive search queries across internal document repositories, providing quick access to organizational knowledge and reducing time spent searching for relevant information.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}
+
+// Add Tax Compliance Simulation opportunity
+export async function addTaxComplianceSimulationOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'Tax Compliance Simulation',
+    volume: 76, // High value/time savings
+    complexity: 32, // Medium complexity/risk
+    category: 'high-priority',
+    description: 'AI-powered simulation and modeling of tax compliance scenarios to predict outcomes, identify risks, and optimize tax strategies before implementation.',
+    solution_type: 'ai',
+    solution_reasoning: 'Machine learning and predictive modeling enable sophisticated simulation of tax scenarios, allowing for risk assessment and strategy optimization before actual implementation, reducing compliance risks and improving decision-making.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}

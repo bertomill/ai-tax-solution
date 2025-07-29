@@ -74,7 +74,7 @@ export function ConversationalRAG() {
   const welcomeSuggestions = [
     "What are the current corporate tax rates for different income brackets?",
     "How do depreciation rules work for business equipment and property?", 
-    "What are the key differences between Schedule C and Schedule K-1 income?",
+    "What are the best practices for tax research using AI tools?",
     "Can you explain the Section 199A qualified business income deduction?",
     "What are the latest changes to international tax regulations like GILTI?"
   ]

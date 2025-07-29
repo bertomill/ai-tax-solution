@@ -776,6 +776,9 @@ export default function ProblemIdentificationPage() {
   const [aiSolution, setAiSolution] = useState('')
   const [isGeneratingAI, setIsGeneratingAI] = useState(false)
   const [showMetricsModal, setShowMetricsModal] = useState(false)
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(null)
+  const [showRiskModal, setShowRiskModal] = useState(false)
+  const [selectedRisk, setSelectedRisk] = useState<string | null>(null)
 
   const openTaskDrawer = (task: TaskDetail) => {
     setSelectedTask(task)
@@ -788,6 +791,307 @@ export default function ProblemIdentificationPage() {
     setSelectedTask(null)
     setAiSolution('')
     setIsGeneratingAI(false)
+  }
+
+  const handleMetricClick = (metric: string) => {
+    setSelectedMetric(metric)
+    setShowMetricsModal(true)
+  }
+
+  const handleRiskClick = (risk: string) => {
+    setSelectedRisk(risk)
+    setShowRiskModal(true)
+  }
+
+  const renderRiskDetails = (risk: string) => {
+    switch (risk) {
+      case 'Comprehensive Testing Protocols':
+        return {
+          description: "AI systems can produce unexpected outputs or fail in edge cases that weren't anticipated during development. This risk includes model hallucinations, bias amplification, and inconsistent performance across different data types.",
+          mitigation: [
+            "Implement automated testing suites with diverse test cases",
+            "Conduct A/B testing with real user scenarios",
+            "Establish continuous monitoring for model drift",
+            "Create fallback procedures for AI system failures",
+            "Regular model retraining and validation cycles"
+          ]
+        }
+      
+      case 'Rollback Procedures & Backup Systems':
+        return {
+          description: "AI system failures can occur suddenly and impact critical business processes. Without proper rollback mechanisms, organizations may face extended downtime and data integrity issues.",
+          mitigation: [
+            "Maintain multiple model versions with version control",
+            "Implement feature flags for gradual rollouts",
+            "Create automated rollback triggers based on performance metrics",
+            "Establish backup systems that can operate without AI",
+            "Regular disaster recovery testing and documentation"
+          ]
+        }
+      
+      case 'Performance Monitoring & Alerting':
+        return {
+          description: "AI systems can degrade over time due to data drift, model decay, or changing user behavior. Without proper monitoring, performance issues may go undetected until they cause significant problems.",
+          mitigation: [
+            "Real-time monitoring of model performance metrics",
+            "Automated alerting for performance degradation",
+            "Dashboard for tracking key performance indicators",
+            "Regular performance reviews and optimization",
+            "Integration with existing IT monitoring systems"
+          ]
+        }
+      
+      case 'Security Audits & Penetration Testing':
+        return {
+          description: "AI systems can introduce new security vulnerabilities, including data poisoning attacks, model inversion attacks, and privacy breaches through model outputs.",
+          mitigation: [
+            "Regular security assessments by third-party experts",
+            "Implementation of data encryption and access controls",
+            "Model output sanitization and validation",
+            "Regular penetration testing of AI endpoints",
+            "Compliance with security frameworks and standards"
+          ]
+        }
+      
+      case 'Executive Sponsorship & Change Champions':
+        return {
+          description: "AI implementation requires significant organizational change. Without strong leadership support and internal advocates, resistance to change can derail the project and prevent successful adoption.",
+          mitigation: [
+            "Secure executive sponsorship with clear accountability",
+            "Identify and empower change champions across departments",
+            "Create clear communication channels for feedback",
+            "Establish regular progress reviews with leadership",
+            "Celebrate early wins and success stories"
+          ]
+        }
+      
+      case 'Comprehensive Training Programs':
+        return {
+          description: "Users may struggle to effectively use AI tools without proper training, leading to low adoption rates, errors, and resistance to the new technology.",
+          mitigation: [
+            "Develop role-specific training programs",
+            "Create interactive tutorials and documentation",
+            "Provide ongoing support and refresher training",
+            "Establish peer learning and mentoring programs",
+            "Regular assessment of training effectiveness"
+          ]
+        }
+      
+      case 'Clear Communication Strategies':
+        return {
+          description: "Poor communication about AI implementation can create confusion, fear, and resistance among employees, leading to low adoption and potential project failure.",
+          mitigation: [
+            "Develop clear messaging about AI benefits and changes",
+            "Create multiple communication channels and formats",
+            "Address concerns and misconceptions proactively",
+            "Provide regular updates on implementation progress",
+            "Establish feedback mechanisms for employee concerns"
+          ]
+        }
+      
+      case 'Regular Feedback & Iteration Cycles':
+        return {
+          description: "AI systems need continuous improvement based on user feedback and changing requirements. Without regular feedback loops, the system may become outdated or fail to meet evolving needs.",
+          mitigation: [
+            "Establish regular user feedback collection processes",
+            "Create agile development cycles for AI improvements",
+            "Implement A/B testing for new features",
+            "Regular review of user satisfaction and performance metrics",
+            "Continuous monitoring of user behavior and needs"
+          ]
+        }
+      
+      default:
+        return {
+          description: "This risk requires careful consideration and appropriate mitigation strategies to ensure successful AI implementation.",
+          mitigation: [
+            "Conduct thorough risk assessment",
+            "Develop specific mitigation strategies",
+            "Establish monitoring and review processes",
+            "Create contingency plans",
+            "Regular risk review and updates"
+          ]
+        }
+    }
+  }
+
+  const renderMetricChart = (metric: string) => {
+    switch (metric) {
+      case 'User Adoption Rate':
+        return (
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              User Adoption Rate Trend (Last 6 Months)
+            </h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <div className="flex items-end justify-between h-32 mb-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '60%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jan</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '70%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Feb</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '75%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Mar</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '85%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Apr</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '90%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">May</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-blue-500 rounded-t" style={{ height: '94%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jun</span>
+                </div>
+              </div>
+              <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                Steady growth in user adoption with 94% current rate
+              </div>
+            </div>
+          </div>
+        )
+      
+      case 'Time Savings':
+        return (
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              Time Savings by Task Type
+            </h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Tax Research</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">67% reduction</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                  <div className="bg-green-500 h-3 rounded-full" style={{ width: '67%' }}></div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Document Review</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">58% reduction</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                  <div className="bg-green-500 h-3 rounded-full" style={{ width: '58%' }}></div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Compliance Checks</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">45% reduction</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                  <div className="bg-green-500 h-3 rounded-full" style={{ width: '45%' }}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      
+      case 'ROI':
+        return (
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              ROI Projection (12 Months)
+            </h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <div className="flex items-end justify-between h-32 mb-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '20%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M1</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '40%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M2</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '60%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M3</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '80%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M4</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '100%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M5</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-purple-500 rounded-t" style={{ height: '120%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M6</span>
+                </div>
+              </div>
+              <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                Projected 3.2x ROI within 12 months of implementation
+              </div>
+            </div>
+          </div>
+        )
+      
+      case 'Error Reduction':
+        return (
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              Error Rate Reduction Over Time
+            </h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <div className="flex items-end justify-between h-32 mb-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '100%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Before</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '80%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M1</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '65%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M2</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '50%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M3</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '40%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M4</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-8 bg-red-500 rounded-t" style={{ height: '30%' }}></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">M5</span>
+                </div>
+              </div>
+              <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+                42% reduction in errors achieved through AI-powered validation
+              </div>
+            </div>
+          </div>
+        )
+      
+      default:
+        return (
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              {metric} Metrics
+            </h4>
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+              <div className="flex items-center justify-center h-32">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-400 mb-2">📊</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Chart visualization for {metric} would be displayed here
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+    }
   }
 
   const generateAISolution = async () => {
@@ -926,39 +1230,39 @@ export default function ProblemIdentificationPage() {
                           
                           <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
                             <div className="border-t border-gray-200/50 p-4">
-                              <div className="space-y-6">
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {userPersonas.map((persona, index) => (
                                   <motion.div
                                     key={persona.title}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="space-y-4"
+                                    className="bg-white/40 dark:bg-gray-800/40 border border-gray-200/50 rounded-lg p-4 space-y-4"
                                   >
                                     <div>
-                                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                                        <Users className="w-5 h-5 text-gray-400" />
+                                      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                                        <Users className="w-4 h-4 text-gray-400" />
                                         {persona.title}
                                       </h3>
-                                      <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
+                                      <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.description}</p>
                                     </div>
                                     
-                                    <div className="space-y-4">
+                                    <div className="space-y-3">
                                       <div>
-                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 text-sm">
                                           Current Pain Points
                                         </h4>
                                         <ul className="space-y-1">
                                           {persona.painPoints.map((pain, i) => (
-                                            <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
+                                            <li key={i} className="text-gray-600 dark:text-gray-300 text-xs ml-4">
                                               • {pain}
                                             </li>
                                           ))}
                                         </ul>
                                       </div>
                                       <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                                        <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
+                                        <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-xs">Current Process:</h5>
+                                        <p className="text-gray-600 dark:text-gray-300 text-xs">{persona.currentProcess}</p>
                                       </div>
                                     </div>
                                   </motion.div>
@@ -1392,7 +1696,7 @@ export default function ProblemIdentificationPage() {
                         </p>
                       </div>
 
-                      <div className="grid gap-4">
+                      <div className="space-y-4">
                         {mvpFeatures.map((feature, index) => (
                           <motion.div
                             key={feature.title}
@@ -1400,43 +1704,26 @@ export default function ProblemIdentificationPage() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.1 }}
                           >
-                            <Card className={`border-l-4 ${
-                              feature.priority === 'P0 - Core' ? 'border-l-green-500' :
-                              feature.priority === 'P1 - Important' ? 'border-l-yellow-500' :
-                              'border-l-gray-400'
-                            } hover:shadow-md transition-all duration-200`}>
-                              <CardContent className="p-4">
-                                <div className="flex items-start justify-between gap-4">
-                                  <div className="flex items-start gap-3 flex-1">
-                                    <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
-                                      {feature.icon}
-                                    </div>
-                                    <div className="flex-1">
-                                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                        {feature.title}
-                                      </h4>
-                                      <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                        {feature.description}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-col gap-2">
-                                    <Badge 
-                                      className={
-                                        feature.priority === 'P0 - Core' ? 'bg-green-100 text-green-700' :
-                                        feature.priority === 'P1 - Important' ? 'bg-yellow-100 text-yellow-700' :
-                                        'bg-gray-100 text-gray-700'
-                                      }
-                                    >
-                                      {feature.priority}
-                                    </Badge>
-                                    <Badge variant="outline" className="text-xs">
-                                      {feature.timeframe}
-                                    </Badge>
+                            <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                    {feature.title}
+                                  </h4>
+                                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-3">
+                                    {feature.description}
+                                  </p>
+                                  <div className="flex gap-2">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                      Priority: {feature.priority}
+                                    </span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                                      • {feature.timeframe}
+                                    </span>
                                   </div>
                                 </div>
-                              </CardContent>
-                            </Card>
+                              </div>
+                            </div>
                           </motion.div>
                         ))}
                       </div>
@@ -1614,28 +1901,88 @@ export default function ProblemIdentificationPage() {
                           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Adoption Metrics</h6>
                             <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• 90%+ user adoption rate</li>
-                              <li>• 70%+ daily active users</li>
-                              <li>• 50%+ feature utilization</li>
-                              <li>• 95%+ user satisfaction score</li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('User Adoption Rate')}
+                              >
+                                • 90%+ user adoption rate
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Daily Active Users')}
+                              >
+                                • 70%+ daily active users
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Feature Utilization')}
+                              >
+                                • 50%+ feature utilization
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('User Satisfaction Score')}
+                              >
+                                • 95%+ user satisfaction score
+                              </li>
                             </ul>
                           </div>
                           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Efficiency Gains</h6>
                             <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• 60%+ time savings on tasks</li>
-                              <li>• 40%+ reduction in errors</li>
-                              <li>• 30%+ faster processing</li>
-                              <li>• 25%+ cost reduction</li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Time Savings')}
+                              >
+                                • 60%+ time savings on tasks
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Error Reduction')}
+                              >
+                                • 40%+ reduction in errors
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Processing Speed')}
+                              >
+                                • 30%+ faster processing
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Cost Reduction')}
+                              >
+                                • 25%+ cost reduction
+                              </li>
                             </ul>
                           </div>
                           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Business Impact</h6>
                             <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• 3x ROI within 12 months</li>
-                              <li>• 50%+ compliance improvement</li>
-                              <li>• 35%+ productivity increase</li>
-                              <li>• 90%+ audit readiness</li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('ROI')}
+                              >
+                                • 3x ROI within 12 months
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Compliance Improvement')}
+                              >
+                                • 50%+ compliance improvement
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Productivity Increase')}
+                              >
+                                • 35%+ productivity increase
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                onClick={() => handleMetricClick('Audit Readiness')}
+                              >
+                                • 90%+ audit readiness
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -1650,19 +1997,59 @@ export default function ProblemIdentificationPage() {
                           <div className="space-y-2">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Technical Risks</h6>
                             <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Comprehensive testing protocols</li>
-                              <li>• Rollback procedures & backup systems</li>
-                              <li>• Performance monitoring & alerting</li>
-                              <li>• Security audits & penetration testing</li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Comprehensive Testing Protocols')}
+                              >
+                                • Comprehensive testing protocols
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Rollback Procedures & Backup Systems')}
+                              >
+                                • Rollback procedures & backup systems
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Performance Monitoring & Alerting')}
+                              >
+                                • Performance monitoring & alerting
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Security Audits & Penetration Testing')}
+                              >
+                                • Security audits & penetration testing
+                              </li>
                             </ul>
                           </div>
                           <div className="space-y-2">
                             <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Organizational Risks</h6>
                             <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                              <li>• Executive sponsorship & change champions</li>
-                              <li>• Comprehensive training programs</li>
-                              <li>• Clear communication strategies</li>
-                              <li>• Regular feedback & iteration cycles</li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Executive Sponsorship & Change Champions')}
+                              >
+                                • Executive sponsorship & change champions
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Comprehensive Training Programs')}
+                              >
+                                • Comprehensive training programs
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Clear Communication Strategies')}
+                              >
+                                • Clear communication strategies
+                              </li>
+                              <li 
+                                className="cursor-pointer hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                onClick={() => handleRiskClick('Regular Feedback & Iteration Cycles')}
+                              >
+                                • Regular feedback & iteration cycles
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -1853,10 +2240,39 @@ export default function ProblemIdentificationPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                Success Metrics Dashboard Example
+                {selectedMetric} - Chart Example
               </h3>
               <button
-                onClick={() => setShowMetricsModal(false)}
+                onClick={() => {
+                  setShowMetricsModal(false)
+                  setSelectedMetric(null)
+                }}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              {selectedMetric && renderMetricChart(selectedMetric)}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Risk Details Modal */}
+      {showRiskModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                {selectedRisk} - Risk Analysis
+              </h3>
+              <button
+                onClick={() => {
+                  setShowRiskModal(false)
+                  setSelectedRisk(null)
+                }}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
@@ -1864,153 +2280,63 @@ export default function ProblemIdentificationPage() {
             </div>
             
             <div className="p-6 space-y-6">
-              {/* Dashboard Overview */}
-              <div className="grid md:grid-cols-4 gap-4">
-                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">94%</div>
-                  <div className="text-sm text-blue-700 dark:text-blue-300">User Adoption</div>
-                </div>
-                <div className="bg-green-50 dark:bg-green-950/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">67%</div>
-                  <div className="text-sm text-green-700 dark:text-green-300">Time Savings</div>
-                </div>
-                <div className="bg-purple-50 dark:bg-purple-950/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">3.2x</div>
-                  <div className="text-sm text-purple-700 dark:text-purple-300">ROI</div>
-                </div>
-                <div className="bg-orange-50 dark:bg-orange-950/30 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">96%</div>
-                  <div className="text-sm text-orange-700 dark:text-orange-300">Satisfaction</div>
-                </div>
-              </div>
+              {selectedRisk && (() => {
+                const riskDetails = renderRiskDetails(selectedRisk)
+                return (
+                  <>
+                    {/* Risk Description */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        Risk Description
+                      </h4>
+                      <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 rounded-lg p-4">
+                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                          {riskDetails.description}
+                        </p>
+                      </div>
+                    </div>
 
-              {/* Chart Example */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                  User Adoption Trend (Last 6 Months)
-                </h4>
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
-                  <div className="flex items-end justify-between h-32 mb-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '60%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jan</span>
+                    {/* Mitigation Strategies */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        Mitigation Strategies
+                      </h4>
+                      <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 rounded-lg p-4">
+                        <ul className="space-y-2">
+                          {riskDetails.mitigation.map((strategy, index) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <div className="w-1.5 h-1.5 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                                {strategy}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '70%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Feb</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '75%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Mar</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '85%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Apr</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '90%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">May</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-8 bg-blue-500 rounded-t" style={{ height: '94%' }}></div>
-                      <span className="text-xs text-gray-600 dark:text-gray-400 mt-2">Jun</span>
-                    </div>
-                  </div>
-                  <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-                    Steady growth in user adoption with 94% current rate
-                  </div>
-                </div>
-              </div>
 
-              {/* Detailed Metrics */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">Efficiency Metrics</h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Average Research Time</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">67% reduction</span>
+                    {/* Risk Level Indicator */}
+                    <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Risk Level:</span>
+                        <div className="flex gap-1">
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                          <div className="w-3 h-3 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                          <div className="w-3 h-3 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                        </div>
+                        <span className="text-sm text-red-600 dark:text-red-400 font-medium">High</span>
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Requires immediate attention
+                      </div>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '67%' }}></div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Error Rate</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">42% reduction</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-red-500 h-2 rounded-full" style={{ width: '42%' }}></div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Processing Speed</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">31% faster</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '31%' }}></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">Business Impact</h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">ROI Achievement</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">3.2x (320%)</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-purple-500 h-2 rounded-full" style={{ width: '100%' }}></div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Compliance Score</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">52% improvement</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-green-500 h-2 rounded-full" style={{ width: '52%' }}></div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Productivity Gain</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">38% increase</span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-orange-500 h-2 rounded-full" style={{ width: '38%' }}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Real-time Activity */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Real-time Activity</h4>
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-400">User completed tax research task</span>
-                      <span className="text-gray-500 dark:text-gray-500 ml-auto">2 min ago</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-400">New document uploaded to system</span>
-                      <span className="text-gray-500 dark:text-gray-500 ml-auto">5 min ago</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-400">AI analysis completed</span>
-                      <span className="text-gray-500 dark:text-gray-500 ml-auto">8 min ago</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-400">Compliance check passed</span>
-                      <span className="text-gray-500 dark:text-gray-500 ml-auto">12 min ago</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                  </>
+                )
+              })()}
             </div>
           </div>
         </div>

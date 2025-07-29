@@ -35,11 +35,17 @@ function SourcesSection({ content }: { content: string }) {
       <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Sources:</h4>
       <div className="space-y-1">
         {sources.map((source, index) => {
-          const sourceMatch = source.match(/\[Source (\d+)\]:\s*(.+)/)
-          if (!sourceMatch) return null
+          // Try to match with URL first, then fallback to without URL
+          let sourceMatch = source.match(/\[Source (\d+)\]:\s*(.+?)\s*\((.+?)\)/)
+          if (!sourceMatch) {
+            // Fallback for sources without URLs
+            sourceMatch = source.match(/\[Source (\d+)\]:\s*(.+)/)
+            if (!sourceMatch) return null
+          }
           
           const sourceNum = sourceMatch[1]
           const sourceInfo = sourceMatch[2]
+          const sourceUrl = sourceMatch[3] // Will be undefined for fallback case
           
           return (
             <div key={index} className="flex items-start gap-2 text-xs">
@@ -49,6 +55,17 @@ function SourcesSection({ content }: { content: string }) {
                   [Source {sourceNum}]
                 </span>
                 <span className="text-gray-700 dark:text-gray-300">{sourceInfo}</span>
+                {sourceUrl && sourceUrl !== '#' && (
+                  <a 
+                    href={sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-2 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50 transition-colors cursor-pointer"
+                    title="Open source document"
+                  >
+                    📄 View
+                  </a>
+                )}
               </div>
             </div>
           )

@@ -216,13 +216,13 @@ export function DocumentSidebar({ className, userId = 'demo-user' }: DocumentSid
                     {getFileIcon(doc.fileType)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between">
                       <p className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate">
                         {doc.fileName}
                       </p>
                       {doc.storagePath && (
-                        <span className="text-xs text-blue-500 font-medium">
-                          Click to view
+                        <span className="text-xs text-blue-500 font-medium ml-2 flex-shrink-0">
+                          View
                         </span>
                       )}
                     </div>
