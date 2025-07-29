@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  User, 
   Palette, 
   Brain,
   Save,
@@ -16,16 +15,7 @@ import {
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 interface AIModel {
@@ -82,21 +72,9 @@ const themeOptions = [
 ]
 
 export default function PreferencesPage() {
-  const [personalInfo, setPersonalInfo] = useState({
-    name: '',
-    bio: '',
-    areaOfWork: ''
-  })
   const [theme, setTheme] = useState('system')
   const [defaultModel, setDefaultModel] = useState('claude')
   const [isSaving, setIsSaving] = useState(false)
-
-  const handlePersonalInfoChange = (field: string, value: string) => {
-    setPersonalInfo(prev => ({
-      ...prev,
-      [field]: value
-    }))
-  }
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -105,7 +83,6 @@ export default function PreferencesPage() {
     
     // Save to localStorage for now
     localStorage.setItem('userPreferences', JSON.stringify({
-      personalInfo,
       theme,
       defaultModel
     }))
@@ -118,11 +95,10 @@ export default function PreferencesPage() {
     const saved = localStorage.getItem('userPreferences')
     if (saved) {
       const preferences = JSON.parse(saved)
-      setPersonalInfo(preferences.personalInfo || personalInfo)
       setTheme(preferences.theme || 'system')
       setDefaultModel(preferences.defaultModel || 'claude')
     }
-  }, [personalInfo])
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
@@ -152,70 +128,12 @@ export default function PreferencesPage() {
           </motion.div>
 
           <div className="space-y-6">
-            {/* Personal Information */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-blue-600" />
-                    Personal Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        placeholder="Enter your full name"
-                        value={personalInfo.name}
-                        onChange={(e) => handlePersonalInfoChange('name', e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="areaOfWork">Area of Work</Label>
-                      <Select
-                        value={personalInfo.areaOfWork}
-                        onValueChange={(value) => handlePersonalInfoChange('areaOfWork', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your area of work" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="tax-professional">Tax Professional</SelectItem>
-                          <SelectItem value="accountant">Accountant</SelectItem>
-                          <SelectItem value="financial-advisor">Financial Advisor</SelectItem>
-                          <SelectItem value="lawyer">Tax Lawyer</SelectItem>
-                          <SelectItem value="consultant">Tax Consultant</SelectItem>
-                          <SelectItem value="student">Student</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
-                    <Textarea
-                      id="bio"
-                      placeholder="Tell us a bit about yourself and your tax expertise..."
-                      value={personalInfo.bio}
-                      onChange={(e) => handlePersonalInfoChange('bio', e.target.value)}
-                      rows={3}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
 
             {/* Theme and Appearance */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               <Card>
                 <CardHeader>
@@ -259,7 +177,7 @@ export default function PreferencesPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Card>
                 <CardHeader>
@@ -305,7 +223,7 @@ export default function PreferencesPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="flex justify-end"
             >
               <Button 
