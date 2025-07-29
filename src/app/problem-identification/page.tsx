@@ -779,27 +779,15 @@ export default function ProblemIdentificationPage() {
           
           {/* Problem Identification Section */}
           <section id="problem-identification" className="space-y-6 scroll-mt-32">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Problem Identification
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Research Analysis & Automation Opportunities
-              </p>
-            </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                      Comprehensive Day-to-Day Tax Function Research
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                      I did a deep dive into tax operations, through web research and talking to my colleagues who work in tax and analyzing workflows to understand 
-                      their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities </strong> 
-                      performed across tax departments, ranging from routine data processing to complex analytical work. The comprehensive analysis 
-                      below maps each task by volume and complexity to determine the optimal automation approach - whether traditional rule-based 
-                      automation or AI-powered solutions.
-                    </p>
+            <div className="space-y-6">
+              <div>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  I did a deep dive into tax operations, through web research and talking to my colleagues who work in tax and analyzing workflows to understand 
+                  their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities </strong> 
+                  performed across tax departments, ranging from routine data processing to complex analytical work. The comprehensive analysis 
+                  below maps each task by volume and complexity to determine the optimal automation approach - whether traditional rule-based 
+                  automation or AI-powered solutions.
+                </p>
 
                     {/* Collapsible Research Methodology */}
                     <Collapsible.Root>
