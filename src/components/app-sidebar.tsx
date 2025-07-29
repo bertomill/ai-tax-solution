@@ -194,6 +194,11 @@ const navigationData: { sections: NavigationSection[] } = {
           icon: <Check className="size-4" />,
           url: "/tax-research",
         },
+        {
+          title: "Client Communication Assistant",
+          icon: <Users className="size-4" />,
+          url: "/client-communications",
+        },
       ],
     },
   ],

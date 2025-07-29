@@ -1194,11 +1194,11 @@ export default function ProblemIdentificationPage() {
               <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
                 <Collapsible.Trigger asChild>
                   <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
-                    <div className="space-y-1">
-                      <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                         User Analysis
-                      </h2>
-                      <p className="text-lg text-gray-600 dark:text-gray-300">
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
                         Understanding Our Users & Their Pain Points
                       </p>
                     </div>
