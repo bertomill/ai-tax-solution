@@ -1264,15 +1264,12 @@ export default function ProblemIdentificationPage() {
                 <Collapsible.Trigger asChild>
                   <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                     <div className="flex items-center gap-2">
-                      <Target className="w-6 h-6 text-purple-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                          MVP Strategy
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                          Phased Approach to Product Development
-                        </p>
-                      </div>
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        MVP Strategy
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Phased Approach to Product Development
+                      </p>
                     </div>
                     <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
                   </button>
