@@ -119,12 +119,12 @@ const navigationData: { sections: NavigationSection[] } = {
           url: "/interview-format",
           subItems: [
             {
-              title: "Assignment Overview",
+              title: "Overview",
               url: "/interview-format#assignment-overview",
               section: "assignment-overview"
             },
             {
-              title: "Interview Process",
+              title: "Process",
               url: "/interview-format#interview-process", 
               section: "interview-process"
             },
@@ -183,7 +183,7 @@ const navigationData: { sections: NavigationSection[] } = {
       title: "AI Tools",
       items: [
         {
-          title: "AI Document Search",
+          title: "AI Search",
           icon: <Search className="size-4" />,
           url: "/search",
           subItems: [
@@ -200,7 +200,7 @@ const navigationData: { sections: NavigationSection[] } = {
           ]
         },
         {
-          title: "Market Research Agent",
+          title: "Market Research",
           icon: <Zap className="size-4" />,
           url: "/market-research",
           subItems: [
@@ -217,12 +217,12 @@ const navigationData: { sections: NavigationSection[] } = {
           ]
         },
         {
-          title: "Tax Compliance Simulator",
+          title: "Tax Compliance",
           icon: <Check className="size-4" />,
           url: "/tax-research",
         },
         {
-          title: "Communication Drafting",
+          title: "Comm. Drafting",
           icon: <Users className="size-4" />,
           url: "/client-communications",
           subItems: [

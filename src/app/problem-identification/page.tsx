@@ -1634,74 +1634,74 @@ export default function ProblemIdentificationPage() {
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
             className="fixed top-0 right-0 h-full w-full max-w-2xl bg-white dark:bg-gray-800 shadow-2xl z-50 overflow-y-auto"
           >
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
                     Task #{selectedTask.id}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     {selectedTask.department} • {selectedTask.frequency}
                   </p>
                 </div>
                 <button
                   onClick={closeTaskDrawer}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-4 h-4 text-gray-500" />
                 </button>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm">
                     {selectedTask.title}
                   </h4>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 text-xs leading-relaxed">
                     {selectedTask.description}
                   </p>
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-xs">
                       Primary User
                     </h5>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">
                       {selectedTask.user}
                     </p>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-xs">
                       Department
                     </h5>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">
                       {selectedTask.department}
                     </p>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-xs">
                       AI Classification
                     </h5>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    <p className="text-gray-600 dark:text-gray-300 text-xs">
                       {selectedTask.aiClassification}
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-3">
+                  <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2 text-sm">
                     User Journey ({selectedTask.userJourney.length} steps)
                   </h5>
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {selectedTask.userJourney.map((step, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
-                        <div className="flex-shrink-0 w-6 h-6 bg-gray-600 text-white rounded-full flex items-center justify-center text-xs font-medium">
+                      <div key={index} className="flex items-start gap-2 p-2 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg">
+                        <div className="flex-shrink-0 w-5 h-5 bg-gray-600 text-white rounded-full flex items-center justify-center text-xs font-medium">
                           {index + 1}
                         </div>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm">
+                        <p className="text-gray-700 dark:text-gray-300 text-xs leading-tight">
                           {step}
                         </p>
                       </div>
@@ -1710,54 +1710,54 @@ export default function ProblemIdentificationPage() {
                 </div>
 
                 {/* AI Solution Generator */}
-                <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <h5 className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                       AI Solution Idea
                     </h5>
                     <button
                       onClick={generateAISolution}
                       disabled={isGeneratingAI}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors"
+                      className="flex items-center gap-1 px-2 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-xs font-medium rounded transition-colors"
                     >
                       {isGeneratingAI ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-3 h-3 animate-spin" />
                       ) : (
-                        <Lightbulb className="w-4 h-4" />
+                        <Lightbulb className="w-3 h-3" />
                       )}
-                      {isGeneratingAI ? 'Generating...' : 'Generate AI Solution'}
+                      {isGeneratingAI ? 'Generating...' : 'Generate with AI'}
                     </button>
                   </div>
                   
                   {aiSolution && (
-                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg p-4">
+                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg p-3">
                       <div className="prose prose-sm prose-blue dark:prose-invert max-w-none text-blue-900 dark:text-blue-100">
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
                           components={{
-                            p: ({ children }) => <p className="mb-2 last:mb-0 text-sm leading-relaxed">{children}</p>,
-                            ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1 text-sm">{children}</ul>,
-                            ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1 text-sm">{children}</ol>,
-                            li: ({ children }) => <li className="text-sm">{children}</li>,
+                            p: ({ children }) => <p className="mb-1 last:mb-0 text-xs leading-relaxed">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc list-inside mb-1 space-y-0.5 text-xs">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal list-inside mb-1 space-y-0.5 text-xs">{children}</ol>,
+                            li: ({ children }) => <li className="text-xs">{children}</li>,
                             strong: ({ children }) => <strong className="font-semibold text-blue-800 dark:text-blue-200">{children}</strong>,
                             em: ({ children }) => <em className="italic text-blue-800 dark:text-blue-200">{children}</em>,
-                            h1: ({ children }) => <h1 className="text-base font-bold text-blue-900 dark:text-blue-100 mb-2">{children}</h1>,
-                            h2: ({ children }) => <h2 className="text-sm font-bold text-blue-900 dark:text-blue-100 mb-2">{children}</h2>,
-                            h3: ({ children }) => <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">{children}</h3>,
+                            h1: ({ children }) => <h1 className="text-sm font-bold text-blue-900 dark:text-blue-100 mb-1">{children}</h1>,
+                            h2: ({ children }) => <h2 className="text-xs font-bold text-blue-900 dark:text-blue-100 mb-1">{children}</h2>,
+                            h3: ({ children }) => <h3 className="text-xs font-semibold text-blue-900 dark:text-blue-100 mb-0.5">{children}</h3>,
                             code: ({ children, className }) => {
                               const isInline = !className
                               return isInline ? (
-                                <code className="bg-blue-100 dark:bg-blue-900/50 px-1.5 py-0.5 rounded text-xs font-mono text-blue-800 dark:text-blue-200">
+                                <code className="bg-blue-100 dark:bg-blue-900/50 px-1 py-0.5 rounded text-xs font-mono text-blue-800 dark:text-blue-200">
                                   {children}
                                 </code>
                               ) : (
-                                <code className="block bg-blue-100 dark:bg-blue-900/50 p-2 rounded text-xs font-mono text-blue-800 dark:text-blue-200 overflow-x-auto">
+                                <code className="block bg-blue-100 dark:bg-blue-900/50 p-1.5 rounded text-xs font-mono text-blue-800 dark:text-blue-200 overflow-x-auto">
                                   {children}
                                 </code>
                               )
                             },
                             blockquote: ({ children }) => (
-                              <blockquote className="border-l-2 border-blue-300 dark:border-blue-700 pl-3 italic text-blue-800 dark:text-blue-200 text-sm">
+                              <blockquote className="border-l-2 border-blue-300 dark:border-blue-700 pl-2 italic text-blue-800 dark:text-blue-200 text-xs">
                                 {children}
                               </blockquote>
                             ),
@@ -1770,10 +1770,10 @@ export default function ProblemIdentificationPage() {
                   )}
                   
                   {!aiSolution && !isGeneratingAI && (
-                    <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-lg p-4">
-                                              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                          Click &quot;Generate AI Solution&quot; to get a custom AI automation idea for this specific tax task.
-                        </p>
+                    <div className="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-lg p-3">
+                      <p className="text-gray-500 dark:text-gray-400 text-xs">
+                        Click &quot;Generate with AI&quot; to get a custom AI automation idea for this specific tax task.
+                      </p>
                     </div>
                   )}
                 </div>
