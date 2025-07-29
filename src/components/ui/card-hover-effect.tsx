@@ -20,7 +20,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 gap-6",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
         className
       )}
     >
@@ -50,23 +50,23 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
-            <div className="flex items-start gap-4">
-              {item.icon && (
-                <div className="p-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white group-hover:scale-110 transition-transform duration-200">
+            <div className="flex-1">
+              {/* Vector Graphic */}
+              <div className="mb-4 flex justify-start">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 border border-blue-200/50 dark:border-blue-800/50 flex items-center justify-center">
                   {item.icon}
                 </div>
-              )}
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <CardTitle>{item.title}</CardTitle>
-                  {item.badge && (
-                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                </div>
-                <CardDescription>{item.description}</CardDescription>
               </div>
+              
+              <div className="flex items-center gap-2 mb-2">
+                <CardTitle>{item.title}</CardTitle>
+                {item.badge && (
+                  <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+              <CardDescription>{item.description}</CardDescription>
             </div>
           </Card>
         </a>

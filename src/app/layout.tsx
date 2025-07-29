@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { AppBreadcrumb } from "@/components/app-breadcrumb";
 import Footer from "@/components/ui/footer";
 import { ThemeProvider } from "@/lib/theme-provider";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
+              <AppBreadcrumb />
               {children}
             </SidebarInset>
           </SidebarProvider>

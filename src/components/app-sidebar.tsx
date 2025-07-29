@@ -13,6 +13,7 @@ import {
   ChevronRight,
   ChevronDown,
   Settings,
+  MessageSquare,
 } from "lucide-react"
 
 import {
@@ -220,10 +221,22 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Tax Compliance",
           icon: <Check className="size-4" />,
           url: "/tax-research",
+          subItems: [
+            {
+              title: "Compliance Simulator",
+              url: "/tax-research",
+              section: "simulator"
+            },
+            {
+              title: "Solution Design",
+              url: "/tax-research?tab=design",
+              section: "design"
+            }
+          ]
         },
         {
           title: "Comm. Drafting",
-          icon: <Users className="size-4" />,
+          icon: <MessageSquare className="size-4" />,
           url: "/client-communications",
           subItems: [
             {
