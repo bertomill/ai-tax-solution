@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AppBreadcrumb } from "@/components/app-breadcrumb";
 import { ThemeProvider } from "@/lib/theme-provider";
+import { PasswordProtection } from "@/components/password-protection";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,13 +41,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <AppBreadcrumb />
-              {children}
-            </SidebarInset>
-          </SidebarProvider>
+          <PasswordProtection>
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <AppBreadcrumb />
+                {children}
+              </SidebarInset>
+            </SidebarProvider>
+          </PasswordProtection>
         </ThemeProvider>
       </body>
     </html>

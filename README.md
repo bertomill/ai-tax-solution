@@ -1,8 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Tax Research Platform
+
+This is a [Next.js](https://nextjs.org) project that provides an AI-powered tax research platform with password protection.
+
+## Password Protection Setup
+
+The application is protected by a password system. To set up the password:
+
+1. Add the following line to your existing `.env` file:
+   ```
+   APP_PASSWORD=AIGTM2025
+   ```
+2. The password is currently set to `AIGTM2025` - you can change this to any password you prefer
 
 ## Getting Started
 
-First, run the development server:
+First, set up the password protection as described above, then run the development server:
 
 ```bash
 npm run dev
@@ -14,7 +26,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You will be prompted to enter the password before accessing the platform.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
