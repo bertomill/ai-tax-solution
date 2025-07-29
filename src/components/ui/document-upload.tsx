@@ -122,20 +122,20 @@ export function DocumentUpload({
 
       setUploadProgress('Uploading and processing...')
       
-      // Simulate upload progress
-      await simulateProgress(30, 2500)
+      // Simulate upload progress - increased from 2.5s to 6s
+      await simulateProgress(30, 6000)
 
       const formData = new FormData()
       formData.append('file', file)
       formData.append('userId', userId)
 
-      // Simulate more progress during API call
+      // Simulate more progress during API call - increased from 5s to 12s
       const uploadPromise = fetch('/api/upload', {
         method: 'POST',
         body: formData,
       })
       
-      const progressPromise = simulateProgress(80, 5000)
+      const progressPromise = simulateProgress(80, 12000)
       
       const [response] = await Promise.all([uploadPromise, progressPromise])
       const data = await response.json()
@@ -146,8 +146,8 @@ export function DocumentUpload({
 
       setUploadProgress('Processing complete!')
       
-      // Final progress update
-      await simulateProgress(100, 1500)
+      // Final progress update - increased from 1.5s to 2s
+      await simulateProgress(100, 2000)
       
       // Refresh document list
       await fetchUserDocuments()
@@ -230,8 +230,8 @@ export function DocumentUpload({
 
       setUploadProgress('Uploading and processing...')
       
-      // Simulate progress during processing
-      await simulateProgress(40, 2500)
+      // Simulate progress during processing - increased from 2.5s to 6s
+      await simulateProgress(40, 6000)
 
       const uploadPromise = fetch('/api/upload', {
         method: 'POST',
@@ -245,7 +245,8 @@ export function DocumentUpload({
         }),
       })
       
-      const progressPromise = simulateProgress(85, 4000)
+      // Simulate more progress during API call - increased from 4s to 12s
+      const progressPromise = simulateProgress(85, 12000)
       
       const [response] = await Promise.all([uploadPromise, progressPromise])
       const data = await response.json()
@@ -256,8 +257,8 @@ export function DocumentUpload({
 
       setUploadProgress('Processing complete!')
       
-      // Final progress update
-      await simulateProgress(100, 1500)
+      // Final progress update - increased from 1.5s to 2s
+      await simulateProgress(100, 2000)
       
       // Clear the form
       setPastedText('')

@@ -5,6 +5,18 @@ import { ragSearch } from '@/lib/rag-search'
 
 export const runtime = 'edge'
 
+// Function to generate document URL
+function generateDocumentUrl(storagePath: string | undefined, fileName: string | undefined): string {
+  if (storagePath) {
+    // If we have a storage path, we can generate a proper URL
+    return `/api/view-document?storagePath=${encodeURIComponent(storagePath)}&userId=demo-user`
+  } else if (fileName) {
+    // Fallback to just the filename
+    return `#${encodeURIComponent(fileName)}`
+  }
+  return '#'
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json()
@@ -19,26 +31,37 @@ export async function POST(req: NextRequest) {
     // Perform RAG search with the user's query
     console.log('Performing RAG search for:', userMessage.content)
     const ragResults = await ragSearch(userMessage.content, {
-      matchThreshold: 0.7,
+      matchThreshold: 0.1, // Lowered from 0.7 to 0.1 for better document matching
       matchCount: 5
     })
 
     // Build context from RAG results with rich citation info
-    const contextSections = ragResults.results.map((result, index) => 
-      `[Source ${index + 1}] (${result.metadata.source} - ${result.metadata.section}, Chunk ${result.metadata.chunk_index}/${result.metadata.total_chunks}): ${result.content}`
-    ).join('\n\n')
+    const contextSections = ragResults.results.map((result, index) => {
+      const fileName = result.metadata.fileName || 'Unknown Document'
+      const section = result.metadata.section || 'General'
+      const chunkInfo = `${result.metadata.chunk_index}/${result.metadata.total_chunks}`
+      return `[Source ${index + 1}] (${fileName} - ${section}, Chunk ${chunkInfo}): ${result.content}`
+    }).join('\n\n')
 
-    // Prepare citation information
-    const citations = ragResults.results.map((result, index) => ({
-      id: index + 1,
-      source: result.metadata.source,
-      section: result.metadata.section,
-      page_title: result.metadata.page_title,
-      chunk_index: result.metadata.chunk_index,
-      total_chunks: result.metadata.total_chunks,
-      similarity: result.similarity,
-      content_preview: result.content.slice(0, 100) + '...'
-    }))
+    // Prepare citation information with proper URLs
+    const citations = ragResults.results.map((result, index) => {
+      const fileName = result.metadata.fileName || 'Unknown Document'
+      const section = result.metadata.section || 'General'
+      const chunkInfo = `${result.metadata.chunk_index}/${result.metadata.total_chunks}`
+      const documentUrl = generateDocumentUrl(result.metadata.storagePath, fileName)
+      
+      return {
+        id: index + 1,
+        source: result.metadata.source,
+        fileName: fileName,
+        section: section,
+        chunk_index: result.metadata.chunk_index,
+        total_chunks: result.metadata.total_chunks,
+        similarity: result.similarity,
+        content_preview: result.content.slice(0, 100) + '...',
+        documentUrl: documentUrl
+      }
+    })
 
     // Create conversation history context
     const conversationHistory = messages.slice(0, -1).map((msg: { role: string; content: string }) => 
@@ -75,7 +98,15 @@ When referencing information from the context, always include citations in this 
 7. End your response with a "Sources:" section listing all cited sources with their details
 
 **Available Sources:**
-${citations.map(c => `[Source ${c.id}]: ${c.source} - ${c.section} (Chunk ${c.chunk_index}/${c.total_chunks})`).join('\n')}`
+${citations.map(c => `[Source ${c.id}]: ${c.fileName} - ${c.section} (Chunk ${c.chunk_index}/${c.total_chunks})`).join('\n')}
+
+**Important:** When you include the "Sources:" section at the end of your response, format it exactly like this example:
+
+Sources:
+1. [Source 1]: inside-indirect-tax-april-2025.pdf - European Union (Chunk 10/130)
+2. [Source 2]: ca-federal-and-provincial-territorial-tax-rates.pdf - Corporate Tax Rates (Chunk 4/12)
+
+Do NOT include [object Object] or any technical metadata. Only show the filename, section, and chunk information.`
 
     // Create the streaming response
     const result = await streamText({

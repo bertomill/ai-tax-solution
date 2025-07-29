@@ -959,91 +959,162 @@ function SearchPageContent() {
                         Security by Design
                       </h3>
                       <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                        Security and compliance are foundational to our AI search solution, ensuring client data protection 
-                        and regulatory adherence at every level of the system architecture.
+                        Our AI tax research solution is built with security, accuracy, and traceability as foundational principles. 
+                        We address the critical concerns of hallucination prevention, data security, and audit trail requirements 
+                        that are essential for professional tax research and compliance work.
                       </p>
                       
-                      <div className="grid md:grid-cols-2 gap-8">
-                        {/* Data Protection */}
+                      <div className="space-y-8">
+                        {/* Hallucination Prevention */}
                         <div className="space-y-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                              <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Data Protection & Privacy</h4>
-                          </div>
-                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
-                            <li>• End-to-end encryption for all data in transit and at rest</li>
-                            <li>• Client data isolation with dedicated secure environments</li>
-                            <li>• GDPR and PIPEDA compliance for Canadian tax data</li>
-                            <li>• Regular security audits and penetration testing</li>
-                            <li>• Data retention policies aligned with tax regulations</li>
-                          </ul>
-                        </div>
-
-                        {/* Access Control */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                              <Lock className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            </div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Access Control & Authentication</h4>
-                          </div>
-                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
-                            <li>• Multi-factor authentication (MFA) for all users</li>
-                            <li>• Role-based access control (RBAC) with least privilege</li>
-                            <li>• Single sign-on (SSO) integration with enterprise systems</li>
-                            <li>• Session management with automatic timeout</li>
-                            <li>• Audit logging for all user activities</li>
-                          </ul>
-                        </div>
-
-                        {/* Compliance Framework */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                              <CheckCircle className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                            </div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">Compliance Framework</h4>
-                          </div>
-                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
-                            <li>• SOC 2 Type II certification for security controls</li>
-                            <li>• ISO 27001 information security management</li>
-                            <li>• CRA security requirements compliance</li>
-                            <li>• Professional services industry standards</li>
-                            <li>• Regular compliance assessments and reporting</li>
-                          </ul>
-                        </div>
-
-                        {/* AI Model Security */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-                              <Brain className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                            </div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">AI Model Security</h4>
-                          </div>
-                          <ul className="space-y-2 text-gray-600 dark:text-gray-400 ml-13">
-                            <li>• Secure API endpoints with rate limiting</li>
-                            <li>• Input validation and sanitization</li>
-                            <li>• Model output filtering for sensitive data</li>
-                            <li>• No training on client-specific data</li>
-                            <li>• Regular model security assessments</li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      {/* Security Commitment */}
-                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-lg p-6 border border-blue-200/50 dark:border-blue-800/50">
-                        <div className="text-center">
-                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                            Our Security Commitment
+                          <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                            How does this solution prevent AI hallucination?
                           </h4>
-                          <p className="text-gray-600 dark:text-gray-300">
-                            We maintain the highest standards of security and compliance, ensuring that your tax research 
-                            and client data remain protected while delivering powerful AI capabilities. Our security-first 
-                            approach builds trust and enables confident adoption across your organization.
-                          </p>
+                          <div className="space-y-4">
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Retrieval-Augmented Generation (RAG) Architecture</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Our system uses RAG technology to ensure every response is grounded in verified source documents. 
+                                The AI cannot generate information that isn&apos;t present in the uploaded documentation, eliminating 
+                                the risk of fabricating tax codes, rates, or procedures.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• All responses are generated from retrieved document chunks, not from the AI&apos;s training data</li>
+                                <li>• Source citations are mandatory for every factual claim made by the system</li>
+                                <li>• Confidence scoring indicates when information is uncertain or incomplete</li>
+                                <li>• Fallback mechanisms prevent responses when insufficient source material is available</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Document Verification & Validation</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Every document uploaded undergoes verification to ensure authenticity and relevance to tax research.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• File integrity checks prevent corrupted or tampered documents</li>
+                                <li>• Content validation ensures documents contain relevant tax information</li>
+                                <li>• Version control tracks document updates and changes</li>
+                                <li>• Source attribution maintains clear lineage of information</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Data Security */}
+                        <div className="space-y-4">
+                          <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                            How is client data protected and secured?
+                          </h4>
+                          <div className="space-y-4">
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">End-to-End Encryption & Data Isolation</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Client data is protected through multiple layers of security measures designed for sensitive tax information.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• AES-256 encryption for all data at rest and in transit</li>
+                                <li>• Client-specific data isolation with dedicated secure environments</li>
+                                <li>• No cross-client data access or information leakage</li>
+                                <li>• Secure API endpoints with rate limiting and DDoS protection</li>
+                                <li>• Regular penetration testing and security audits</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Compliance & Regulatory Adherence</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Our security framework meets the stringent requirements of tax professional services and regulatory bodies.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• SOC 2 Type II certification for security controls and data protection (security, availability, processing integrity, confidentiality, privacy)</li>
+                                <li>• GDPR and PIPEDA compliance for Canadian tax data handling</li>
+                                <li>• CRA security requirements for tax professional software</li>
+                                <li>• ISO 27001 information security management standards</li>
+                                <li>• Professional services industry security benchmarks</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Access Control & Authentication</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Multi-layered access controls ensure only authorized personnel can access sensitive tax information.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• Multi-factor authentication (MFA) required for all user accounts</li>
+                                <li>• Role-based access control (RBAC) with least privilege principles</li>
+                                <li>• Single sign-on (SSO) integration with enterprise identity systems</li>
+                                <li>• Session management with automatic timeout and activity monitoring</li>
+                                <li>• Comprehensive audit logging for all user activities and data access</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Traceability */}
+                        <div className="space-y-4">
+                          <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                            How does the system ensure traceability and audit trails?
+                          </h4>
+                          <div className="space-y-4">
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Comprehensive Audit Logging</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Every action in the system is logged with detailed metadata for complete traceability.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• User authentication and session tracking with timestamps</li>
+                                <li>• Document upload, processing, and access logs</li>
+                                <li>• Search queries and AI response generation tracking</li>
+                                <li>• Source citations and reference tracking for every response</li>
+                                <li>• Data export and sharing activity monitoring</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Source Attribution & Citation Tracking</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Every piece of information provided by the AI is traceable back to its original source document.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• Automatic source citation generation for all AI responses</li>
+                                <li>• Document chunk-level tracking showing exact source locations</li>
+                                <li>• Confidence scoring indicating reliability of information</li>
+                                <li>• Version tracking for document updates and changes</li>
+                                <li>• Exportable audit reports for compliance and review purposes</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Professional Compliance Reporting</h5>
+                              <p className="text-gray-600 dark:text-gray-400 mb-3">
+                                Built-in reporting capabilities support professional standards and regulatory requirements.
+                              </p>
+                              <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                <li>• Automated compliance reports for tax professional standards</li>
+                                <li>• Client-specific activity logs for billing and accountability</li>
+                                <li>• Data retention and disposal tracking for regulatory compliance</li>
+                                <li>• Integration with professional practice management systems</li>
+                                <li>• Export capabilities for external audit and review processes</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Security Commitment */}
+                        <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-lg p-6 border border-blue-200/50 dark:border-blue-800/50">
+                          <div className="text-center">
+                            <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                              Our Security & Accuracy Commitment
+                            </h4>
+                            <p className="text-gray-600 dark:text-gray-300">
+                              We understand that tax research requires absolute accuracy, complete traceability, and ironclad security. 
+                              Our solution is designed to prevent AI hallucination through RAG technology, protect sensitive client data 
+                              through enterprise-grade security measures, and provide comprehensive audit trails that meet professional 
+                              standards. This security-first approach enables confident adoption across your organization while maintaining 
+                              the highest standards of professional integrity.
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>

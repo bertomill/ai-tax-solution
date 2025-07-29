@@ -279,14 +279,12 @@ Please conduct thorough analysis considering current tax laws, recent changes, a
       {activeTab === 'simulation' && (
         <div className="space-y-6">
           {/* Jurisdiction Selection */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Building2 className="w-5 h-5" />
-                Select Tax Jurisdictions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-5 h-5" />
+              <h3 className="text-lg font-semibold text-gray-900">Select Tax Jurisdictions</h3>
+            </div>
+            <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {TAX_JURISDICTIONS.map((jurisdiction) => (
                   <div 
@@ -328,19 +326,16 @@ Please conduct thorough analysis considering current tax laws, recent changes, a
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Business Type Selection */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Briefcase className="w-5 h-5" />
-                Select Business Type
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-5 h-5" />
+              <h3 className="text-lg font-semibold text-gray-900">Select Business Type</h3>
+            </div>
+            <div className="space-y-3">
                 {BUSINESS_TYPES.map((businessType) => (
                   <div 
                     key={businessType.id} 
@@ -376,12 +371,11 @@ Please conduct thorough analysis considering current tax laws, recent changes, a
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Simulation Button */}
-          <Card>
-            <CardContent className="p-6 space-y-4">
+          <div className="space-y-4">
               <div className="flex gap-3">
                 <Button 
                   onClick={handleSimulation}
@@ -527,8 +521,8 @@ Please conduct thorough analysis considering current tax laws, recent changes, a
                   </p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Simulation Results */}
           {scenarios.length > 0 && (

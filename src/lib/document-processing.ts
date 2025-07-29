@@ -183,7 +183,7 @@ export class DocumentProcessor {
               .insert({
                 content: chunk,
                 metadata,
-                embedding: `[${embeddings[index].join(',')}]`
+                embedding: embeddings[index] // Store as actual array, not string
               })
               .select('id')
 
@@ -288,7 +288,7 @@ export class DocumentProcessor {
               .insert({
                 content: chunk,
                 metadata,
-                embedding: `[${embeddings[index].join(',')}]`
+                embedding: embeddings[index] // Store as actual array, not string
               })
               .select('id')
 
@@ -971,7 +971,7 @@ Look for tasks that meet these criteria:
           .insert({
             content: chunk,
             metadata,
-            embedding: `[${embeddings[index].join(',')}]`
+            embedding: embeddings[index] // Store as actual array, not string
           })
 
         if (error) {

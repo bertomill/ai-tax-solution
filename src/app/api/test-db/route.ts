@@ -1,65 +1,52 @@
-import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { NextRequest, NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabase-direct'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 Testing database connection...')
+    console.log('🔍 Testing database contents...')
     
-    // Test 1: Basic connection
-    const { error: connectionError } = await supabase
-      .from('_dummy_')
+    // Get all documents
+    const { data: documents, error } = await supabase
+      .from('documents')
       .select('*')
-      .limit(1)
+      .limit(10)
     
-    console.log('Connection test result:', { connectionError })
+    if (error) {
+      console.error('Error fetching documents:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
     
-    // Test 2: Check if documents table exists
-    const { data: tableTest, error: tableError } = await supabase
-      .from('documents')
-      .select('id')
-      .limit(1)
-    
-    console.log('Table test result:', { tableError, data: tableTest })
-    
-    if (tableError && tableError.code === '42P01') {
+    if (!documents || documents.length === 0) {
       return NextResponse.json({
-        status: 'table_missing',
-        message: 'Documents table does not exist',
-        error: tableError.message,
-        solution: 'Run the SQL setup in Supabase dashboard'
+        message: 'No documents found in database',
+        count: 0
       })
     }
     
-    if (tableError) {
-      return NextResponse.json({
-        status: 'table_error',
-        message: 'Error accessing documents table',
-        error: tableError.message
-      })
-    }
-    
-    // Test 3: Try to count existing documents
-    const { count } = await supabase
-      .from('documents')
-      .select('*', { count: 'exact', head: true })
+    // Analyze the documents
+    const analysis = documents.map((doc, index) => ({
+      id: doc.id,
+      content_length: doc.content?.length || 0,
+      content_preview: doc.content?.substring(0, 100) + '...',
+      metadata: doc.metadata,
+      embedding_type: typeof doc.embedding,
+      embedding_length: Array.isArray(doc.embedding) ? doc.embedding.length : 'Not an array',
+      embedding_preview: Array.isArray(doc.embedding) ? 
+        `[${doc.embedding.slice(0, 5).join(', ')}...]` : 
+        String(doc.embedding).substring(0, 50) + '...'
+    }))
     
     return NextResponse.json({
-      status: 'success',
-      message: 'Database is working correctly',
-      tableExists: true,
-      documentCount: count || 0,
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'Not configured',
-      hasApiKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      message: 'Database test completed',
+      total_documents: documents.length,
+      documents: analysis
     })
-
+    
   } catch (error) {
     console.error('Database test error:', error)
-    return NextResponse.json({
-      status: 'error',
-      message: 'Database test failed',
-      error: error instanceof Error ? error.message : 'Unknown error',
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'Not configured',
-      hasApiKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    })
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
   }
 } 

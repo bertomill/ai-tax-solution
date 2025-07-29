@@ -20,6 +20,44 @@ interface ChatMessageProps {
   speechSupported?: boolean
 }
 
+// Sources section component
+function SourcesSection({ content }: { content: string }) {
+  // Extract sources from the content
+  const sourcesMatch = content.match(/Sources:\s*\n((?:[\d\.]+\s*\[Source \d+\]:.*\n?)*)/)
+  
+  if (!sourcesMatch) return null
+  
+  const sourcesText = sourcesMatch[1]
+  const sources = sourcesText.split('\n').filter(line => line.trim())
+  
+  return (
+    <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700" data-sources-section>
+      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">Sources:</h4>
+      <div className="space-y-1">
+        {sources.map((source, index) => {
+          const sourceMatch = source.match(/\[Source (\d+)\]:\s*(.+)/)
+          if (!sourceMatch) return null
+          
+          const sourceNum = sourceMatch[1]
+          const sourceInfo = sourceMatch[2]
+          
+          return (
+            <div key={index} className="flex items-start gap-2 text-xs">
+              <span className="text-gray-500 dark:text-gray-400 font-mono">{index + 1}.</span>
+              <div className="flex-1">
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 mr-1">
+                  [Source {sourceNum}]
+                </span>
+                <span className="text-gray-700 dark:text-gray-300">{sourceInfo}</span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: ChatMessageProps) {
   const isUser = message.role === 'user'
 
@@ -75,52 +113,64 @@ export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: Ch
                   <span className="text-sm text-gray-500">AI is thinking...</span>
                 </div>
               ) : (
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    p: ({ children }) => {
-                      // Convert children to string to process citations
-                      const text = React.Children.toArray(children).join('')
-                      
-                      // Split text by citation pattern and process
-                      const parts = text.split(/(\[Source \d+\])/)
-                      const processedParts = parts.map((part, index) => {
-                        const citationMatch = part.match(/\[Source (\d+)\]/)
-                        if (citationMatch) {
-                          const sourceNum = citationMatch[1]
-                          return (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 mx-0.5 cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
-                              title={`Click to see source details`}
-                            >
-                              [Source {sourceNum}]
-                            </span>
-                          )
-                        }
-                        return part
-                      })
-                      
-                      return <p className="mb-2 last:mb-0">{processedParts}</p>
-                    },
-                    ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
-                    ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
-                    li: ({ children }) => <li className="text-sm">{children}</li>,
-                    strong: ({ children }) => <strong className="font-semibold text-blue-600 dark:text-blue-400">{children}</strong>,
-                    code: ({ children }) => (
-                      <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">
-                        {children}
-                      </code>
-                    ),
-                    pre: ({ children }) => (
-                      <pre className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg overflow-x-auto text-xs">
-                        {children}
-                      </pre>
-                    ),
-                  }}
-                >
-                  {message.content}
-                </ReactMarkdown>
+                <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-2 prose-ul:my-2 prose-ol:my-2">
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ children }) => {
+                        // Convert children to string to process citations
+                        const text = React.Children.toArray(children).join('')
+                        
+                        // Split text by citation pattern and process
+                        const parts = text.split(/(\[Source \d+\])/)
+                        const processedParts = parts.map((part, index) => {
+                          const citationMatch = part.match(/\[Source (\d+)\]/)
+                          if (citationMatch) {
+                            const sourceNum = citationMatch[1]
+                            return (
+                              <span
+                                key={index}
+                                className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 mx-0.5 cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                                title={`Click to see source details`}
+                                onClick={() => {
+                                  // Scroll to sources section if it exists
+                                  const sourcesSection = document.querySelector('[data-sources-section]')
+                                  if (sourcesSection) {
+                                    sourcesSection.scrollIntoView({ behavior: 'smooth' })
+                                  }
+                                }}
+                              >
+                                [Source {sourceNum}]
+                              </span>
+                            )
+                          }
+                          return part
+                        })
+                        
+                        return <p className="mb-2 last:mb-0">{processedParts}</p>
+                      },
+                      ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                      ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+                      li: ({ children }) => <li className="text-sm">{children}</li>,
+                      strong: ({ children }) => <strong className="font-semibold text-blue-600 dark:text-blue-400">{children}</strong>,
+                      code: ({ children }) => (
+                        <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">
+                          {children}
+                        </code>
+                      ),
+                      pre: ({ children }) => (
+                        <pre className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg overflow-x-auto text-xs">
+                          {children}
+                        </pre>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                  
+                  {/* Display sources section for assistant messages */}
+                  {message.role === 'assistant' && <SourcesSection content={message.content} />}
+                </div>
               )}
             </div>
           )}

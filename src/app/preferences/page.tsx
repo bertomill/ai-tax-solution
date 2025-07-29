@@ -3,15 +3,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
-  Palette, 
-  Brain,
-  Save,
-  Settings,
-  Monitor,
-  Sun,
-  Moon,
-  Sparkles,
-  Zap
+  Save
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -22,32 +14,39 @@ import { useTheme } from '@/lib/theme-provider'
 interface AIModel {
   id: string
   name: string
-  icon: React.ReactNode
   description: string
-  color: string
 }
 
 const aiModels: AIModel[] = [
   {
-    id: 'gpt-4',
-    name: 'ChatGPT',
-    icon: <Sparkles className="w-4 h-4" />,
-    description: 'OpenAI\'s advanced language model, great for detailed analysis',
-    color: 'text-green-600'
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    description: 'OpenAI\'s most advanced model, excellent for complex analysis and reasoning'
   },
   {
-    id: 'claude',
-    name: 'Claude',
-    icon: <Brain className="w-4 h-4" />,
-    description: 'Anthropic\'s helpful and harmless AI, excellent for complex reasoning',
-    color: 'text-orange-600'
+    id: 'gpt-4-turbo',
+    name: 'GPT-4 Turbo',
+    description: 'Fast and efficient model, great for detailed tax research and analysis'
   },
   {
-    id: 'gemini',
-    name: 'Gemini',
-    icon: <Zap className="w-4 h-4" />,
-    description: 'Google\'s multimodal AI, powerful for diverse tasks',
-    color: 'text-blue-600'
+    id: 'claude-3-5-sonnet',
+    name: 'Claude 3.5 Sonnet',
+    description: 'Anthropic\'s latest model, exceptional for complex reasoning and detailed explanations'
+  },
+  {
+    id: 'claude-3-opus',
+    name: 'Claude 3 Opus',
+    description: 'Most capable Claude model, perfect for advanced tax planning and strategy'
+  },
+  {
+    id: 'gemini-1.5-pro',
+    name: 'Gemini 1.5 Pro',
+    description: 'Google\'s advanced multimodal model, powerful for diverse tax research tasks'
+  },
+  {
+    id: 'gemini-1.5-flash',
+    name: 'Gemini 1.5 Flash',
+    description: 'Fast and efficient Gemini model, ideal for quick tax queries and analysis'
   }
 ]
 
@@ -55,26 +54,23 @@ const themeOptions = [
   {
     id: 'light' as const,
     name: 'Light',
-    icon: <Sun className="w-4 h-4" />,
     description: 'Clean, bright interface'
   },
   {
     id: 'dark' as const, 
     name: 'Dark',
-    icon: <Moon className="w-4 h-4" />,
     description: 'Easy on the eyes'
   },
   {
     id: 'system' as const,
     name: 'System',
-    icon: <Monitor className="w-4 h-4" />,
     description: 'Follow device preference'
   }
 ]
 
 export default function PreferencesPage() {
   const { theme, setTheme } = useTheme()
-  const [defaultModel, setDefaultModel] = useState('claude')
+  const [defaultModel, setDefaultModel] = useState('claude-3-5-sonnet')
   const [isSaving, setIsSaving] = useState(false)
 
   const handleSave = async () => {
@@ -95,7 +91,7 @@ export default function PreferencesPage() {
     const saved = localStorage.getItem('userPreferences')
     if (saved) {
       const preferences = JSON.parse(saved)
-      setDefaultModel(preferences.defaultModel || 'claude')
+      setDefaultModel(preferences.defaultModel || 'claude-3-5-sonnet')
     }
   }, [])
 
@@ -114,9 +110,6 @@ export default function PreferencesPage() {
             className="mb-8"
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="p-1.5 bg-gray-900 dark:bg-gray-700 rounded-lg">
-                <Settings className="w-5 h-5 text-white" />
-              </div>
               <h1 className="text-2xl font-bold text-black dark:text-gray-100">
                 Preferences
               </h1>
@@ -136,8 +129,7 @@ export default function PreferencesPage() {
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Palette className="w-5 h-5 text-purple-600" />
+                  <CardTitle>
                     Theme & Appearance
                   </CardTitle>
                 </CardHeader>
@@ -156,9 +148,6 @@ export default function PreferencesPage() {
                             htmlFor={option.id}
                             className="flex flex-col items-center justify-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer transition-all hover:border-gray-300 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:border-gray-700 dark:hover:border-gray-600 dark:peer-checked:border-blue-500 dark:peer-checked:bg-blue-950/20"
                           >
-                            <div className="mb-2">
-                              {option.icon}
-                            </div>
                             <div className="font-medium text-sm">{option.name}</div>
                             <div className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
                               {option.description}
@@ -180,8 +169,7 @@ export default function PreferencesPage() {
             >
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-green-600" />
+                  <CardTitle>
                     Default AI Model
                   </CardTitle>
                 </CardHeader>
@@ -200,9 +188,6 @@ export default function PreferencesPage() {
                             htmlFor={model.id}
                             className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer transition-all hover:border-gray-300 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:border-gray-700 dark:hover:border-gray-600 dark:peer-checked:border-blue-500 dark:peer-checked:bg-blue-950/20"
                           >
-                            <div className={`mr-3 ${model.color}`}>
-                              {model.icon}
-                            </div>
                             <div className="flex-1">
                               <div className="font-medium">{model.name}</div>
                               <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">

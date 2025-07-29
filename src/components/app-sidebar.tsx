@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Settings,
   MessageSquare,
+  Shield,
 } from "lucide-react"
 
 import {
@@ -35,6 +36,7 @@ import {
   SidebarFooter,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Button } from "@/components/ui/button"
 
 // TypeScript interfaces for navigation data
 interface NavigationSubItem {
@@ -261,6 +263,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const [activeSection, setActiveSection] = React.useState<string>("")
   const [expandedItems, setExpandedItems] = React.useState<string[]>([])
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    localStorage.removeItem('ai-tax-auth')
+    localStorage.removeItem('ai-tax-auth-timestamp')
+    // Redirect to home page or reload to trigger password protection
+    window.location.href = '/'
+  }
   
   // Helper function to determine if a navigation item is active
   const isActiveItem = (url: string): boolean => {
@@ -342,7 +352,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="pt-4">
         <div className="flex items-center gap-2 px-2">
           <SidebarTrigger className="-ml-1" />
           {state === "expanded" && (
@@ -482,6 +492,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <span className="font-medium transition-all duration-200">Preferences</span>
                 )}
               </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          
+          {/* Sign Out Button */}
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              onClick={handleLogout}
+              tooltip={state === "collapsed" ? "Sign Out" : undefined}
+              className="group relative transition-all duration-200 hover:bg-red-50 hover:text-red-700 border-t border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex items-center gap-3 py-3 w-full">
+                <div className="transition-transform duration-200 group-hover:scale-110">
+                  <Shield className="size-4" />
+                </div>
+                {state === "expanded" && (
+                  <span className="font-medium transition-all duration-200">Sign Out</span>
+                )}
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

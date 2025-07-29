@@ -837,13 +837,13 @@ export default function ProblemIdentificationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
       {/* Page Header */}
-      <div className="py-8 px-4">
-        <div className="max-w-6xl space-y-3">
+      <div className="py-4 px-4">
+        <div className="max-w-6xl space-y-2">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-blue-300">
             Approach
           </h1>
           <p className="text-base text-black dark:text-gray-300">
-            Comprehensive Problem Analysis & Solution Strategy
+            My approach to problem discovery and solution design
           </p>
         </div>
       </div>
@@ -851,13 +851,13 @@ export default function ProblemIdentificationPage() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
-        <div className="max-w-6xl xl:mr-80 space-y-12">
+        <div className="max-w-6xl xl:mr-80 space-y-8">
           
           {/* Problem Identification Section */}
-          <section id="problem-identification" className="space-y-6 scroll-mt-32">
-            <div className="space-y-6">
+          <section id="problem-identification" className="space-y-4 scroll-mt-32">
+            <div className="space-y-4">
               <div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
                   I did a deep dive into tax operations, through web research and talking to my colleagues who work in tax and analyzing workflows to understand 
                   their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities </strong> 
                   performed across tax departments, ranging from routine data processing to complex analytical work. The comprehensive analysis 
@@ -884,19 +884,19 @@ export default function ProblemIdentificationPage() {
                           <div className="border-t border-gray-200/50 p-4">
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-300">
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Market Research</h5>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">1. Market Research</h5>
                                 <p>Conducted research on the market for tax automation tools and services</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">User Interviews</h5>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">2. User Interviews</h5>
                                 <p>Spoke with my colleagues who work in tax</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">3. Workflow Analysis</h5>
                                 <p>Documented several day-to-day tax tasks</p>
                               </div>
                               <div>
-                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Risk & Value Scoring</h5>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">4. Risk & Value Scoring</h5>
                                 <p>Quantified each task in terms of volume and complexity</p>
                               </div>
                             </div>

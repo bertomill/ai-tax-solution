@@ -53,7 +53,7 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   }, [sections])
 
   return (
-    <div className={`${className} bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto`}>
+    <div className={`${className} fixed top-8 right-8 z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto w-64`}>
       <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200/50 dark:border-gray-700/50">
         <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
           <FileText className="w-4 h-4 text-gray-600 dark:text-gray-300" />
@@ -98,7 +98,6 @@ interface Expectation {
 }
 
 export default function InterviewFormatPage() {
-
   const interviewSteps: InterviewStep[] = [
     {
       number: '1',
@@ -159,10 +158,11 @@ export default function InterviewFormatPage() {
     }
   ]
 
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
+      {/* Sticky Navigation - Top Right Corner */}
+      <OnThisPageSidebar className="hidden lg:block" />
+      
       {/* Page Header */}
       <div className="py-8 px-4 max-w-7xl mx-auto">
         <div className="space-y-3">
@@ -175,157 +175,146 @@ export default function InterviewFormatPage() {
         </div>
       </div>
 
-
-
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              <div className="space-y-12">
+          {/* Main Content - Full Width with Right Margin for Sticky Nav */}
+          <div className="lg:mr-80">
+            <div className="space-y-12">
           
-          {/* Assignment Overview Section */}
-          <section id="assignment-overview" className="space-y-6 scroll-mt-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Assignment Overview
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Whiteboarding Interview Session Details
-              </p>
-            </div>
+              {/* Assignment Overview Section */}
+              <section id="assignment-overview" className="space-y-6 scroll-mt-8">
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    Assignment Overview
+                  </h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    Whiteboarding Interview Session Details
+                  </p>
+                </div>
 
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                  Whiteboarding Interview Session
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-                  This round will be a collaborative whiteboarding session—a chance for us to work together like colleagues exploring a new idea.
-                  You&apos;ll come prepared with a problem you believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
-                </p>
-              </div>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                      Whiteboarding Interview Session
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                      This round will be a collaborative whiteboarding session—a chance for us to work together like colleagues exploring a new idea.
+                      You&apos;ll come prepared with a problem you believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
+                    </p>
+                  </div>
 
-              <ul className="space-y-3">
-                <li className="text-gray-700">
-                  <strong>Session Duration:</strong> Approximately 90 minutes, broken into two parts
-                </li>
-                <li className="text-gray-700">
-                  <strong>Format:</strong> Real working session, not a pitch - collaborative exploration
-                </li>
-              </ul>
-            </div>
-          </section>
+                  <ul className="space-y-3">
+                    <li className="text-gray-700">
+                      <strong>Session Duration:</strong> Approximately 90 minutes, broken into two parts
+                    </li>
+                    <li className="text-gray-700">
+                      <strong>Format:</strong> Real working session, not a pitch - collaborative exploration
+                    </li>
+                  </ul>
+                </div>
+              </section>
 
-          {/* Interview Process Section */}
-          <section id="interview-process" className="space-y-6 scroll-mt-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Interview Format
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                90-Minute Session in Two Parts
-              </p>
-            </div>
+              {/* Interview Process Section */}
+              <section id="interview-process" className="space-y-6 scroll-mt-8">
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    Interview Format
+                  </h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    90-Minute Session in Two Parts
+                  </p>
+                </div>
 
-            <div className="space-y-6">
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Interview Format - 2-Part Process
-              </h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    Interview Format - 2-Part Process
+                  </h3>
 
-              <div className="space-y-4">
-                {interviewSteps.map((step, index) => (
-                  <motion.div
-                    key={step.number}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="flex items-start gap-4 p-4 border border-gray-200/50 rounded-lg">
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full bg-gray-900 text-white text-sm font-bold flex items-center justify-center">
-                          {step.number}
+                  <div className="space-y-4">
+                    {interviewSteps.map((step, index) => (
+                      <motion.div
+                        key={step.number}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <div className="flex items-start gap-4 p-4 border border-gray-200/50 rounded-lg">
+                          <div className="flex-shrink-0">
+                            <div className="w-8 h-8 rounded-full bg-gray-900 text-white text-sm font-bold flex items-center justify-center">
+                              {step.number}
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                {step.title}
+                              </h4>
+                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                {step.duration}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 dark:text-gray-300">
+                              {step.description}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                            {step.title}
-                          </h4>
-                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {step.duration}
-                          </span>
-                        </div>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
 
-            {/* Part 1: Whiteboarding Details */}
-            <div className="space-y-6 mt-8">
-              <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                Part 1: Whiteboarding – Product Ideation Details
-              </h4>
-              
-              <div className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  The candidate will come prepared with a problem they believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
-                </p>
-                
-                <ul className="space-y-3">
-                  <li className="text-gray-700">
-                    <strong>Working Session Format:</strong> This will be treated like a real working session, not a pitch. The candidate will walk through their thinking, and together they&apos;ll collaborate, ask questions, and expand the idea.
-                  </li>
-                  <li className="text-gray-700">
-                    <strong>Multiple Ideas:</strong> If the candidate brings more than one idea, they&apos;ll choose one to focus on together.
-                  </li>
-                  <li className="text-gray-700">
-                    <strong>Visual Tools:</strong> The candidate is welcome to use the whiteboard, sketch, or talk through their thinking. If they&apos;d like to reference visuals, content, or examples, a screen will be available to bring them up during the session.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </section>
+                {/* Part 1: Whiteboarding Details */}
+                <div className="space-y-6 mt-8">
+                  <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    Part 1: Whiteboarding – Product Ideation Details
+                  </h4>
+                  
+                  <div className="space-y-4">
+                    <p className="text-gray-700 leading-relaxed">
+                      The candidate will come prepared with a problem they believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
+                    </p>
+                    
+                    <ul className="space-y-3">
+                      <li className="text-gray-700">
+                        <strong>Working Session Format:</strong> This will be treated like a real working session, not a pitch. The candidate will walk through their thinking, and together they&apos;ll collaborate, ask questions, and expand the idea.
+                      </li>
+                      <li className="text-gray-700">
+                        <strong>Multiple Ideas:</strong> If the candidate brings more than one idea, they&apos;ll choose one to focus on together.
+                      </li>
+                      <li className="text-gray-700">
+                        <strong>Visual Tools:</strong> The candidate is welcome to use the whiteboard, sketch, or talk through their thinking. If they&apos;d like to reference visuals, content, or examples, a screen will be available to bring them up during the session.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
 
-          {/* Expectations Section */}
-          <section id="expectations" className="space-y-6 scroll-mt-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Success Factors
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                Key Skills & Expectations
-              </p>
-            </div>
+              {/* Expectations Section */}
+              <section id="expectations" className="space-y-6 scroll-mt-8">
+                <div className="space-y-4">
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    Success Factors
+                  </h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    Key Skills & Expectations
+                  </p>
+                </div>
 
-            <div className="space-y-6">
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Success Factors
-              </h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                    Success Factors
+                  </h3>
 
-              <ul className="space-y-4">
-                {expectations.map((item) => (
-                  <li key={item.title} className="text-gray-700">
-                    <strong>{item.title}:</strong> {item.description}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-              </div>
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-8">
-                <OnThisPageSidebar className="lg:block hidden" />
-              </div>
+                  <ul className="space-y-4">
+                    {expectations.map((item) => (
+                      <li key={item.title} className="text-gray-700">
+                        <strong>{item.title}:</strong> {item.description}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, ChevronDown, Paperclip, Sparkles, Brain, Zap, Mic, MicOff } from 'lucide-react'
+import { Send, ChevronDown, Paperclip, Mic, MicOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAutoResizeTextarea } from '@/hooks/use-auto-resize-textarea'
@@ -24,32 +24,42 @@ interface SpeechRecognitionErrorEvent {
   error: string
 }
 
-
 interface AIModel {
   id: string
   name: string
-  icon: React.ReactNode
-  color: string
+  description: string
 }
 
 const aiModels: AIModel[] = [
   {
-    id: 'gpt-4',
-    name: 'GPT-4',
-    icon: <Sparkles className="w-4 h-4" />,
-    color: 'text-green-600'
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    description: 'OpenAI\'s most advanced model'
   },
   {
-    id: 'claude',
-    name: 'Claude',
-    icon: <Brain className="w-4 h-4" />,
-    color: 'text-orange-600'
+    id: 'gpt-4-turbo',
+    name: 'GPT-4 Turbo',
+    description: 'Fast and efficient model'
   },
   {
-    id: 'gemini',
-    name: 'Gemini',
-    icon: <Zap className="w-4 h-4" />,
-    color: 'text-blue-600'
+    id: 'claude-3-5-sonnet',
+    name: 'Claude 3.5 Sonnet',
+    description: 'Anthropic\'s latest model'
+  },
+  {
+    id: 'claude-3-opus',
+    name: 'Claude 3 Opus',
+    description: 'Most capable Claude model'
+  },
+  {
+    id: 'gemini-1.5-pro',
+    name: 'Gemini 1.5 Pro',
+    description: 'Google\'s advanced model'
+  },
+  {
+    id: 'gemini-1.5-flash',
+    name: 'Gemini 1.5 Flash',
+    description: 'Fast and efficient Gemini'
   }
 ]
 
@@ -266,9 +276,6 @@ export function AIPrompt({
             onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
             className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
           >
-            <div className={selectedModel.color}>
-              {selectedModel.icon}
-            </div>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {selectedModel.name}
             </span>
@@ -284,7 +291,7 @@ export function AIPrompt({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute bottom-full left-0 mb-1 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50"
+                className="absolute bottom-full left-0 mb-1 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50"
               >
                 {aiModels.map((model) => (
                   <button
@@ -295,15 +302,15 @@ export function AIPrompt({
                       setIsModelDropdownOpen(false)
                     }}
                     className={cn(
-                      "w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors first:rounded-t-lg last:rounded-b-lg",
+                      "w-full flex flex-col items-start px-3 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors first:rounded-t-lg last:rounded-b-lg",
                       selectedModel.id === model.id && "bg-gray-50 dark:bg-gray-750"
                     )}
                   >
-                    <div className={model.color}>
-                      {model.icon}
-                    </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       {model.name}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {model.description}
                     </span>
                   </button>
                 ))}
