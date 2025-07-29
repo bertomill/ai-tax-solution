@@ -19,7 +19,8 @@ import {
   CheckCircle,
   AlertCircle,
   Building2,
-  Briefcase
+  Briefcase,
+  X
 } from 'lucide-react'
 
 interface MarketInsight {
@@ -84,6 +85,7 @@ const MarketResearchAgent: React.FC = () => {
   const [scheduleTime, setScheduleTime] = useState('')
   const [isScheduling, setIsScheduling] = useState(false)
   const [scheduleSuccess, setScheduleSuccess] = useState(false)
+  const [showPrompt, setShowPrompt] = useState(false)
 
   const handleFirmSelection = (firmId: string, checked: boolean) => {
     if (checked) {
@@ -218,6 +220,37 @@ const MarketResearchAgent: React.FC = () => {
       case 'low': return 'text-red-600'
       default: return 'text-gray-600'
     }
+  }
+
+  const generateResearchPrompt = () => {
+    const selectedFirmNames = selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).filter(Boolean)
+    const selectedThemeData = RESEARCH_THEMES.find(t => t.id === selectedTheme)
+    
+    return `Conduct comprehensive market research on the following:
+
+RESEARCH SCOPE:
+- Target Firms: ${selectedFirmNames.join(', ')}
+- Research Theme: ${selectedThemeData?.name}
+- Theme Description: ${selectedThemeData?.description}
+- Keywords: ${selectedThemeData?.keywords.join(', ')}
+
+RESEARCH OBJECTIVES:
+1. Analyze recent developments, announcements, and strategic initiatives by the selected firms
+2. Identify emerging trends and patterns related to the research theme
+3. Assess market opportunities and potential risks
+4. Evaluate competitive positioning and market dynamics
+5. Provide actionable insights for tax automation and AI implementation
+
+DELIVERABLE FORMAT:
+For each insight, provide:
+- Category (trend/competitor/opportunity/risk)
+- Title and description
+- Confidence level (high/medium/low)
+- Impact assessment (high/medium/low)
+- Data sources and references
+- Timestamp
+
+Please conduct thorough research across multiple sources including company websites, press releases, industry reports, and recent news to provide comprehensive market intelligence.`
   }
 
   return (
@@ -355,25 +388,36 @@ const MarketResearchAgent: React.FC = () => {
 
           {/* Research Button */}
           <Card>
-            <CardContent className="p-6">
-              <Button 
-                onClick={handleResearch}
-                disabled={selectedFirms.length === 0 || !selectedTheme || isAnalyzing}
-                className="w-full h-12"
-                size="lg"
-              >
-                {isAnalyzing ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Conducting Market Research...
-                  </>
-                ) : (
-                  <>
-                    <Search className="w-4 h-4 mr-2" />
-                    Start Agentic Market Research
-                  </>
-                )}
-              </Button>
+            <CardContent className="p-6 space-y-4">
+              <div className="flex gap-3">
+                <Button 
+                  onClick={handleResearch}
+                  disabled={selectedFirms.length === 0 || !selectedTheme || isAnalyzing}
+                  className="flex-1 h-12"
+                  size="lg"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Conducting Market Research...
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4 mr-2" />
+                      Start Agentic Market Research
+                    </>
+                  )}
+                </Button>
+                <Button
+                  onClick={() => setShowPrompt(true)}
+                  disabled={selectedFirms.length === 0 || !selectedTheme}
+                  variant="outline"
+                  className="h-12 px-4"
+                >
+                  <Lightbulb className="w-4 h-4 mr-2" />
+                  View Research Prompt
+                </Button>
+              </div>
               {(selectedFirms.length > 0 || selectedTheme) && (
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                   <p className="text-sm text-blue-800">
@@ -735,6 +779,82 @@ const MarketResearchAgent: React.FC = () => {
               </div>
             </CardContent>
           </Card>
+        </div>
+      )}
+
+      {/* Research Prompt Modal */}
+      {showPrompt && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Research Prompt Preview
+              </h3>
+              <Button
+                onClick={() => setShowPrompt(false)}
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+            <div className="p-6 overflow-y-auto max-h-[60vh]">
+              <div className="space-y-4">
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    What the AI Agent Will Research:
+                  </h4>
+                  <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
+                    {generateResearchPrompt()}
+                  </pre>
+                </div>
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                  <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                    Research Configuration:
+                  </h4>
+                  <div className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
+                    {selectedFirms.length > 0 && (
+                      <div>
+                        <strong>Target Firms:</strong> {selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).join(', ')}
+                      </div>
+                    )}
+                    {selectedTheme && (
+                      <div>
+                        <strong>Research Theme:</strong> {RESEARCH_THEMES.find(t => t.id === selectedTheme)?.name}
+                      </div>
+                    )}
+                    <div>
+                      <strong>Expected Output:</strong> Structured insights with categories, confidence levels, and impact assessments
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                This prompt will be sent to the AI agent to conduct comprehensive market research.
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setShowPrompt(false)}
+                  variant="outline"
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowPrompt(false)
+                    handleResearch()
+                  }}
+                  disabled={isAnalyzing}
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Start Research Now
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
