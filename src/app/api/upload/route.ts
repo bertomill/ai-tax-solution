@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { documentProcessor } from '@/lib/document-processing'
-import { storeDocument, initializeStorage } from '@/lib/supabase'
+import { storeDocument } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,9 +41,6 @@ export async function POST(request: NextRequest) {
 
       // Create a filename from the title
       const fileName = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`
-
-      // Initialize storage if needed
-      await initializeStorage()
 
       // Store text content as a file in Supabase storage
       const textBuffer = Buffer.from(text, 'utf-8')
@@ -124,10 +121,7 @@ export async function POST(request: NextRequest) {
     // Convert to buffer
     const buffer = Buffer.from(await file.arrayBuffer())
 
-    // Initialize storage if needed
-    await initializeStorage()
-
-    // Store original file in Supabase storage
+    // Store original file in Supabase storage (bucket already exists)
     const storageResult = await storeDocument(
       buffer,
       file.name,

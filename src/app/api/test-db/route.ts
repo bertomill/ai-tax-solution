@@ -6,7 +6,7 @@ export async function GET() {
     console.log('🔍 Testing database connection...')
     
     // Test 1: Basic connection
-    const { data: connectionTest, error: connectionError } = await supabase
+    const { error: connectionError } = await supabase
       .from('_dummy_')
       .select('*')
       .limit(1)
@@ -39,7 +39,7 @@ export async function GET() {
     }
     
     // Test 3: Try to count existing documents
-    const { count, error: countError } = await supabase
+    const { count } = await supabase
       .from('documents')
       .select('*', { count: 'exact', head: true })
     

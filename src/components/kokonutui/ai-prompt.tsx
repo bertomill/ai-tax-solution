@@ -7,13 +7,6 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAutoResizeTextarea } from '@/hooks/use-auto-resize-textarea'
 
-// Extend the Window interface to include SpeechRecognition
-declare global {
-  interface Window {
-    SpeechRecognition: any
-    webkitSpeechRecognition: any
-  }
-}
 
 interface AIModel {
   id: string
@@ -71,16 +64,16 @@ export function AIPrompt({
   // Check for speech recognition support
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      setSpeechSupported(!!SpeechRecognition)
+      const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      setSpeechSupported(!!SpeechRecognitionClass)
       
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition()
+      if (SpeechRecognitionClass) {
+        const recognition = new SpeechRecognitionClass()
         recognition.continuous = true
         recognition.interimResults = true
         recognition.lang = 'en-US'
         
-        recognition.onresult = (event) => {
+        recognition.onresult = (event: any) => {
           let transcript = ''
           for (let i = event.resultIndex; i < event.results.length; i++) {
             transcript += event.results[i][0].transcript
@@ -96,7 +89,7 @@ export function AIPrompt({
           setIsRecording(false)
         }
         
-        recognition.onerror = (event) => {
+        recognition.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error)
           setIsRecording(false)
         }

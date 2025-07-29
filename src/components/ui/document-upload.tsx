@@ -1,12 +1,11 @@
 "use client"
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Upload, 
   File, 
   Loader2, 
-  CheckCircle2, 
   XCircle, 
   Trash2,
   FileText,
@@ -51,14 +50,8 @@ export function DocumentUpload({
   const [error, setError] = useState<string | null>(null)
   const [pastedText, setPastedText] = useState('')
   const [textTitle, setTextTitle] = useState('')
-  const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload')
 
-  // Fetch user documents on component mount
-  React.useEffect(() => {
-    fetchUserDocuments()
-  }, [userId])
-
-  const fetchUserDocuments = async () => {
+  const fetchUserDocuments = useCallback(async () => {
     try {
       const response = await fetch(`/api/upload?userId=${encodeURIComponent(userId)}`)
       const data = await response.json()
@@ -69,7 +62,12 @@ export function DocumentUpload({
     } catch (error) {
       console.error('Error fetching documents:', error)
     }
-  }
+  }, [userId])
+
+  // Fetch user documents on component mount
+  useEffect(() => {
+    fetchUserDocuments()
+  }, [fetchUserDocuments])
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -89,7 +87,7 @@ export function DocumentUpload({
     if (files.length > 0) {
       handleFileUpload(files[0])
     }
-  }, [])
+  }, [handleFileUpload])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -98,7 +96,7 @@ export function DocumentUpload({
     }
   }
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true)
     setError(null)
     setUploadProgress('Preparing upload...')
@@ -185,7 +183,7 @@ export function DocumentUpload({
       setUploadProgress('')
       onUploadError?.()
     }
-  }
+  }, [userId, onUploadStart, onUploadProgress, onUploadSuccess, onUploadError, fetchUserDocuments])
 
   const handleTextSubmit = async () => {
     if (!pastedText.trim()) {
@@ -323,13 +321,6 @@ export function DocumentUpload({
     }
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
 
   return (
     <div className={className}>

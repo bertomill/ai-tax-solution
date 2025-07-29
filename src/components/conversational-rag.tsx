@@ -27,7 +27,6 @@ export function ConversationalRAG() {
     input,
     handleInputChange,
     isLoading,
-    stop,
     reload,
     setMessages,
     append

@@ -96,11 +96,34 @@ export async function storeDocument(
     const cleanFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_')
     const storagePath = `${userId}/${timestamp}_${cleanFileName}`
 
+    // Determine content type based on file extension
+    let contentType = 'application/octet-stream'
+    switch (fileType.toLowerCase()) {
+      case 'pdf':
+        contentType = 'application/pdf'
+        break
+      case 'docx':
+        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        break
+      case 'doc':
+        contentType = 'application/msword'
+        break
+      case 'txt':
+        contentType = 'text/plain'
+        break
+      case 'md':
+        contentType = 'text/markdown'
+        break
+    }
+
+    console.log(`Storing file: ${fileName}, type: ${fileType}, contentType: ${contentType}`)
+
     const { error } = await supabase.storage
       .from(DOCUMENTS_BUCKET)
       .upload(storagePath, file, {
         cacheControl: '3600',
-        upsert: false
+        upsert: false,
+        contentType: contentType
       })
 
     if (error) {
@@ -108,6 +131,7 @@ export async function storeDocument(
       return { success: false, error: error.message }
     }
 
+    console.log(`Successfully stored file at: ${storagePath}`)
     return { success: true, storagePath }
   } catch (error) {
     console.error('Storage error:', error)

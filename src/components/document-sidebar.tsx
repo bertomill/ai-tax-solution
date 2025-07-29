@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Database, 
@@ -16,7 +16,6 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { DocumentUpload } from '@/components/ui/document-upload'
 import { DocumentViewer } from '@/components/ui/document-viewer'
 
@@ -35,21 +34,14 @@ interface DocumentSidebarProps {
 
 export function DocumentSidebar({ className, userId = 'demo-user' }: DocumentSidebarProps) {
   const [showUpload, setShowUpload] = useState(false)
-  const [uploadMethod, setUploadMethod] = useState<'file' | 'text'>('file')
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadFileName, setUploadFileName] = useState('')
   const [uploadedDocs, setUploadedDocs] = useState<UploadedDocument[]>([])
-  const [error, setError] = useState<string | null>(null)
   const [viewerOpen, setViewerOpen] = useState(false)
   const [selectedDocument, setSelectedDocument] = useState<UploadedDocument | null>(null)
 
-  // Fetch user documents on component mount
-  useEffect(() => {
-    fetchUserDocuments()
-  }, [userId])
-
-  const fetchUserDocuments = async () => {
+  const fetchUserDocuments = useCallback(async () => {
     try {
       const response = await fetch(`/api/upload?userId=${encodeURIComponent(userId)}`)
       const data = await response.json()
@@ -60,7 +52,12 @@ export function DocumentSidebar({ className, userId = 'demo-user' }: DocumentSid
     } catch (error) {
       console.error('Error fetching documents:', error)
     }
-  }
+  }, [userId])
+
+  // Fetch user documents on component mount
+  useEffect(() => {
+    fetchUserDocuments()
+  }, [fetchUserDocuments])
 
   const handleDeleteDocument = async (fileName: string) => {
     try {
@@ -82,7 +79,7 @@ export function DocumentSidebar({ className, userId = 'demo-user' }: DocumentSid
       await fetchUserDocuments()
       
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Delete failed')
+      console.error('Delete failed:', error)
     }
   }
 

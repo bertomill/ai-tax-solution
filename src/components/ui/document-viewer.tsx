@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   X, 
@@ -30,13 +30,7 @@ export function DocumentViewer({ isOpen, onClose, document, userId }: DocumentVi
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (isOpen && document.storagePath) {
-      loadDocument()
-    }
-  }, [isOpen, document.storagePath])
-
-  const loadDocument = async () => {
+  const loadDocument = useCallback(async () => {
     if (!document.storagePath) {
       setError('Document storage path not available')
       return
@@ -59,6 +53,9 @@ export function DocumentViewer({ isOpen, onClose, document, userId }: DocumentVi
       }
 
       setDocumentUrl(data.documentUrl)
+      
+      console.log('Document URL:', data.documentUrl)
+      console.log('Document type:', document.fileType)
 
       // For text files, fetch the content directly to display inline
       if (document.fileType === 'txt' || document.fileType === 'md') {
@@ -78,16 +75,22 @@ export function DocumentViewer({ isOpen, onClose, document, userId }: DocumentVi
     } finally {
       setLoading(false)
     }
-  }
+  }, [document.storagePath])
+
+  useEffect(() => {
+    if (isOpen && document.storagePath) {
+      loadDocument()
+    }
+  }, [isOpen, document.storagePath, loadDocument])
 
   const handleDownload = () => {
     if (documentUrl) {
-      const link = document.createElement('a')
+      const link = window.document.createElement('a')
       link.href = documentUrl
       link.download = document.fileName
-      document.body.appendChild(link)
+      window.document.body.appendChild(link)
       link.click()
-      document.body.removeChild(link)
+      window.document.body.removeChild(link)
     }
   }
 
@@ -127,11 +130,31 @@ export function DocumentViewer({ isOpen, onClose, document, userId }: DocumentVi
         return (
           <div className="h-96 md:h-[600px]">
             {documentUrl ? (
-              <iframe
-                src={documentUrl}
-                className="w-full h-full border rounded-lg"
-                title={document.fileName}
-              />
+              <div className="h-full">
+                <iframe
+                  src={`${documentUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+                  className="w-full h-full border rounded-lg"
+                  title={document.fileName}
+                  allow="fullscreen"
+                  onError={() => {
+                    console.error('PDF iframe failed to load')
+                  }}
+                />
+                <div className="mt-2 text-center">
+                  <p className="text-xs text-gray-500 mb-2">
+                    Having trouble viewing? 
+                  </p>
+                  <Button 
+                    onClick={handleOpenInNewTab} 
+                    variant="outline" 
+                    size="sm"
+                    className="text-xs"
+                  >
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    Open PDF in new tab
+                  </Button>
+                </div>
+              </div>
             ) : (
               <div className="flex items-center justify-center h-full border rounded-lg bg-gray-50">
                 <p className="text-gray-500">PDF preview not available</p>
