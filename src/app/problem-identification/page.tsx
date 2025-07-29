@@ -23,11 +23,6 @@ import {
 import AutomationChart from '@/components/ui/automation-chart'
 import * as Collapsible from '@radix-ui/react-collapsible'
 
-interface TabItem {
-  id: string
-  label: string
-  icon: React.ReactNode
-}
 
 interface UserPersona {
   title: string
@@ -56,30 +51,7 @@ interface AIComponent {
 }
 
 export default function ProblemIdentificationPage() {
-  const [activeTab, setActiveTab] = useState<string>('problem-identification')
 
-  const tabs: TabItem[] = [
-    {
-      id: 'problem-identification',
-      label: 'Problem Identification',
-      icon: <Lightbulb className="w-4 h-4" />
-    },
-    {
-      id: 'user-analysis',
-      label: 'User Analysis',
-      icon: <Users className="w-4 h-4" />
-    },
-    {
-      id: 'mvp-strategy',
-      label: 'MVP Strategy',
-      icon: <Target className="w-4 h-4" />
-    },
-    {
-      id: 'ai-implementation',
-      label: 'AI Implementation',
-      icon: <Brain className="w-4 h-4" />
-    }
-  ]
 
   const userPersonas: UserPersona[] = [
     {
@@ -196,45 +168,11 @@ export default function ProblemIdentificationPage() {
     }
   ]
 
-  // Smooth scroll to section
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const offset = 120 // Account for sticky header
-      const elementPosition = element.offsetTop - offset
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      })
-    }
-    setActiveTab(sectionId)
-  }
 
-  // Handle scroll spy for active tab and scroll to top on mount
+  // Scroll to top on mount
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo({ top: 0, behavior: 'smooth' })
-
-    const handleScroll = () => {
-      const sections = ['problem-identification', 'user-analysis', 'mvp-strategy', 'ai-implementation']
-      const scrollPosition = window.scrollY + 150
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveTab(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Initial check
-
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
@@ -251,35 +189,6 @@ export default function ProblemIdentificationPage() {
         </div>
       </div>
 
-      {/* Sticky Tab Navigation */}
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex space-x-1 p-1 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => scrollToSection(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 relative whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'text-blue-700 bg-blue-100'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                {tab.icon}
-                <span className="hidden sm:inline">{tab.label}</span>
-                {activeTab === tab.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-blue-100 rounded-lg -z-10"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
@@ -307,34 +216,69 @@ export default function ProblemIdentificationPage() {
                       Comprehensive Day-to-Day Tax Function Research
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                      I conducted extensive research into banking tax operations, interviewing professionals and analyzing workflows to understand 
-                      their daily tasks. Through this research, I identified and catalogued <strong>18+ specific day-to-day activities</strong> 
+                      I conducted extensive research into tax operations, through web research and interviewing my colleagues who work in tax and analyzing workflows to understand 
+                      their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities</strong> 
                       performed across tax departments, ranging from routine data processing to complex analytical work. The comprehensive analysis 
                       below maps each task by volume and complexity to determine the optimal automation approach - whether traditional rule-based 
                       automation or AI-powered solutions.
                     </p>
 
-                    {/* Research Methodology */}
-                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200/50 rounded-lg p-4 mb-6">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                        <Lightbulb className="w-4 h-4 text-amber-600" />
-                        Research Methodology
-                      </h4>
-                      <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-300">
-                        <div>
-                          <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
-                          <p>Mapped end-to-end processes from document intake to compliance reporting</p>
-                        </div>
-                        <div>
-                          <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Professional Interviews</h5>
-                          <p>Spoke with tax analysts, managers, and directors across multiple institutions</p>
-                        </div>
-                        <div>
-                          <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Volume & Complexity Scoring</h5>
-                          <p>Quantified each task on frequency (volume) and skill requirements (complexity)</p>
-                        </div>
+                    {/* Collapsible Research Methodology */}
+                    <Collapsible.Root>
+                      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200/50 rounded-lg mb-6">
+                        <Collapsible.Trigger asChild>
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-colors rounded-t-lg">
+                            <div className="flex items-center gap-2">
+                              <Lightbulb className="w-4 h-4 text-amber-600" />
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                Research Methodology
+                              </h4>
+                            </div>
+                            <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                          </button>
+                        </Collapsible.Trigger>
+                        
+                        <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                          <div className="border-t border-amber-200/50 p-4">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-300">
+                              <div>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
+                                <p>Mapped end-to-end processes from document intake to compliance reporting</p>
+                              </div>
+                              <div>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Professional Interviews</h5>
+                                <p>Spoke with tax analysts, managers, and directors across multiple institutions</p>
+                              </div>
+                              <div>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">GenAI Research Reports</h5>
+                                <p>Conducted deep research reports with GenAI (OpenAI, Google) for industry insights</p>
+                              </div>
+                              <div>
+                                <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Volume & Complexity Scoring</h5>
+                                <p>Quantified each task on frequency (volume) and skill requirements (complexity)</p>
+                              </div>
+                            </div>
+                            
+                            <div className="mt-4 pt-4 border-t border-amber-200/50">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2 text-sm">Key Reference:</h5>
+                              <div className="bg-amber-50/50 dark:bg-amber-950/20 rounded-lg p-3">
+                                <a 
+                                  href="https://www.deloitte.com/content/dam/assets-zone3/us/en/docs/services/tax/2024/heads-of-tax-guide-to-ai.pdf" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 underline text-xs transition-colors"
+                                >
+                                  Deloitte: Head of Tax Guide to AI (2024)
+                                </a>
+                                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                  Industry analysis on AI applications in tax operations and strategic implementation
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </Collapsible.Content>
                       </div>
-                    </div>
+                    </Collapsible.Root>
 
                     {/* Collapsible Raw Task List */}
                     <Collapsible.Root>
@@ -624,38 +568,53 @@ export default function ProblemIdentificationPage() {
                     </div>
                   </Collapsible.Root>
 
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-200/50 rounded-lg p-6">
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center space-x-2">
-                      <Target className="w-5 h-5 text-blue-600" />
-                      <span>Key Research Findings</span>
-                    </h4>
-                    <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>33 comprehensive tax activities</strong> identified and analyzed across banking operations and strategic functions</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>Strategic categorization</strong> applied: operational tasks for traditional automation, knowledge-intensive tasks for AI solutions</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>High-volume, low-complexity zone</strong> contains 7 prime automation candidates with 75%+ volume scores</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>AI solutions dominate</strong> interpretive tasks: document classification, regulatory analysis, and transaction monitoring</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>Traditional automation excels</strong> at structured tasks: calculations, data validation, and report generation</span>
-                      </li>
-                      <li className="flex items-start space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span><strong>Research methodology</strong> included workflow analysis, professional interviews, and volume/complexity scoring</span>
-                      </li>
-                    </ul>
-                  </div>
+                  {/* Collapsible Key Research Findings */}
+                  <Collapsible.Root>
+                    <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border border-blue-200/50 rounded-lg">
+                      <Collapsible.Trigger asChild>
+                        <button className="w-full flex items-center justify-between p-6 text-left hover:bg-blue-100/50 dark:hover:bg-blue-900/20 transition-colors rounded-t-lg">
+                          <div className="flex items-center gap-2">
+                            <Target className="w-5 h-5 text-blue-600" />
+                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                              Key Research Findings
+                            </h4>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                        </button>
+                      </Collapsible.Trigger>
+                      
+                      <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                        <div className="border-t border-blue-200/50 p-6">
+                          <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>33 comprehensive tax activities</strong> identified and analyzed across banking operations and strategic functions</span>
+                            </li>
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>Strategic categorization</strong> applied: operational tasks for traditional automation, knowledge-intensive tasks for AI solutions</span>
+                            </li>
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>High-volume, low-complexity zone</strong> contains 7 prime automation candidates with 75%+ volume scores</span>
+                            </li>
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>AI solutions dominate</strong> interpretive tasks: document classification, regulatory analysis, and transaction monitoring</span>
+                            </li>
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>Traditional automation excels</strong> at structured tasks: calculations, data validation, and report generation</span>
+                            </li>
+                            <li className="flex items-start space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span><strong>Research methodology</strong> included workflow analysis, professional interviews, and volume/complexity scoring</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </Collapsible.Content>
+                    </div>
+                  </Collapsible.Root>
                 </div>
               </CardContent>
             </Card>

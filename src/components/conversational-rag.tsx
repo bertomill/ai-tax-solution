@@ -148,41 +148,38 @@ export function ConversationalRAG() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="h-full flex items-center justify-center p-2"
+              className="h-full flex items-start justify-center pt-8 p-2"
             >
-              <Card className="w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-blue-200/50">
-                <CardHeader className="text-center pb-3">
-                  <CardTitle className="flex items-center justify-center gap-2 text-blue-700 dark:text-blue-300">
-                    <Sparkles className="w-5 h-5" />
-                    Welcome to Your AI Tax Research Assistant
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-0">
-                  <p className="text-gray-600 dark:text-gray-300 text-center">
-                    I&apos;m here to help you research tax law, regulations, and compliance requirements. 
-                    Ask me anything about tax codes, deductions, filing procedures, or specific tax scenarios.
+              <div className="w-full max-w-xl mx-auto text-center space-y-3">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-5 h-5 text-black dark:text-white" />
+                  <h2 className="text-lg font-semibold text-black dark:text-white">
+                    AI Tax Research Assistant
+                  </h2>
+                </div>
+                
+                <p className="text-black dark:text-white text-sm mb-3">
+                  Ask me about tax codes, deductions, filing procedures, or specific tax scenarios.
+                </p>
+                
+                <div className="space-y-2">
+                  <p className="text-black dark:text-white text-xs font-medium">
+                    Popular questions:
                   </p>
-                  
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
-                      Popular questions to get started:
-                    </h4>
-                    <div className="grid gap-2">
-                      {welcomeSuggestions.map((suggestion, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleCustomSubmit(suggestion)}
-                          disabled={isLoading}
-                          className="text-left p-3 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 rounded-lg text-sm text-blue-700 dark:text-blue-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="grid gap-2">
+                    {welcomeSuggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleCustomSubmit(suggestion)}
+                        disabled={isLoading}
+                        className="text-left p-3 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/50 rounded-lg text-sm text-blue-700 dark:text-blue-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
                   </div>
-
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           ) : (
             <motion.div

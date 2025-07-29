@@ -53,6 +53,7 @@ model AutomationOpportunity {
   description       String
   solutionType      String   @map("solution_type") // 'ai' | 'automation'
   solutionReasoning String   @map("solution_reasoning")
+  aiCategory        String?  @map("ai_category") // 'Content Generation' | 'Classification' | 'Summarization' | 'Transformation' | 'Q&A' | 'Extraction' | 'Reasoning'
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
