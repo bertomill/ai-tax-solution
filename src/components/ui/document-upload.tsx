@@ -123,7 +123,7 @@ export function DocumentUpload({
       setUploadProgress('Uploading and processing...')
       
       // Simulate upload progress
-      await simulateProgress(30, 500)
+      await simulateProgress(30, 2500)
 
       const formData = new FormData()
       formData.append('file', file)
@@ -135,7 +135,7 @@ export function DocumentUpload({
         body: formData,
       })
       
-      const progressPromise = simulateProgress(80, 1000)
+      const progressPromise = simulateProgress(80, 5000)
       
       const [response] = await Promise.all([uploadPromise, progressPromise])
       const data = await response.json()
@@ -147,7 +147,7 @@ export function DocumentUpload({
       setUploadProgress('Processing complete!')
       
       // Final progress update
-      await simulateProgress(100, 300)
+      await simulateProgress(100, 1500)
       
       // Refresh document list
       await fetchUserDocuments()
@@ -231,7 +231,7 @@ export function DocumentUpload({
       setUploadProgress('Uploading and processing...')
       
       // Simulate progress during processing
-      await simulateProgress(40, 500)
+      await simulateProgress(40, 2500)
 
       const uploadPromise = fetch('/api/upload', {
         method: 'POST',
@@ -245,7 +245,7 @@ export function DocumentUpload({
         }),
       })
       
-      const progressPromise = simulateProgress(85, 800)
+      const progressPromise = simulateProgress(85, 4000)
       
       const [response] = await Promise.all([uploadPromise, progressPromise])
       const data = await response.json()
@@ -257,7 +257,7 @@ export function DocumentUpload({
       setUploadProgress('Processing complete!')
       
       // Final progress update
-      await simulateProgress(100, 300)
+      await simulateProgress(100, 1500)
       
       // Clear the form
       setPastedText('')
