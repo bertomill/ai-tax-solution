@@ -39,7 +39,7 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   const sections: OnThisPageSection[] = [
     { id: 'problem-identification', title: 'Problem Identification' },
     { id: 'user-analysis', title: 'User Analysis' },
-    { id: 'mvp-strategy', title: 'MVP Strategy' },
+    { id: 'mvp-strategy', title: 'Development Strategy' },
     { id: 'enterprise-rollout', title: 'Enterprise Scale Rollout' }
   ]
 
@@ -1225,7 +1225,7 @@ export default function ProblemIdentificationPage() {
                   <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                     <div className="flex items-center gap-2">
                       <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                        MVP Strategy
+                        Development Strategy
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300">
                         Phased Approach to Product Development

@@ -151,7 +151,7 @@ const navigationData: { sections: NavigationSection[] } = {
               section: "user-analysis"
             },
             {
-              title: "MVP Strategy",
+              title: "Development Strategy",
               url: "/problem-identification#mvp-strategy",
               section: "mvp-strategy"
             },
@@ -184,6 +184,18 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Market Research Agent",
           icon: <Zap className="size-4" />,
           url: "/market-research",
+          subItems: [
+            {
+              title: "Market Research",
+              url: "/market-research",
+              section: "research"
+            },
+            {
+              title: "Solution Design",
+              url: "/market-research?tab=design",
+              section: "design"
+            }
+          ]
         },
         {
           title: "Tax Research & Compliance",
@@ -194,6 +206,18 @@ const navigationData: { sections: NavigationSection[] } = {
           title: "Client Communication Assistant",
           icon: <Users className="size-4" />,
           url: "/client-communications",
+          subItems: [
+            {
+              title: "Communication Assistant",
+              url: "/client-communications",
+              section: "communications"
+            },
+            {
+              title: "Solution Design",
+              url: "/client-communications?tab=design",
+              section: "design"
+            }
+          ]
         },
       ],
     },
@@ -238,13 +262,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     
     if (pathname === "/interview-format") {
       sections = ["assignment-overview", "interview-process", "expectations"]
-      itemToExpand = "Interview Format"
+      itemToExpand = "Session Format"
     } else if (pathname === "/problem-identification") {
       sections = ["problem-identification", "user-analysis", "mvp-strategy", "enterprise-rollout"]
       itemToExpand = "Approach"
     } else if (pathname === "/documentation") {
       sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons", "ai-tools", "automation-vs-ai"]
       itemToExpand = "Documentation"
+    } else if (pathname === "/search") {
+      sections = ["search", "design"]
+      itemToExpand = "AI Document Search"
+    } else if (pathname === "/market-research") {
+      sections = ["research", "design"]
+      itemToExpand = "Market Research Agent"
+    } else if (pathname === "/client-communications") {
+      sections = ["communications", "design"]
+      itemToExpand = "Client Communication Assistant"
     }
     
     if (sections.length === 0) return
