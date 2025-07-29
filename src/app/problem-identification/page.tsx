@@ -39,7 +39,8 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   const sections: OnThisPageSection[] = [
     { id: 'problem-identification', title: 'Problem Identification' },
     { id: 'user-analysis', title: 'User Analysis' },
-    { id: 'mvp-strategy', title: 'MVP Strategy' }
+    { id: 'mvp-strategy', title: 'MVP Strategy' },
+    { id: 'enterprise-rollout', title: 'Enterprise Scale Rollout' }
   ]
 
   useEffect(() => {
@@ -1301,6 +1302,185 @@ export default function ProblemIdentificationPage() {
             </Collapsible.Root>
           </section>
 
+          {/* Enterprise Scale Rollout Section */}
+          <section id="enterprise-rollout" className="space-y-6 scroll-mt-32">
+            <Collapsible.Root>
+              <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
+                <Collapsible.Trigger asChild>
+                  <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                        Enterprise Scale Rollout
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        Strategic Deployment & Adoption Framework
+                      </p>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                  </button>
+                </Collapsible.Trigger>
+                <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                  <div className="border-t border-gray-200/50 p-4">
+                    <div className="space-y-6">
+                      
+                      {/* Rollout Strategy Overview */}
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Multi-Phase Enterprise Deployment Strategy
+                        </h5>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                          Our enterprise rollout strategy focuses on systematic adoption, risk mitigation, and value demonstration across large-scale tax operations. The approach ensures smooth integration while maximizing ROI and user adoption.
+                        </p>
+                      </div>
+
+                      {/* Rollout Phases */}
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Phase 1: Foundation & Pilot (Months 1-3)
+                        </h5>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Infrastructure Setup</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Deploy enterprise-grade infrastructure</li>
+                              <li>• Implement security & compliance frameworks</li>
+                              <li>• Establish data governance protocols</li>
+                              <li>• Set up monitoring & analytics systems</li>
+                            </ul>
+                          </div>
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Pilot Program</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Select 2-3 high-impact departments</li>
+                              <li>• Train 50-100 power users</li>
+                              <li>• Implement feedback collection system</li>
+                              <li>• Measure initial ROI metrics</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Phase 2: Departmental Expansion (Months 4-8)
+                        </h5>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Scaling Strategy</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Roll out to 5-8 additional departments</li>
+                              <li>• Implement advanced features & integrations</li>
+                              <li>• Establish center of excellence</li>
+                              <li>• Develop internal training programs</li>
+                            </ul>
+                          </div>
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Change Management</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Deploy change management framework</li>
+                              <li>• Conduct leadership workshops</li>
+                              <li>• Establish user communities</li>
+                              <li>• Monitor adoption metrics</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Phase 3: Enterprise-Wide Deployment (Months 9-12)
+                        </h5>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Full Scale Rollout</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Deploy across all tax departments</li>
+                              <li>• Integrate with enterprise systems</li>
+                              <li>• Implement advanced analytics</li>
+                              <li>• Establish governance committees</li>
+                            </ul>
+                          </div>
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Optimization</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Performance optimization & scaling</li>
+                              <li>• Advanced feature deployment</li>
+                              <li>• Continuous improvement programs</li>
+                              <li>• ROI measurement & reporting</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Success Metrics */}
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Success Metrics & KPIs
+                        </h5>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Adoption Metrics</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 90%+ user adoption rate</li>
+                              <li>• 70%+ daily active users</li>
+                              <li>• 50%+ feature utilization</li>
+                              <li>• 95%+ user satisfaction score</li>
+                            </ul>
+                          </div>
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Efficiency Gains</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 60%+ time savings on tasks</li>
+                              <li>• 40%+ reduction in errors</li>
+                              <li>• 30%+ faster processing</li>
+                              <li>• 25%+ cost reduction</li>
+                            </ul>
+                          </div>
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Business Impact</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 3x ROI within 12 months</li>
+                              <li>• 50%+ compliance improvement</li>
+                              <li>• 35%+ productivity increase</li>
+                              <li>• 90%+ audit readiness</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Risk Mitigation */}
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Risk Mitigation & Governance
+                        </h5>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Technical Risks</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Comprehensive testing protocols</li>
+                              <li>• Rollback procedures & backup systems</li>
+                              <li>• Performance monitoring & alerting</li>
+                              <li>• Security audits & penetration testing</li>
+                            </ul>
+                          </div>
+                          <div className="space-y-2">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Organizational Risks</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Executive sponsorship & change champions</li>
+                              <li>• Comprehensive training programs</li>
+                              <li>• Clear communication strategies</li>
+                              <li>• Regular feedback & iteration cycles</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </Collapsible.Content>
+              </div>
+            </Collapsible.Root>
+          </section>
 
         </div>
       </main>
