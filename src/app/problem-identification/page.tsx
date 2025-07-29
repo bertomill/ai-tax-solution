@@ -37,8 +37,11 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
   const [activeSection, setActiveSection] = useState('')
 
   const sections: OnThisPageSection[] = [
-    { id: 'problem-identification', title: 'Problem Identification' },
+    { id: 'problem-identification', title: 'Research Approach' },
+    { id: 'research-methodology', title: 'Research Methodology' },
     { id: 'user-analysis', title: 'User Analysis' },
+    { id: 'task-list', title: 'Day-to-Day Tax Tasks' },
+    { id: 'automation-opportunities', title: 'Automation Opportunities' },
     { id: 'mvp-strategy', title: 'Development Strategy' },
     { id: 'enterprise-rollout', title: 'Enterprise Scale Rollout' }
   ]
@@ -790,8 +793,9 @@ export default function ProblemIdentificationPage() {
                 </p>
 
                     {/* Collapsible Research Methodology */}
-                    <Collapsible.Root>
-                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
+                    <div id="research-methodology" className="scroll-mt-32">
+                      <Collapsible.Root>
+                        <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                         <Collapsible.Trigger asChild>
                           <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
@@ -827,6 +831,7 @@ export default function ProblemIdentificationPage() {
                         </Collapsible.Content>
                       </div>
                     </Collapsible.Root>
+                    </div>
 
                     {/* User Analysis Section */}
                     <section id="user-analysis" className="space-y-6 scroll-mt-32 mb-8">
@@ -896,8 +901,9 @@ export default function ProblemIdentificationPage() {
                     </section>
 
                     {/* Collapsible Raw Task List */}
-                    <Collapsible.Root>
-                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
+                    <div id="task-list" className="scroll-mt-32">
+                      <Collapsible.Root>
+                        <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                         <Collapsible.Trigger asChild>
                           <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
@@ -1170,9 +1176,11 @@ export default function ProblemIdentificationPage() {
                       </div>
                     </Collapsible.Root>
                   </div>
+                  </div>
                   {/* Collapsible Tax Automation Opportunities Chart */}
-                  <Collapsible.Root>
-                    <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
+                  <div id="automation-opportunities" className="scroll-mt-32">
+                    <Collapsible.Root>
+                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-8">
                       <Collapsible.Trigger asChild>
                         <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                           <div className="flex items-center gap-2">
@@ -1198,6 +1206,7 @@ export default function ProblemIdentificationPage() {
                       </Collapsible.Content>
                     </div>
                   </Collapsible.Root>
+                  </div>
 
 
                 </div>

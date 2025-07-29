@@ -156,7 +156,7 @@ const navigationData: { sections: NavigationSection[] } = {
               section: "mvp-strategy"
             },
 
-          ]
+          ] 
         },
       ],
     },
@@ -264,7 +264,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       sections = ["assignment-overview", "interview-process", "expectations"]
       itemToExpand = "Session Format"
     } else if (pathname === "/problem-identification") {
-      sections = ["problem-identification", "user-analysis", "mvp-strategy", "enterprise-rollout"]
+      sections = ["problem-identification", "research-methodology", "user-analysis", "task-list", "automation-opportunities", "mvp-strategy", "enterprise-rollout"]
       itemToExpand = "Approach"
     } else if (pathname === "/documentation") {
       sections = ["overview", "ai-forms", "efficiency", "insights", "practical-lessons", "ai-tools", "automation-vs-ai"]
