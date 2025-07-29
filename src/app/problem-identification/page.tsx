@@ -22,7 +22,12 @@ import {
   X,
   Eye,
   Lightbulb,
-  Loader2
+  Loader2,
+  Search,
+  Settings,
+  Link,
+  BarChart3,
+  RefreshCw
 } from 'lucide-react'
 import AutomationChart from '@/components/ui/automation-chart'
 import * as Collapsible from '@radix-ui/react-collapsible'
@@ -47,7 +52,7 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
     { id: 'user-analysis', title: 'User Analysis' },
     { id: 'task-list', title: 'Day-to-Day Tax Tasks' },
     { id: 'automation-opportunities', title: 'Automation Opportunities' },
-    { id: 'mvp-strategy', title: 'Development Strategy' },
+    { id: 'development-strategy', title: 'Development Strategy' },
     { id: 'enterprise-rollout', title: 'Enterprise Scale Rollout' }
   ]
 
@@ -203,6 +208,164 @@ export default function ProblemIdentificationPage() {
       priority: "P2 - Nice to Have",
       timeframe: "Month 4+",
       icon: <Users className="w-5 h-5" />
+    }
+  ]
+
+  // Development phases for holistic approach covering all 4 use cases
+  const developmentPhases = [
+    {
+      title: "Phase 1: Foundation & Core Infrastructure (1-3 months)",
+      description: "Establish the technical foundation supporting all 4 use cases",
+      features: [
+        {
+          useCase: "Infrastructure",
+          items: [
+            "Cloud environment setup (Azure/AWS/GCP)",
+            "AI/ML model deployment pipeline",
+            "Document processing & storage architecture",
+            "Security & compliance framework (SOC2, ISO 27001)",
+            "API gateway & microservices foundation"
+          ]
+        },
+        {
+          useCase: "Tax Research & Documentation",
+          items: [
+            "AI-powered semantic search engine",
+            "PDF document ingestion pipeline",
+            "Text extraction & chunking algorithms",
+            "Vector database for embeddings",
+            "Basic search interface"
+          ]
+        },
+        {
+          useCase: "Problem Identification",
+          items: [
+            "Process analysis framework",
+            "Data collection mechanisms",
+            "Basic pattern recognition",
+            "Issue categorization system",
+            "Root cause analysis templates"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Phase 2: Core Use Case Development (4-6 months)",
+      description: "Build and deploy the primary functionality for each use case",
+      features: [
+        {
+          useCase: "Tax Research & Documentation",
+          items: [
+            "Advanced query understanding & intent detection",
+            "Multi-source document aggregation",
+            "Citation tracking & source verification",
+            "Research workflow management",
+            "Professional reporting & export features"
+          ]
+        },
+        {
+          useCase: "Problem Identification",
+          items: [
+            "Automated workflow analysis",
+            "Time & efficiency tracking",
+            "Bottleneck detection algorithms",
+            "Cost analysis & ROI calculations",
+            "Interactive problem mapping tools"
+          ]
+        },
+        {
+          useCase: "Solution Design",
+          items: [
+            "Solution recommendation engine",
+            "Implementation planning tools",
+            "Resource requirement estimation",
+            "Risk assessment frameworks",
+            "Technology stack suggestions"
+          ]
+        },
+        {
+          useCase: "Market Research",
+          items: [
+            "Competitive analysis automation",
+            "Market trend identification",
+            "Industry benchmark comparisons",
+            "Financial impact modeling",
+            "Strategic insight generation"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Phase 3: Advanced Features & Integration (7-9 months)",
+      description: "Enhance capabilities with AI-driven insights and cross-use case integration",
+      features: [
+        {
+          useCase: "Cross-Platform Integration",
+          items: [
+            "Unified dashboard across all use cases",
+            "Cross-functional workflow automation",
+            "Integrated reporting & analytics",
+            "Single sign-on & user management",
+            "API integrations (ERP, CRM, accounting systems)"
+          ]
+        },
+        {
+          useCase: "Advanced AI Capabilities",
+          items: [
+            "Predictive analytics & forecasting",
+            "Natural language query optimization",
+            "Automated insight generation",
+            "Personalized recommendations",
+            "Machine learning model improvement"
+          ]
+        },
+        {
+          useCase: "Collaboration & Governance",
+          items: [
+            "Team collaboration features",
+            "Version control & audit trails",
+            "Approval workflows",
+            "Knowledge sharing platforms",
+            "Training & onboarding systems"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Phase 4: Enterprise Scale & Optimization (10-12 months)",
+      description: "Scale for enterprise deployment with advanced governance and optimization",
+      features: [
+        {
+          useCase: "Enterprise Readiness",
+          items: [
+            "Multi-tenant architecture",
+            "Advanced security & compliance",
+            "Performance optimization at scale",
+            "Disaster recovery & backup systems",
+            "24/7 monitoring & support"
+          ]
+        },
+        {
+          useCase: "Advanced Analytics",
+          items: [
+            "Executive dashboards & KPIs",
+            "ROI measurement & reporting",
+            "Usage analytics & optimization",
+            "Predictive maintenance",
+            "Custom reporting & data exports"
+          ]
+        },
+        {
+          useCase: "Continuous Improvement",
+          items: [
+            "A/B testing framework",
+            "User feedback integration",
+            "Model retraining pipelines",
+            "Performance benchmarking",
+            "Innovation lab & R&D features"
+          ]
+        }
+      ]
     }
   ]
 
@@ -1666,8 +1829,8 @@ export default function ProblemIdentificationPage() {
 
 
 
-          {/* MVP Strategy Section */}
-          <section id="mvp-strategy" className="space-y-6 scroll-mt-32 mb-8">
+          {/* Development Strategy Section */}
+          <section id="development-strategy" className="space-y-6 scroll-mt-32 mb-8">
             <Collapsible.Root>
               <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg">
                 <Collapsible.Trigger asChild>
@@ -1677,7 +1840,7 @@ export default function ProblemIdentificationPage() {
                         Development Strategy
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300">
-                        Phased Approach to Product Development
+                        Holistic Product Development Across All 4 Use Cases
                       </p>
                     </div>
                     <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
@@ -1687,46 +1850,125 @@ export default function ProblemIdentificationPage() {
                 <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
                   <div className="border-t border-gray-200/50 p-4">
                     <div className="space-y-6">
+                      
+                      {/* Strategy Overview */}
                       <div className="text-center bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/50 dark:to-blue-950/50 rounded-lg p-6">
                         <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                          MVP Goal: Prove 75% Time Reduction in Tax Research
+                          Comprehensive AI Tax Solution Platform
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          Launch with 3 core features that deliver immediate value to tax professionals
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">
+                          Phased development approach covering Tax Research, Problem Identification, Solution Design, and Market Research
                         </p>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                          <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3">
+                            <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100">Tax Research</h5>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">AI-powered document search</p>
+                          </div>
+                          <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3">
+                            <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100">Problem ID</h5>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">Workflow analysis</p>
+                          </div>
+                          <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3">
+                            <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100">Solution Design</h5>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">Implementation planning</p>
+                          </div>
+                          <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-3">
+                            <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100">Market Research</h5>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">Competitive analysis</p>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="space-y-4">
-                        {mvpFeatures.map((feature, index) => (
-                          <motion.div
-                            key={feature.title}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                          >
-                            <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                              <div className="flex items-start justify-between gap-4">
-                                <div className="flex-1">
-                                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                    {feature.title}
-                                  </h4>
-                                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-3">
-                                    {feature.description}
-                                  </p>
-                                  <div className="flex gap-2">
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                                      Priority: {feature.priority}
-                                    </span>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                                      • {feature.timeframe}
-                                    </span>
+                      {/* Development Phases */}
+                      {developmentPhases.map((phase, phaseIndex) => (
+                        <div key={phase.title} className="space-y-4">
+                          <Collapsible.Root>
+                            <div className="border border-gray-200/50 rounded-lg">
+                              <Collapsible.Trigger asChild>
+                                <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-lg">
+                                  <div>
+                                    <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                                      {phase.title}
+                                    </h5>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                                      {phase.description}
+                                    </p>
+                                  </div>
+                                  <ChevronDown className="w-4 h-4 text-gray-500 transition-transform ui-state-open:rotate-180" />
+                                </button>
+                              </Collapsible.Trigger>
+                              <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
+                                <div className="border-t border-gray-200/50 p-4">
+                                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {phase.features.map((featureGroup, groupIndex) => (
+                                      <div key={featureGroup.useCase} className="space-y-2">
+                                        <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm flex items-center gap-2">
+                                          {featureGroup.useCase === 'Tax Research & Documentation' && <Brain className="w-4 h-4 text-blue-500" />}
+                                          {featureGroup.useCase === 'Problem Identification' && <Search className="w-4 h-4 text-green-500" />}
+                                          {featureGroup.useCase === 'Solution Design' && <Settings className="w-4 h-4 text-orange-500" />}
+                                          {featureGroup.useCase === 'Market Research' && <TrendingUp className="w-4 h-4 text-purple-500" />}
+                                          {featureGroup.useCase === 'Infrastructure' && <Database className="w-4 h-4 text-gray-500" />}
+                                          {featureGroup.useCase === 'Cross-Platform Integration' && <Link className="w-4 h-4 text-indigo-500" />}
+                                          {featureGroup.useCase === 'Advanced AI Capabilities' && <Zap className="w-4 h-4 text-yellow-500" />}
+                                          {featureGroup.useCase === 'Collaboration & Governance' && <Users className="w-4 h-4 text-teal-500" />}
+                                          {featureGroup.useCase === 'Enterprise Readiness' && <Shield className="w-4 h-4 text-red-500" />}
+                                          {featureGroup.useCase === 'Advanced Analytics' && <BarChart3 className="w-4 h-4 text-blue-500" />}
+                                          {featureGroup.useCase === 'Continuous Improvement' && <RefreshCw className="w-4 h-4 text-green-500" />}
+                                          {featureGroup.useCase}
+                                        </h6>
+                                        <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                          {featureGroup.items.map((item, itemIndex) => (
+                                            <li key={itemIndex} className="text-xs leading-relaxed">
+                                              • {item}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    ))}
                                   </div>
                                 </div>
-                              </div>
+                              </Collapsible.Content>
                             </div>
-                          </motion.div>
-                        ))}
+                          </Collapsible.Root>
+                        </div>
+                      ))}
+
+                      {/* Success Metrics for Development */}
+                      <div className="space-y-4">
+                        <h5 className="font-semibold text-gray-900 dark:text-gray-100">
+                          Development Success Metrics
+                        </h5>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Phase 1 Targets</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 95% system uptime</li>
+                              <li>• &lt;2s document processing</li>
+                              <li>• 85% search accuracy</li>
+                              <li>• SOC2 compliance</li>
+                            </ul>
+                          </div>
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Phase 2 Targets</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 75% time reduction</li>
+                              <li>• 90% user satisfaction</li>
+                              <li>• 4 use cases live</li>
+                              <li>• 100+ pilot users</li>
+                            </ul>
+                          </div>
+                          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                            <h6 className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-2">Phase 3-4 Targets</h6>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Enterprise scalability</li>
+                              <li>• 3x ROI achievement</li>
+                              <li>• 1000+ active users</li>
+                              <li>• 99.9% availability</li>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
+
                     </div>
                   </div>
                 </Collapsible.Content>
