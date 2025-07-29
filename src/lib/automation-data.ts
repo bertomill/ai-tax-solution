@@ -189,3 +189,18 @@ export async function addCommunicationDraftingOpportunity(): Promise<AutomationO
 
   return await addAutomationOpportunity(opportunity)
 }
+
+// Add Tax Compliance Scenarios opportunity
+export async function addTaxComplianceScenariosOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'Tax Compliance Scenarios',
+    volume: 82, // High value/time savings
+    complexity: 18, // Low complexity/risk
+    category: 'high-priority',
+    description: 'AI-powered analysis of tax cases to identify risks and compliance considerations through structured scenario modeling and regulatory framework analysis.',
+    solution_type: 'ai',
+    solution_reasoning: 'Rule-based analysis combined with natural language processing enables systematic evaluation of tax scenarios, identification of compliance risks, and generation of structured recommendations based on established tax regulations and precedents.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}

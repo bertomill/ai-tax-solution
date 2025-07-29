@@ -16,7 +16,7 @@ import {
   FileText
 } from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
-import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, addCommunicationDraftingOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
+import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, addCommunicationDraftingOpportunity, addTaxComplianceScenariosOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
 
 const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
@@ -90,6 +90,23 @@ const AutomationChart: React.FC = () => {
     } catch (error) {
       console.error('Error adding Communication Drafting:', error)
       alert('❌ Error adding Communication Drafting')
+    }
+  }
+
+  const handleAddTaxComplianceScenarios = async () => {
+    try {
+      const result = await addTaxComplianceScenariosOpportunity()
+      if (result) {
+        // Refresh the data
+        const opportunities = await getAutomationOpportunities()
+        setAutomationOpportunities(opportunities)
+        alert('✅ Tax Compliance Scenarios added successfully!')
+      } else {
+        alert('❌ Failed to add Tax Compliance Scenarios')
+      }
+    } catch (error) {
+      console.error('Error adding Tax Compliance Scenarios:', error)
+      alert('❌ Error adding Tax Compliance Scenarios')
     }
   }
 
@@ -373,6 +390,7 @@ const AutomationChart: React.FC = () => {
                 const isSelectedSolution = opportunity.name === 'AI Document Search'
                 const isTaxTrendsResearch = opportunity.name === 'Tax Trends Market Research'
                 const isCommunicationDrafting = opportunity.name === 'Communication Drafting'
+                const isTaxComplianceScenarios = opportunity.name === 'Tax Compliance Scenarios'
                 
                 return (
                   <Popover key={opportunity.id}>
@@ -384,6 +402,8 @@ const AutomationChart: React.FC = () => {
                           isTaxTrendsResearch ? 'ring-4 ring-blue-400 ring-opacity-60 shadow-lg shadow-blue-200 animate-pulse' : ''
                         } ${
                           isCommunicationDrafting ? 'ring-4 ring-emerald-400 ring-opacity-60 shadow-lg shadow-emerald-200 animate-pulse' : ''
+                        } ${
+                          isTaxComplianceScenarios ? 'ring-4 ring-orange-400 ring-opacity-60 shadow-lg shadow-orange-200 animate-pulse' : ''
                         }`}
                         style={{
                           left: `${x}%`,
