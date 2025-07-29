@@ -100,11 +100,11 @@ const ModernHomepage: React.FC = () => {
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Welcome Section */}
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-300">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-blue-300">
               Exploring AI Use Cases in the Tax Space
             </h1>
             <h2 className="text-xl font-medium text-gray-600 dark:text-gray-400">
-              Whiteboarding Interview Preparation Dashboard
+              Whiteboarding Excercise Dashboard
             </h2>
           </div>
 

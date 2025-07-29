@@ -1,11 +1,10 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { 
-  Lightbulb, 
   CheckCircle, 
   Users, 
   Target, 
@@ -23,6 +22,74 @@ import {
 import AutomationChart from '@/components/ui/automation-chart'
 import * as Collapsible from '@radix-ui/react-collapsible'
 
+interface OnThisPageSection {
+  id: string
+  title: string
+}
+
+interface OnThisPageSidebarProps {
+  className?: string
+}
+
+function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
+  const [activeSection, setActiveSection] = useState('')
+
+  const sections: OnThisPageSection[] = [
+    { id: 'problem-identification', title: 'Problem Identification' },
+    { id: 'user-analysis', title: 'User Analysis' },
+    { id: 'mvp-strategy', title: 'MVP Strategy' },
+    { id: 'ai-implementation', title: 'AI Implementation' }
+  ]
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i].id)
+        if (element && scrollPosition >= element.offsetTop) {
+          setActiveSection(sections[i].id)
+          break
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className={`${className} bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 max-h-[calc(100vh-4rem)] overflow-y-auto shadow-lg`}>
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200/50 dark:border-gray-700/50">
+        <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+          <FileText className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">On this page</h3>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Navigate approach sections</p>
+        </div>
+      </div>
+      
+      <nav className="space-y-1">
+        {sections.map((section) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className={`block px-3 py-2 text-sm rounded-md transition-all duration-200 ${
+              activeSection === section.id
+                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            {section.title}
+          </a>
+        ))}
+      </nav>
+    </div>
+  )
+}
 
 interface UserPersona {
   title: string
@@ -179,8 +246,8 @@ export default function ProblemIdentificationPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
       {/* Page Header */}
       <div className="py-8 px-4">
-        <div className="max-w-6xl mx-auto space-y-3">
-          <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-300">
+        <div className="max-w-6xl space-y-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-blue-300">
             Approach
           </h1>
           <p className="text-base text-black dark:text-gray-300">
@@ -192,32 +259,27 @@ export default function ProblemIdentificationPage() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
-        <div className="max-w-6xl mx-auto space-y-12">
+        <div className="max-w-6xl xl:mr-80 space-y-12">
           
           {/* Problem Identification Section */}
           <section id="problem-identification" className="space-y-6 scroll-mt-32">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Lightbulb className="w-6 h-6 text-amber-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  Problem Identification
-                </h2>
-              </div>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Problem Identification
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Research Analysis & Automation Opportunities
               </p>
             </div>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-              <CardContent className="p-6">
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                       Comprehensive Day-to-Day Tax Function Research
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                      I conducted extensive research into tax operations, through web research and interviewing my colleagues who work in tax and analyzing workflows to understand 
-                      their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities</strong> 
+                      I did a deep dive into tax operations, through web research and talking to my colleagues who work in tax and analyzing workflows to understand 
+                      their daily tasks. Through this research, I identified and catalogued <strong>30+ specific day-to-day activities </strong> 
                       performed across tax departments, ranging from routine data processing to complex analytical work. The comprehensive analysis 
                       below maps each task by volume and complexity to determine the optimal automation approach - whether traditional rule-based 
                       automation or AI-powered solutions.
@@ -225,11 +287,10 @@ export default function ProblemIdentificationPage() {
 
                     {/* Collapsible Research Methodology */}
                     <Collapsible.Root>
-                      <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200/50 rounded-lg mb-6">
+                      <div className="bg-white/60 dark:bg-gray-800/60 border border-gray-200/50 rounded-lg mb-6">
                         <Collapsible.Trigger asChild>
-                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-amber-100/50 dark:hover:bg-amber-900/20 transition-colors rounded-t-lg">
+                          <button className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition-colors rounded-t-lg">
                             <div className="flex items-center gap-2">
-                              <Lightbulb className="w-4 h-4 text-amber-600" />
                               <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                                 Research Methodology
                               </h4>
@@ -239,7 +300,7 @@ export default function ProblemIdentificationPage() {
                         </Collapsible.Trigger>
                         
                         <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
-                          <div className="border-t border-amber-200/50 p-4">
+                          <div className="border-t border-gray-200/50 p-4">
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-300">
                               <div>
                                 <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1">Workflow Analysis</h5>
@@ -258,23 +319,6 @@ export default function ProblemIdentificationPage() {
                                 <p>Quantified each task on frequency (volume) and skill requirements (complexity)</p>
                               </div>
                             </div>
-                            
-                            <div className="mt-4 pt-4 border-t border-amber-200/50">
-                              <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2 text-sm">Key Reference:</h5>
-                              <div className="bg-amber-50/50 dark:bg-amber-950/20 rounded-lg p-3">
-                                <a 
-                                  href="https://www.deloitte.com/content/dam/assets-zone3/us/en/docs/services/tax/2024/heads-of-tax-guide-to-ai.pdf" 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-blue-700 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-200 underline text-xs transition-colors"
-                                >
-                                  Deloitte: Head of Tax Guide to AI (2024)
-                                </a>
-                                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                                  Industry analysis on AI applications in tax operations and strategic implementation
-                                </p>
-                              </div>
-                            </div>
                           </div>
                         </Collapsible.Content>
                       </div>
@@ -288,7 +332,7 @@ export default function ProblemIdentificationPage() {
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-blue-600" />
                               <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                Raw Research Data: Complete List of Day-to-Day Tax Tasks
+                                List of Day-to-Day Tax Tasks
                               </h4>
                               <Badge variant="outline" className="text-xs">
                                 33 tasks identified
@@ -301,7 +345,7 @@ export default function ProblemIdentificationPage() {
                         <Collapsible.Content className="overflow-hidden data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
                           <div className="border-t border-gray-200/50 p-4">
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                              Below is the comprehensive list of daily tax activities I documented through interviews and workflow analysis. 
+                              Below is the list of tax activities I documented through my research and conversations with tax professionals. 
                               This raw data formed the foundation for the volume/complexity analysis and automation opportunity identification.
                             </p>
                             
@@ -519,18 +563,6 @@ export default function ProblemIdentificationPage() {
                             </div>
                             
                             <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 bg-gray-50/50 dark:bg-gray-800/50 rounded-lg p-3">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Database className="w-3 h-3" />
-                                <span className="font-medium">Research Notes:</span>
-                              </div>
-                              <ul className="space-y-1 ml-5 list-disc">
-                                <li>Tasks 1-28: Gathered from 12+ interviews across 4 major banking institutions</li>
-                                <li>Tasks 29-33: Strategic AI opportunities identified through additional research and industry analysis</li>
-                                <li>Each task was later scored on complexity (1-5) and volume (1-5) for automation analysis</li>
-                                <li>Department classifications based on typical organizational structure</li>
-                                <li>Frequency represents typical occurrence patterns observed across institutions</li>
-                                <li>Strategic tasks focus on knowledge-intensive work requiring AI-powered solutions</li>
-                              </ul>
                             </div>
                           </div>
                         </Collapsible.Content>
@@ -616,19 +648,14 @@ export default function ProblemIdentificationPage() {
                     </div>
                   </Collapsible.Root>
                 </div>
-              </CardContent>
-            </Card>
           </section>
 
           {/* User Analysis Section */}
           <section id="user-analysis" className="space-y-6 scroll-mt-32">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Users className="w-6 h-6 text-green-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  User Analysis
-                </h2>
-              </div>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                User Analysis
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Understanding Our Users & Their Pain Points
               </p>
@@ -641,39 +668,37 @@ export default function ProblemIdentificationPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  className="space-y-4"
                 >
-                  <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3">
-                        <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
-                          {persona.icon}
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold">{persona.title}</h3>
-                          <p className="text-gray-600 dark:text-gray-300 font-normal">{persona.description}</p>
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-red-500" />
-                          Current Pain Points
-                        </h4>
-                        <ul className="space-y-1">
-                          {persona.painPoints.map((pain, i) => (
-                            <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
-                              • {pain}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
-                        <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-center gap-3">
+                    <div className={`p-3 bg-gradient-to-r ${persona.color} rounded-lg text-white`}>
+                      {persona.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{persona.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{persona.description}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4 text-red-500" />
+                        Current Pain Points
+                      </h4>
+                      <ul className="space-y-1">
+                        {persona.painPoints.map((pain, i) => (
+                          <li key={i} className="text-gray-600 dark:text-gray-300 text-sm ml-6">
+                            • {pain}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3">
+                      <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">Current Process:</h5>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm">{persona.currentProcess}</p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -852,6 +877,9 @@ export default function ProblemIdentificationPage() {
           </section>
         </div>
       </main>
+      
+      {/* Fixed On This Page Sidebar */}
+      <OnThisPageSidebar className="fixed top-8 right-8 z-50 w-64 hidden xl:block" />
     </div>
   )
 } 

@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -17,6 +17,74 @@ import {
   FileText,
   CheckCircle
 } from 'lucide-react'
+
+interface OnThisPageSection {
+  id: string
+  title: string
+}
+
+interface OnThisPageSidebarProps {
+  className?: string
+}
+
+function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
+  const [activeSection, setActiveSection] = useState('')
+
+  const sections: OnThisPageSection[] = [
+    { id: 'assignment-overview', title: 'Assignment Overview' },
+    { id: 'interview-process', title: 'Interview Process' },
+    { id: 'expectations', title: 'Success Factors' }
+  ]
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i].id)
+        if (element && scrollPosition >= element.offsetTop) {
+          setActiveSection(sections[i].id)
+          break
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className={`${className} bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg p-4 sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto`}>
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200/50 dark:border-gray-700/50">
+        <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+          <FileText className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">On this page</h3>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Navigate interview sections</p>
+        </div>
+      </div>
+      
+      <nav className="space-y-1">
+        {sections.map((section) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className={`block px-3 py-2 text-sm rounded-md transition-all duration-200 ${
+              activeSection === section.id
+                ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-gray-200'
+            }`}
+          >
+            {section.title}
+          </a>
+        ))}
+      </nav>
+    </div>
+  )
+}
 
 interface InterviewStep {
   number: string
@@ -37,38 +105,17 @@ export default function InterviewFormatPage() {
   const interviewSteps: InterviewStep[] = [
     {
       number: '1',
-      title: 'Problem Presentation',
-      description: 'Present your identified tax problem and why it\'s worth solving',
-      duration: '15-20 min',
+      title: 'Whiteboarding – Product Ideation',
+      description: 'Collaborative problem-solving session with AI-powered solution ideas',
+      duration: '30-45 min',
       icon: <Lightbulb className="w-4 h-4" />
     },
     {
       number: '2',
-      title: 'Solution Ideation',
-      description: 'Share your AI-powered solution ideas and approach',
-      duration: '20-25 min',
-      icon: <Brain className="w-4 h-4" />
-    },
-    {
-      number: '3',
-      title: 'Collaborative Discussion',
-      description: 'Work together to expand and refine the ideas',
-      duration: '25-30 min',
+      title: 'Part 2 (Details TBD)',
+      description: 'Second part of the interview session',
+      duration: '45-60 min',
       icon: <Users className="w-4 h-4" />
-    },
-    {
-      number: '4',
-      title: 'Technical Deep Dive',
-      description: 'Explore implementation details and technical considerations',
-      duration: '15-20 min',
-      icon: <Settings className="w-4 h-4" />
-    },
-    {
-      number: '5',
-      title: 'Next Steps',
-      description: 'Discuss MVP strategy and phased rollout approach',
-      duration: '10-15 min',
-      icon: <ArrowRight className="w-4 h-4" />
     }
   ]
 
@@ -120,188 +167,170 @@ export default function InterviewFormatPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30">
       {/* Page Header */}
-      <div className="text-left py-8 px-4 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-          Interview Format
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
-          Complete Interview Guide & Expectations
-        </p>
+      <div className="py-8 px-4 max-w-7xl mx-auto">
+        <div className="space-y-3">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-blue-300">
+            Interview Format
+          </h1>
+          <h2 className="text-xl font-medium text-gray-600 dark:text-gray-400">
+            Complete Interview Guide & Expectations
+          </h2>
+        </div>
       </div>
 
 
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto p-4 md:p-6">
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              <div className="space-y-12">
           
           {/* Assignment Overview Section */}
           <section id="assignment-overview" className="space-y-6 scroll-mt-8">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <FileText className="w-6 h-6 text-blue-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  Assignment Overview
-                </h2>
-              </div>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Assignment Overview
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Whiteboarding Interview Session Details
               </p>
             </div>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                      Whiteboarding Interview Session
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-                      This round will be a collaborative whiteboarding session—a chance for us to work together like colleagues exploring a new idea.
-                      You&apos;ll come prepared with a problem you believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
-                    </p>
-                  </div>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                  Whiteboarding Interview Session
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                  This round will be a collaborative whiteboarding session—a chance for us to work together like colleagues exploring a new idea.
+                  You&apos;ll come prepared with a problem you believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
+                </p>
+              </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200/50">
-                      <CardHeader>
-                        <CardTitle className="flex items-center space-x-2">
-                          <Clock className="w-5 h-5 text-blue-600" />
-                          <span>Session Duration</span>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 dark:text-gray-300">Approximately 90 minutes, broken into two parts</p>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/50 dark:to-blue-950/50 border-green-200/50">
-                      <CardHeader>
-                        <CardTitle className="flex items-center space-x-2">
-                          <Users className="w-5 h-5 text-green-600" />
-                          <span>Format</span>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 dark:text-gray-300">Real working session, not a pitch - collaborative exploration</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <ul className="space-y-3">
+                <li className="text-gray-700">
+                  <strong>Session Duration:</strong> Approximately 90 minutes, broken into two parts
+                </li>
+                <li className="text-gray-700">
+                  <strong>Format:</strong> Real working session, not a pitch - collaborative exploration
+                </li>
+              </ul>
+            </div>
           </section>
 
           {/* Interview Process Section */}
           <section id="interview-process" className="space-y-6 scroll-mt-8">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Users className="w-6 h-6 text-purple-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  Interview Process
-                </h2>
-              </div>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Interview Format
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                5-Step Collaborative Process
+                90-Minute Session in Two Parts
               </p>
             </div>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    Interview Process - 5-Step Process
-                  </h3>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Interview Format - 2-Part Process
+              </h3>
 
-                  <div className="space-y-4">
-                    {interviewSteps.map((step, index) => (
-                      <motion.div
-                        key={step.number}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className="bg-white/60 backdrop-blur-sm border-gray-200/50 hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
-                          <CardContent className="p-4">
-                            <div className="flex items-start gap-4">
-                              <div className="flex-shrink-0">
-                                <Badge className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-bold flex items-center justify-center">
-                                  {step.number}
-                                </Badge>
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between mb-2">
-                                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                                    {step.icon}
-                                    {step.title}
-                                  </h4>
-                                  <Badge variant="outline" className="text-xs">
-                                    {step.duration}
-                                  </Badge>
-                                </div>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                  {step.description}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <div className="space-y-4">
+                {interviewSteps.map((step, index) => (
+                  <motion.div
+                    key={step.number}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex items-start gap-4 p-4 border border-gray-200/50 rounded-lg">
+                      <div className="flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gray-900 text-white text-sm font-bold flex items-center justify-center">
+                          {step.number}
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                            {step.title}
+                          </h4>
+                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            {step.duration}
+                          </span>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Part 1: Whiteboarding Details */}
+            <div className="space-y-6 mt-8">
+              <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                Part 1: Whiteboarding – Product Ideation Details
+              </h4>
+              
+              <div className="space-y-4">
+                <p className="text-gray-700 leading-relaxed">
+                  The candidate will come prepared with a problem they believe is worth solving in the Tax space—and one or more AI-powered solution ideas to address it.
+                </p>
+                
+                <ul className="space-y-3">
+                  <li className="text-gray-700">
+                    <strong>Working Session Format:</strong> This will be treated like a real working session, not a pitch. The candidate will walk through their thinking, and together they&apos;ll collaborate, ask questions, and expand the idea.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Multiple Ideas:</strong> If the candidate brings more than one idea, they&apos;ll choose one to focus on together.
+                  </li>
+                  <li className="text-gray-700">
+                    <strong>Visual Tools:</strong> The candidate is welcome to use the whiteboard, sketch, or talk through their thinking. If they&apos;d like to reference visuals, content, or examples, a screen will be available to bring them up during the session.
+                  </li>
+                </ul>
+              </div>
+            </div>
           </section>
 
           {/* Expectations Section */}
           <section id="expectations" className="space-y-6 scroll-mt-8">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-2">
-                <Target className="w-6 h-6 text-green-600" />
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                  What We&apos;re Looking For
-                </h2>
-              </div>
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Success Factors
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300">
                 Key Skills & Expectations
               </p>
             </div>
 
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm">
-              <CardContent className="p-6">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                    What We&apos;re Looking For
-                  </h3>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Success Factors
+              </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {expectations.map((item, index) => (
-                      <motion.div
-                        key={item.title}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/50 dark:to-pink-950/50 border-purple-200/50 hover:shadow-md transition-all duration-200 hover:scale-[1.02] h-full">
-                          <CardHeader>
-                            <CardTitle className="flex items-center space-x-2">
-                              {item.icon}
-                              <span>{item.title}</span>
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <p className="text-gray-600 dark:text-gray-300">
-                              {item.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              <ul className="space-y-4">
+                {expectations.map((item, index) => (
+                  <li key={item.title} className="text-gray-700">
+                    <strong>{item.title}:</strong> {item.description}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
+              </div>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-8">
+                <OnThisPageSidebar className="lg:block hidden" />
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>

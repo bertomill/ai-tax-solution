@@ -2,31 +2,15 @@
 
 import React from 'react'
 import { Separator } from '@/components/ui/separator'
-import { Building2, Brain, FileText, Mail, ExternalLink } from 'lucide-react'
+import { Building2, FileText, Mail, ExternalLink } from 'lucide-react'
+import Image from 'next/image'
 
 const Footer: React.FC = () => {
   return (
     <footer className="bg-gradient-to-br from-gray-50 via-white to-blue-50/30 border-t border-gray-200/50">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-sm">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-gray-900">AI-Tax-Solutions</h3>
-                <p className="text-xs text-gray-500">Interview Preparation</p>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Strategic AI automation opportunities for banking tax functions. 
-              Comprehensive analysis of when to use traditional automation versus AI solutions.
-            </p>
-          </div>
-
           {/* Navigation Links */}
           <div className="space-y-4">
             <h4 className="font-semibold text-gray-900">Navigation</h4>
@@ -74,7 +58,13 @@ const Footer: React.FC = () => {
                 <span>Next.js & React</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Brain className="w-4 h-4" />
+                <Image
+                  src="/favicon.svg"
+                  alt="Supabase Database"
+                  width={16}
+                  height={16}
+                  className="w-4 h-4"
+                />
                 <span>Supabase Database</span>
               </div>
               <div className="flex items-center space-x-2">

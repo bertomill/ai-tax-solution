@@ -32,6 +32,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarFooter,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 // TypeScript interfaces for navigation data
@@ -94,16 +95,21 @@ const navigationData: { sections: NavigationSection[] } = {
               title: "Practical Lessons",
               url: "/documentation#practical-lessons",
               section: "practical-lessons"
+            },
+            {
+              title: "AI Tools Used",
+              url: "/documentation#ai-tools",
+              section: "ai-tools"
             }
           ]
         },
       ],
     },
     {
-      title: "Interview Sections",
+      title: "Whiteboarding Sections",
       items: [
         {
-          title: "Interview Format",
+          title: "Session Format",
           icon: <Users className="size-4" />,
           url: "/interview-format",
           subItems: [
@@ -118,7 +124,7 @@ const navigationData: { sections: NavigationSection[] } = {
               section: "interview-process"
             },
             {
-              title: "What We're Looking For",
+              title: "Success Factors",
               url: "/interview-format#expectations",
               section: "expectations"
             }
@@ -269,6 +275,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2">
+          <SidebarTrigger className="-ml-1" />
           {state === "expanded" && (
             <div className="flex flex-col gap-0.5 leading-none animate-in slide-in-from-left-2 duration-300">
               <span className="font-medium text-gray-900">AI Tax Use Cases</span>

@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
+
 import { 
   CheckCircle,
   ExternalLink,
@@ -30,7 +31,8 @@ function OnThisPageSidebar({ className }: OnThisPageSidebarProps) {
     { id: 'rag-technology', title: 'RAG Technology' },
     { id: 'efficiency', title: 'Efficiency Gains' },
     { id: 'insights', title: 'Strategic Insights' },
-    { id: 'practical-lessons', title: 'Practical Lessons' }
+    { id: 'practical-lessons', title: 'Practical Lessons' },
+    { id: 'ai-tools', title: 'AI Tools Used' }
   ]
 
   useEffect(() => {
@@ -461,29 +463,237 @@ const DocumentationPage: React.FC = () => {
                 </motion.section>
 
                 {/* Insights Section */}
-                {insightsSection && (
-                  <motion.section
-                    id="insights"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
-                    {createSectionContent(insightsSection)}
-                  </motion.section>
-                )}
+                <motion.section
+                  id="insights"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  <section className="mb-16">
+                    <div className="mb-6">
+                      <h2 className="flex items-center space-x-3 text-2xl font-bold text-gray-900">
+                        <span>Strategic Insights</span>
+                        <Badge variant="outline" className="text-xs ml-2">
+                          insights
+                        </Badge>
+                      </h2>
+                      <p className="text-gray-600 mt-2">
+                        Key findings and strategic observations from AI implementation in tax environments
+                      </p>
+                    </div>
+                    
+                    <div className="prose prose-sm max-w-none">
+                      <p className="text-gray-700 leading-relaxed">
+                        AI implementation in tax functions reveals critical insights about technology adoption, 
+                        workflow optimization, and the future of professional services. These observations help 
+                        guide strategic decisions and implementation approaches.
+                      </p>
+                    </div>
+                    
+                    <Separator className="my-8" />
+                    
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900">Key Strategic Insights</h4>
+                      <ul className="space-y-3">
+                        <li className="text-gray-700">
+                          <strong>Technology Integration:</strong> Successful AI adoption requires careful integration with existing workflows and systems
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Professional Oversight:</strong> AI enhances rather than replaces professional judgment and expertise
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Data Quality:</strong> The effectiveness of AI solutions directly correlates with the quality and organization of underlying data
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Change Management:</strong> Successful implementation requires addressing both technical and human factors
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>ROI Measurement:</strong> Clear metrics and measurement frameworks are essential for demonstrating value and guiding improvements
+                        </li>
+                      </ul>
+                    </div>
+                  </section>
+                </motion.section>
 
                 {/* Practical Lessons Section */}
-                {practicalLessonsSection && (
-                  <motion.section
-                    id="practical-lessons"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    {createSectionContent(practicalLessonsSection)}
-                  </motion.section>
-                )}
+                <motion.section
+                  id="practical-lessons"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <section className="mb-16">
+                    <div className="mb-6">
+                      <h2 className="flex items-center space-x-3 text-2xl font-bold text-gray-900">
+                        <span>Practical Lessons</span>
+                        <Badge variant="outline" className="text-xs ml-2">
+                          lessons-learned
+                        </Badge>
+                      </h2>
+                      <p className="text-gray-600 mt-2">
+                        Real-world lessons and best practices from AI implementation in tax environments
+                      </p>
+                    </div>
+                    
+                    <div className="prose prose-sm max-w-none">
+                      <p className="text-gray-700 leading-relaxed">
+                        Implementing AI in tax functions provides valuable lessons about technology adoption, 
+                        user experience design, and organizational change. These practical insights help inform 
+                        future implementations and avoid common pitfalls.
+                      </p>
+                    </div>
+                    
+                    <Separator className="my-8" />
+                    
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900">Key Practical Lessons</h4>
+                      <ul className="space-y-3">
+                        <li className="text-gray-700">
+                          <strong>Start Small:</strong> Begin with focused use cases and expand gradually based on success and user feedback
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>User-Centric Design:</strong> Design solutions around actual user workflows rather than technology capabilities
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Training and Support:</strong> Invest in comprehensive training and ongoing support to ensure successful adoption
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Iterative Improvement:</strong> Continuously gather feedback and refine solutions based on real-world usage
+                        </li>
+                        <li className="text-gray-700">
+                          <strong>Change Communication:</strong> Clear communication about benefits and changes helps overcome resistance and build enthusiasm
+                        </li>
+                      </ul>
+                    </div>
+                  </section>
+                </motion.section>
               </div>
+
+              {/* AI Tools Used Section */}
+              <motion.section
+                id="ai-tools"
+                className="mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <section className="mb-16">
+                  <div className="mb-6">
+                    <h2 className="flex items-center space-x-3 text-2xl font-bold text-gray-900">
+                      <span>AI Tools Used</span>
+                      <Badge variant="outline" className="text-xs ml-2">
+                        tools
+                      </Badge>
+                    </h2>
+                    <p className="text-gray-600 mt-2">
+                      Key AI technologies and tools utilized in this tax automation research
+                    </p>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-gray-200 rounded-lg">
+                      <thead>
+                        <tr className="bg-gray-50">
+                          <th className="border border-gray-200 px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                            Tool
+                          </th>
+                          <th className="border border-gray-200 px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                            Description
+                          </th>
+                          <th className="border border-gray-200 px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                            Use Case
+                          </th>
+                          <th className="border border-gray-200 px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="hover:bg-gray-50">
+                          <td className="border border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            OpenAI GPT-4
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Advanced language model for natural language processing and text generation
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Chat interface and content generation
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm">
+                            <Badge variant="outline" className="text-green-600 border-green-200">
+                              Active
+                            </Badge>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="border border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            Supabase Vector Search
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Vector database for semantic search and document retrieval
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            RAG implementation and document search
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm">
+                            <Badge variant="outline" className="text-green-600 border-green-200">
+                              Active
+                            </Badge>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="border border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            OpenAI Embeddings
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Text embedding model for converting documents to vector representations
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Document indexing and similarity search
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm">
+                            <Badge variant="outline" className="text-green-600 border-green-200">
+                              Active
+                            </Badge>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="border border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            PDF Processing
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Document extraction and text processing from PDF files
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Tax document ingestion and analysis
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm">
+                            <Badge variant="outline" className="text-blue-600 border-blue-200">
+                              Implemented
+                            </Badge>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="border border-gray-200 px-4 py-3 text-sm font-medium text-gray-900">
+                            Next.js AI SDK
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            React framework with AI integration capabilities
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm text-gray-700">
+                            Frontend development and AI integration
+                          </td>
+                          <td className="border border-gray-200 px-4 py-3 text-sm">
+                            <Badge variant="outline" className="text-green-600 border-green-200">
+                              Active
+                            </Badge>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </motion.section>
             </div>
 
             {/* Sidebar */}
