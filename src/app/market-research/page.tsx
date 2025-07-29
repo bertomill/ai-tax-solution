@@ -308,12 +308,20 @@ Please conduct thorough research across multiple sources including company websi
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {TOP_TAX_FIRMS.map((firm) => (
-                  <div key={firm.id} className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                  <div 
+                    key={firm.id} 
+                    className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors cursor-pointer ${
+                      selectedFirms.includes(firm.id) 
+                        ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => handleFirmSelection(firm.id, !selectedFirms.includes(firm.id))}
+                  >
                     <input
                       type="checkbox"
                       id={firm.id}
                       checked={selectedFirms.includes(firm.id)}
-                      onChange={(e) => handleFirmSelection(firm.id, e.target.checked)}
+                      onChange={(e) => e.stopPropagation()} // Prevent double-triggering
                       className="mt-1"
                     />
                     <div className="flex-1">
@@ -329,9 +337,9 @@ Please conduct thorough research across multiple sources including company websi
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <label htmlFor={firm.id} className="font-medium text-gray-900 cursor-pointer">
+                            <span className="font-medium text-gray-900">
                               {firm.name}
-                            </label>
+                            </span>
                             <Badge variant="outline" className="text-xs">
                               {firm.size}
                             </Badge>
@@ -357,20 +365,28 @@ Please conduct thorough research across multiple sources including company websi
             <CardContent className="space-y-4">
               <div className="space-y-3">
                 {RESEARCH_THEMES.map((theme) => (
-                  <div key={theme.id} className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors">
+                  <div 
+                    key={theme.id} 
+                    className={`flex items-start space-x-3 p-3 border rounded-lg transition-colors cursor-pointer ${
+                      selectedTheme === theme.id 
+                        ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => setSelectedTheme(theme.id)}
+                  >
                     <input
                       type="radio"
                       id={theme.id}
                       name="theme"
                       value={theme.id}
                       checked={selectedTheme === theme.id}
-                      onChange={(e) => setSelectedTheme(e.target.value)}
+                      onChange={(e) => e.stopPropagation()} // Prevent double-triggering
                       className="mt-1"
                     />
                     <div className="flex-1">
-                      <label htmlFor={theme.id} className="font-medium text-gray-900 cursor-pointer block">
+                      <span className="font-medium text-gray-900 block">
                         {theme.name}
-                      </label>
+                      </span>
                       <p className="text-sm text-gray-600 mt-1">{theme.description}</p>
                       <div className="flex flex-wrap gap-1 mt-2">
                         {theme.keywords.slice(0, 3).map((keyword, index) => (
