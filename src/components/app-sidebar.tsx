@@ -155,9 +155,21 @@ const navigationData: { sections: NavigationSection[] } = {
       title: "AI Tools",
       items: [
         {
-          title: "RAG Search",
+          title: "AI Document Search",
           icon: <Search className="size-4" />,
           url: "/search",
+          subItems: [
+            {
+              title: "AI Search",
+              url: "/search",
+              section: "search"
+            },
+            {
+              title: "Solution Design",
+              url: "/search?tab=design",
+              section: "design"
+            }
+          ]
         },
         {
           title: "Automation Analysis",
@@ -258,7 +270,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {state === "expanded" && (
             <div className="flex flex-col gap-0.5 leading-none animate-in slide-in-from-left-2 duration-300">
               <span className="font-medium text-gray-900">AI Tax Use Cases</span>
-              <span className="text-xs text-muted-foreground">Interview Prep</span>
+              <span className="text-xs text-muted-foreground">Robert Mill</span>
             </div>
           )}
         </div>

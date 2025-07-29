@@ -25,7 +25,7 @@ export function ChatMessage({ message, isLoading }: ChatMessageProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        'flex w-full gap-3 p-4',
+        'flex w-full gap-3 p-3',
         isUser ? 'flex-row-reverse' : 'flex-row'
       )}
     >
@@ -44,14 +44,14 @@ export function ChatMessage({ message, isLoading }: ChatMessageProps) {
       {/* Message Content */}
       <div
         className={cn(
-          'flex flex-col space-y-2 max-w-[80%]',
+          'flex flex-col space-y-2 w-full',
           isUser ? 'items-end' : 'items-start'
         )}
       >
         {/* Message Bubble */}
         <div
           className={cn(
-            'rounded-2xl px-4 py-3 shadow-sm',
+            'rounded-2xl px-3 py-2 shadow-sm',
             isUser
               ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
               : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100'

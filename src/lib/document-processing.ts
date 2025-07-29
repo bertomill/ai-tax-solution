@@ -109,6 +109,117 @@ export class DocumentProcessor {
   }
 
   /**
+   * Process pasted text content and store in Supabase
+   */
+  async processTextDocument(
+    text: string,
+    fileName: string,
+    title: string,
+    userId?: string
+  ): Promise<ProcessingResult> {
+    try {
+      console.log(`Processing text document: ${title}`)
+
+      // Validate environment
+      if (!process.env.OPENAI_API_KEY) {
+        throw new Error('OpenAI API key is not configured')
+      }
+
+      // Validate and clean text
+      if (!text || text.trim().length === 0) {
+        return {
+          success: false,
+          error: 'No content provided'
+        }
+      }
+
+      const cleanedText = this.cleanText(text)
+      if (!this.isValidTextChunk(cleanedText)) {
+        return {
+          success: false,
+          error: 'Text content is not valid or contains too much corrupted data'
+        }
+      }
+
+      console.log(`Processing ${cleanedText.length} characters of text`)
+
+      // Smart chunking
+      const chunks = this.chunker.chunk(cleanedText)
+      console.log(`Text split into ${chunks.length} chunks`)
+
+      if (chunks.length === 0) {
+        return {
+          success: false,
+          error: 'Text could not be chunked properly'
+        }
+      }
+
+      // Generate embeddings in batches
+      const embeddings = await this.generateEmbeddings(chunks)
+
+      // Store in Supabase with retry logic
+      const insertPromises = chunks.map(async (chunk, index) => {
+        const metadata: DocumentChunk['metadata'] = {
+          source: 'user_text',
+          fileName,
+          chunkIndex: index,
+          totalChunks: chunks.length,
+          fileType: 'txt',
+          uploadedAt: new Date().toISOString(),
+          userId,
+          category: 'pasted_text',
+          section: title,
+        }
+
+        // Retry logic for network issues
+        let retries = 3
+        while (retries > 0) {
+          try {
+            const { data, error } = await supabase
+              .from('documents')
+              .insert({
+                content: chunk,
+                metadata,
+                embedding: `[${embeddings[index].join(',')}]`
+              })
+              .select('id')
+
+            if (error) {
+              console.error('Error inserting chunk:', error)
+              throw error
+            }
+
+            return data[0]?.id
+          } catch (error) {
+            retries--
+            if (retries === 0) throw error
+            
+            console.log(`Retrying chunk ${index} insert (${3 - retries}/3)`)
+            await new Promise(resolve => setTimeout(resolve, 1000))
+          }
+        }
+      })
+
+      const results = await Promise.all(insertPromises)
+      
+      console.log(`Successfully processed ${results.length} chunks for text: ${title}`)
+
+      return {
+        success: true,
+        documentId: results[0],
+        chunksProcessed: results.length
+      }
+
+    } catch (error) {
+      console.error('Text document processing error:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      }
+    }
+  }
+
+  /**
    * Process a document file and store in Supabase
    */
   async processDocument(

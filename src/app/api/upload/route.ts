@@ -3,6 +3,72 @@ import { documentProcessor } from '@/lib/document-processing'
 
 export async function POST(request: NextRequest) {
   try {
+    const contentType = request.headers.get('content-type')
+    
+    // Handle text submission (JSON)
+    if (contentType?.includes('application/json')) {
+      const { text, title, userId } = await request.json()
+
+      if (!text || !text.trim()) {
+        return NextResponse.json(
+          { error: 'No text content provided' },
+          { status: 400 }
+        )
+      }
+
+      if (!title || !title.trim()) {
+        return NextResponse.json(
+          { error: 'Document title is required' },
+          { status: 400 }
+        )
+      }
+
+      if (!userId) {
+        return NextResponse.json(
+          { error: 'User ID is required' },
+          { status: 400 }
+        )
+      }
+
+      // Validate text length (1MB limit)
+      if (text.length > 1000000) {
+        return NextResponse.json(
+          { error: 'Text is too long. Maximum length is 1MB.' },
+          { status: 400 }
+        )
+      }
+
+      // Create a filename from the title
+      const fileName = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`
+
+      // Process text as document
+      const result = await documentProcessor.processTextDocument(
+        text,
+        fileName,
+        title,
+        userId
+      )
+
+      if (!result.success) {
+        return NextResponse.json(
+          { error: result.error },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Successfully processed ${result.chunksProcessed} chunks`,
+        documentId: result.documentId,
+        chunksProcessed: result.chunksProcessed,
+        fileName,
+        fileType: 'txt',
+        uploadedAt: new Date().toISOString(),
+        totalChunks: result.chunksProcessed,
+      })
+    }
+
+    // Handle file upload (FormData)
     const formData = await request.formData()
     const file = formData.get('file') as File
     const userId = formData.get('userId') as string

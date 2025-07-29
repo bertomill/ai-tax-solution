@@ -11,11 +11,14 @@ import {
   Trash2,
   FileText,
   FileImage,
-  X
+  X,
+  Type,
+  FolderOpen
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface UploadedDocument {
   fileName: string
@@ -27,12 +30,18 @@ interface UploadedDocument {
 interface DocumentUploadProps {
   userId?: string
   onUploadSuccess?: (document: UploadedDocument) => void
+  onUploadStart?: (fileName: string) => void
+  onUploadProgress?: (progress: number) => void
+  onUploadError?: () => void
   className?: string
 }
 
 export function DocumentUpload({ 
   userId = 'demo-user', 
   onUploadSuccess,
+  onUploadStart,
+  onUploadProgress,
+  onUploadError,
   className 
 }: DocumentUploadProps) {
   const [isDragOver, setIsDragOver] = useState(false)
@@ -40,6 +49,9 @@ export function DocumentUpload({
   const [uploadProgress, setUploadProgress] = useState<string>('')
   const [uploadedDocs, setUploadedDocs] = useState<UploadedDocument[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [pastedText, setPastedText] = useState('')
+  const [textTitle, setTextTitle] = useState('')
+  const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload')
 
   // Fetch user documents on component mount
   React.useEffect(() => {
@@ -91,6 +103,28 @@ export function DocumentUpload({
     setError(null)
     setUploadProgress('Preparing upload...')
 
+    // Call upload start callback
+    onUploadStart?.(file.name)
+
+    // Simulate progress updates
+    const simulateProgress = (targetProgress: number, duration: number) => {
+      return new Promise(resolve => {
+        const steps = 20
+        const increment = targetProgress / steps
+        let currentProgress = 0
+        
+        const interval = setInterval(() => {
+          currentProgress += increment
+          if (currentProgress >= targetProgress) {
+            currentProgress = targetProgress
+            clearInterval(interval)
+            resolve(currentProgress)
+          }
+          onUploadProgress?.(currentProgress)
+        }, duration / steps)
+      })
+    }
+
     try {
       // Validate file type
       const allowedTypes = ['pdf', 'docx', 'doc', 'txt', 'md']
@@ -106,16 +140,23 @@ export function DocumentUpload({
       }
 
       setUploadProgress('Uploading and processing...')
+      
+      // Simulate upload progress
+      await simulateProgress(30, 500)
 
       const formData = new FormData()
       formData.append('file', file)
       formData.append('userId', userId)
 
-      const response = await fetch('/api/upload', {
+      // Simulate more progress during API call
+      const uploadPromise = fetch('/api/upload', {
         method: 'POST',
         body: formData,
       })
-
+      
+      const progressPromise = simulateProgress(80, 1000)
+      
+      const [response] = await Promise.all([uploadPromise, progressPromise])
       const data = await response.json()
 
       if (!response.ok) {
@@ -123,6 +164,9 @@ export function DocumentUpload({
       }
 
       setUploadProgress('Processing complete!')
+      
+      // Final progress update
+      await simulateProgress(100, 300)
       
       // Refresh document list
       await fetchUserDocuments()
@@ -139,6 +183,104 @@ export function DocumentUpload({
       setError(error instanceof Error ? error.message : 'Upload failed')
       setIsUploading(false)
       setUploadProgress('')
+      onUploadError?.()
+    }
+  }
+
+  const handleTextSubmit = async () => {
+    if (!pastedText.trim()) {
+      setError('Please enter some text to process')
+      return
+    }
+
+    if (!textTitle.trim()) {
+      setError('Please provide a title for your text document')
+      return
+    }
+
+    setIsUploading(true)
+    setError(null)
+    setUploadProgress('Processing text...')
+
+    // Call upload start callback
+    onUploadStart?.(textTitle)
+
+    // Simulate progress updates
+    const simulateProgress = (targetProgress: number, duration: number) => {
+      return new Promise(resolve => {
+        const steps = 20
+        const increment = targetProgress / steps
+        let currentProgress = 0
+        
+        const interval = setInterval(() => {
+          currentProgress += increment
+          if (currentProgress >= targetProgress) {
+            currentProgress = targetProgress
+            clearInterval(interval)
+            resolve(currentProgress)
+          }
+          onUploadProgress?.(currentProgress)
+        }, duration / steps)
+      })
+    }
+
+    try {
+      // Validate text length
+      if (pastedText.length > 1000000) { // 1MB text limit
+        throw new Error('Text is too long. Maximum length is 1MB.')
+      }
+
+      setUploadProgress('Uploading and processing...')
+      
+      // Simulate progress during processing
+      await simulateProgress(40, 500)
+
+      const uploadPromise = fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: pastedText,
+          title: textTitle,
+          userId: userId,
+        }),
+      })
+      
+      const progressPromise = simulateProgress(85, 800)
+      
+      const [response] = await Promise.all([uploadPromise, progressPromise])
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Upload failed')
+      }
+
+      setUploadProgress('Processing complete!')
+      
+      // Final progress update
+      await simulateProgress(100, 300)
+      
+      // Clear the form
+      setPastedText('')
+      setTextTitle('')
+      
+      // Refresh document list
+      await fetchUserDocuments()
+      
+      // Call success callback
+      onUploadSuccess?.(data)
+
+      setTimeout(() => {
+        setUploadProgress('')
+        setIsUploading(false)
+      }, 1000)
+
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Text processing failed')
+      setIsUploading(false)
+      setUploadProgress('')
+      onUploadError?.()
     }
   }
 
@@ -192,17 +334,35 @@ export function DocumentUpload({
   return (
     <div className={className}>
       {/* Upload Area */}
-      <Card className="mb-6">
+      <Card className="mb-4">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5 text-blue-500" />
-            Upload Documents
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Upload className="w-5 h-5 text-blue-500" />
+              Add Documents
+            </CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
+          <Tabs defaultValue="upload" className="w-full">
+            <div className="flex justify-end mb-3">
+              <TabsList className="h-7 bg-gray-50 dark:bg-gray-900 border">
+                <TabsTrigger value="upload" className="text-xs px-2 py-1 h-5 flex items-center gap-1">
+                  <FolderOpen className="w-3 h-3" />
+                  Files
+                </TabsTrigger>
+                <TabsTrigger value="paste" className="text-xs px-2 py-1 h-5 flex items-center gap-1">
+                  <Type className="w-3 h-3" />
+                  Text
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* File Upload Tab */}
+            <TabsContent value="upload">
           <div
             className={`
-              relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-200
+              relative border-2 border-dashed rounded-xl p-4 text-center transition-all duration-200
               ${isDragOver 
                 ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20' 
                 : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
@@ -236,12 +396,12 @@ export function DocumentUpload({
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="flex flex-col items-center gap-4"
                 >
-                  <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+                  <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
                   <div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                      Processing Document...
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      Processing...
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 px-2 text-center">
                       {uploadProgress}
                     </p>
                   </div>
@@ -255,26 +415,93 @@ export function DocumentUpload({
                   className="flex flex-col items-center gap-4"
                 >
                   <div className={`
-                    p-4 rounded-full transition-colors duration-200
+                    p-3 rounded-full transition-colors duration-200
                     ${isDragOver 
                       ? 'bg-blue-500 text-white' 
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
                     }
                   `}>
-                    <Upload className="w-8 h-8" />
+                    <Upload className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">
-                      Drop files here or click to browse
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                      Drop or click to upload
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Supports PDF, DOCX, DOC, TXT, MD files up to 10MB
+                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
+                      PDF, DOCX, TXT, MD
+                      <br />
+                      Up to 10MB
                     </p>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+            </TabsContent>
+
+            {/* Paste Text Tab */}
+            <TabsContent value="paste">
+              <div className="space-y-3">
+                {/* Title Input */}
+                <div>
+                  <label htmlFor="text-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Document Title
+                  </label>
+                  <input
+                    id="text-title"
+                    type="text"
+                    value={textTitle}
+                    onChange={(e) => setTextTitle(e.target.value)}
+                    placeholder="Document title..."
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm"
+                    disabled={isUploading}
+                  />
+                </div>
+
+                {/* Text Area */}
+                <div>
+                  <label htmlFor="text-content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Text Content
+                  </label>
+                  <textarea
+                    id="text-content"
+                    value={pastedText}
+                    onChange={(e) => setPastedText(e.target.value)}
+                    placeholder="Paste text content here..."
+                    rows={8}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 resize-vertical text-sm"
+                    disabled={isUploading}
+                  />
+                  <div className="mt-2 flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                    <span>{pastedText.length.toLocaleString()} characters</span>
+                    <span>Maximum: 1MB</span>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex justify-end">
+                  <Button
+                    onClick={handleTextSubmit}
+                    disabled={isUploading || !pastedText.trim() || !textTitle.trim()}
+                    size="sm"
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-xs"
+                  >
+                    {isUploading ? (
+                      <>
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <Type className="w-3 h-3 mr-1" />
+                        Process
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
 
           {/* Error Display */}
           <AnimatePresence>
@@ -283,12 +510,12 @@ export function DocumentUpload({
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mt-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2"
+                className="mt-4 p-2 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-2"
               >
-                <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-red-700 dark:text-red-400 font-medium">Upload Error</p>
-                  <p className="text-red-600 dark:text-red-500 text-sm">{error}</p>
+                <XCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-red-700 dark:text-red-400 font-medium text-xs">Error</p>
+                  <p className="text-red-600 dark:text-red-500 text-xs break-words">{error}</p>
                 </div>
                 <Button
                   variant="ghost"
@@ -307,51 +534,46 @@ export function DocumentUpload({
       {/* Uploaded Documents List */}
       {uploadedDocs.length > 0 && (
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between text-sm">
               <span className="flex items-center gap-2">
-                <File className="w-5 h-5 text-green-500" />
-                Your Documents
+                <File className="w-4 h-4 text-green-500" />
+                Documents
               </span>
               <Badge variant="outline" className="text-xs">
-                {uploadedDocs.length} document{uploadedDocs.length !== 1 ? 's' : ''}
+                {uploadedDocs.length}
               </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {uploadedDocs.map((doc, index) => (
                 <motion.div
                   key={`${doc.fileName}-${index}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
                     {getFileIcon(doc.fileType)}
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-gray-100 truncate max-w-xs">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-gray-900 dark:text-gray-100 truncate text-xs">
                         {doc.fileName}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {doc.totalChunks} chunks • Uploaded {new Date(doc.uploadedAt).toLocaleDateString()}
+                        {new Date(doc.uploadedAt).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">
-                      {doc.fileType.toUpperCase()}
-                    </Badge>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteDocument(doc.fileName)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDeleteDocument(doc.fileName)}
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 h-6 w-6 p-0 flex-shrink-0"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
                 </motion.div>
               ))}
             </div>

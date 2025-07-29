@@ -16,7 +16,10 @@ import {
   Eye,
   Rocket,
   ExternalLink,
-  BookOpen
+  BookOpen,
+  Database,
+  Network,
+  Zap
 } from 'lucide-react'
 import Footer from '@/components/ui/footer'
 import { getDocumentationSections, type DocumentationSection } from '@/lib/documentation-data'
@@ -313,6 +316,182 @@ const DocumentationPage: React.FC = () => {
                   <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
                     Our tax research platform demonstrates strategic AI integration by combining multiple AI disciplines rather than relying on a single approach. 
                     This multi-faceted strategy delivers more robust, reliable, and professionally-appropriate solutions for complex tax environments.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.section>
+
+          {/* RAG Technology Section */}
+          <motion.section
+            id="rag-technology"
+            className="mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+          >
+            <Card className="bg-white/80 backdrop-blur-sm border-green-200/50 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-3 text-green-700">
+                  <Brain className="w-6 h-6" />
+                  <span>Retrieval-Augmented Generation (RAG)</span>
+                  <Badge variant="outline" className="text-xs ml-2">
+                    core-technology
+                  </Badge>
+                </CardTitle>
+                <p className="text-gray-600">
+                  Advanced AI search technology that combines semantic understanding with authoritative sources for accurate tax research
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="prose prose-sm max-w-none">
+                  <p className="text-gray-700 leading-relaxed">
+                    Our platform leverages <strong>Retrieval-Augmented Generation (RAG)</strong> to provide accurate, 
+                    source-backed answers to complex tax questions. Unlike general-purpose AI chatbots, our RAG system 
+                    searches through verified tax documentation to ensure professional-grade accuracy and compliance.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="bg-white/60 dark:bg-gray-800/60 border-blue-200/30">
+                    <CardContent className="p-4 text-center">
+                      <Database className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Semantic Search</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Finds relevant information based on meaning and context, not just keywords
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-white/60 dark:bg-gray-800/60 border-purple-200/30">
+                    <CardContent className="p-4 text-center">
+                      <Brain className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">AI Generation</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Uses advanced language models to synthesize retrieved information into coherent answers
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-white/60 dark:bg-gray-800/60 border-green-200/30">
+                    <CardContent className="p-4 text-center">
+                      <Network className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">Contextual Responses</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Provides specific, source-referenced answers tailored to your tax research and compliance needs
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-4 border border-green-200/50">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-yellow-600" />
+                    How Our RAG System Works
+                  </h4>
+                  <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <div className="flex items-start gap-2">
+                      <span className="bg-blue-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">1</span>
+                      <span>Your question is processed using semantic search to understand intent and context</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">2</span>
+                      <span>Relevant sections from tax code documentation are retrieved and ranked by relevance</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">3</span>
+                      <span>AI generates a comprehensive answer using the retrieved context and sources</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">4</span>
+                      <span>Source documents are provided for verification and deeper exploration</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-gray-900 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      Technical Advantages
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Source Attribution</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Every answer includes references to specific tax documents and sections
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Dynamic Knowledge Base</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Easily updated with new tax regulations and professional firm knowledge
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 bg-green-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-green-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Context Preservation</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Maintains conversation history for follow-up questions and clarifications
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-gray-900 flex items-center gap-2">
+                      <Lightbulb className="w-5 h-5 text-blue-600" />
+                      Best Practices for Users
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Specific Questions</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Ask about specific tax codes, regulations, or compliance requirements
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Natural Language</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Use conversational language - the system understands context and synonyms
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3 p-3 bg-blue-50/80 rounded-lg">
+                        <CheckCircle className="size-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h5 className="font-medium text-gray-900">Document Expansion</h5>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Upload firm-specific documents to enhance the knowledge base
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-lg p-4 border border-green-300/50">
+                  <h4 className="font-semibold text-green-800 dark:text-green-200 mb-2 flex items-center gap-2">
+                    <Target className="w-5 h-5" />
+                    Why RAG is Essential for Tax Research
+                  </h4>
+                  <p className="text-sm text-green-700 dark:text-green-300 leading-relaxed">
+                    Tax law requires precise, verifiable information with clear source attribution. Our RAG implementation 
+                    ensures that every answer is grounded in authoritative tax documentation, providing the accuracy and 
+                    traceability that tax professionals need for client advice and compliance work.
                   </p>
                 </div>
               </CardContent>
