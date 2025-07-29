@@ -10,7 +10,11 @@ import {
   FileText,
   ArrowRight,
   Clock,
-  Search
+  Search,
+  Zap,
+  Check,
+  MessageSquare,
+  TrendingUp
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -28,6 +32,15 @@ interface InterviewSection {
   icon: React.ReactNode
   url: string
   color: string
+}
+
+interface AITool {
+  title: string
+  description: string
+  icon: React.ReactNode
+  url: string
+  color: string
+  badge?: string
 }
 
 const ModernHomepage: React.FC = () => {
@@ -90,6 +103,41 @@ const ModernHomepage: React.FC = () => {
       icon: <Brain className="w-6 h-6" />,
       url: '/problem-identification',
       color: 'from-orange-500 to-red-600'
+    }
+  ]
+
+  const aiTools: AITool[] = [
+    {
+      title: 'AI Document Search',
+      description: 'Search through tax documents, regulations, and case law with AI-powered semantic search',
+      icon: <Search className="w-6 h-6" />,
+      url: '/search',
+      color: 'from-blue-500 to-cyan-600',
+      badge: 'Search'
+    },
+    {
+      title: 'Market Research Agent',
+      description: 'AI-powered market research and competitive analysis for tax technology solutions',
+      icon: <TrendingUp className="w-6 h-6" />,
+      url: '/market-research',
+      color: 'from-green-500 to-emerald-600',
+      badge: 'Research'
+    },
+    {
+      title: 'Tax Compliance Simulator',
+      description: 'Simulate tax compliance scenarios and identify potential risks and opportunities',
+      icon: <Check className="w-6 h-6" />,
+      url: '/tax-research',
+      color: 'from-purple-500 to-violet-600',
+      badge: 'Compliance'
+    },
+    {
+      title: 'Communication Drafting',
+      description: 'AI-assisted drafting of client communications and tax letters with compliance checking',
+      icon: <MessageSquare className="w-6 h-6" />,
+      url: '/client-communications',
+      color: 'from-orange-500 to-red-600',
+      badge: 'Drafting'
     }
   ]
 
@@ -163,23 +211,66 @@ const ModernHomepage: React.FC = () => {
             </div>
           </div>
 
+          {/* AI Tools Section */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 text-center">
+              AI Tools & Solutions
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-2xl mx-auto">
+              Explore our suite of AI-powered tools designed specifically for tax professionals
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {aiTools.map((tool, index) => (
+                <Link key={index} href={tool.url}>
+                  <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200 group cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className={`p-3 rounded-lg bg-gradient-to-r ${tool.color} text-white group-hover:scale-110 transition-transform duration-200`}>
+                          {tool.icon}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 transition-colors">
+                              {tool.title}
+                            </h3>
+                            {tool.badge && (
+                              <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                                {tool.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            {tool.description}
+                          </p>
+                          <div className="mt-3 flex items-center text-blue-600 text-sm font-medium">
+                            Try it now <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* Quick Actions */}
           <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 border-blue-200/50">
             <CardContent className="p-6">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 text-center">
-                Preparation Tools
+                Additional Resources
               </h3>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/search">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3">
-                    <Search className="w-4 h-4 mr-2" />
-                    AI-Powered Search
-                  </Button>
-                </Link>
                 <Link href="/documentation">
                   <Button variant="outline" className="px-6 py-3">
                     <FileText className="w-4 h-4 mr-2" />
                     Documentation
+                  </Button>
+                </Link>
+                <Link href="/problem-identification">
+                  <Button variant="outline" className="px-6 py-3">
+                    <Brain className="w-4 h-4 mr-2" />
+                    Automation Chart
                   </Button>
                 </Link>
               </div>
