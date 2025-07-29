@@ -1731,9 +1731,41 @@ export default function ProblemIdentificationPage() {
                   
                   {aiSolution && (
                     <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg p-4">
-                      <p className="text-blue-900 dark:text-blue-100 text-sm leading-relaxed whitespace-pre-wrap">
-                        {aiSolution}
-                      </p>
+                      <div className="prose prose-sm prose-blue dark:prose-invert max-w-none text-blue-900 dark:text-blue-100">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            p: ({ children }) => <p className="mb-2 last:mb-0 text-sm leading-relaxed">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1 text-sm">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1 text-sm">{children}</ol>,
+                            li: ({ children }) => <li className="text-sm">{children}</li>,
+                            strong: ({ children }) => <strong className="font-semibold text-blue-800 dark:text-blue-200">{children}</strong>,
+                            em: ({ children }) => <em className="italic text-blue-800 dark:text-blue-200">{children}</em>,
+                            h1: ({ children }) => <h1 className="text-base font-bold text-blue-900 dark:text-blue-100 mb-2">{children}</h1>,
+                            h2: ({ children }) => <h2 className="text-sm font-bold text-blue-900 dark:text-blue-100 mb-2">{children}</h2>,
+                            h3: ({ children }) => <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">{children}</h3>,
+                            code: ({ children, className }) => {
+                              const isInline = !className
+                              return isInline ? (
+                                <code className="bg-blue-100 dark:bg-blue-900/50 px-1.5 py-0.5 rounded text-xs font-mono text-blue-800 dark:text-blue-200">
+                                  {children}
+                                </code>
+                              ) : (
+                                <code className="block bg-blue-100 dark:bg-blue-900/50 p-2 rounded text-xs font-mono text-blue-800 dark:text-blue-200 overflow-x-auto">
+                                  {children}
+                                </code>
+                              )
+                            },
+                            blockquote: ({ children }) => (
+                              <blockquote className="border-l-2 border-blue-300 dark:border-blue-700 pl-3 italic text-blue-800 dark:text-blue-200 text-sm">
+                                {children}
+                              </blockquote>
+                            ),
+                          }}
+                        >
+                          {aiSolution}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   )}
                   

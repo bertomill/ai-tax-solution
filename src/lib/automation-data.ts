@@ -174,3 +174,18 @@ export async function addTaxTrendsMarketResearchOpportunity(): Promise<Automatio
 
   return await addAutomationOpportunity(opportunity)
 }
+
+// Add Communication Drafting opportunity
+export async function addCommunicationDraftingOpportunity(): Promise<AutomationOpportunity | null> {
+  const opportunity: Omit<AutomationOpportunity, 'id' | 'created_at' | 'updated_at'> = {
+    name: 'Communication Drafting',
+    volume: 75, // High value/time savings
+    complexity: 15, // Very low complexity/risk
+    category: 'high-priority',
+    description: 'AI-assisted drafting of client communications, tax letters, and regulatory responses with automated tone adjustment and compliance checking.',
+    solution_type: 'ai',
+    solution_reasoning: 'Natural language generation and template-based systems enable rapid creation of professional communications while ensuring consistency, compliance, and appropriate tone for different audiences.'
+  }
+
+  return await addAutomationOpportunity(opportunity)
+}

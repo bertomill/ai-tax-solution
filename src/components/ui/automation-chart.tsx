@@ -12,10 +12,11 @@ import {
   DollarSign, 
   CheckCircle,
   AlertCircle,
-  Info
+  Info,
+  FileText
 } from 'lucide-react'
 import AutomationVsAIAnalysis from './automation-vs-ai-analysis'
-import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
+import { getAutomationOpportunities, addAIDocumentSearchOpportunity, addTaxTrendsMarketResearchOpportunity, addCommunicationDraftingOpportunity, type AutomationOpportunity } from '@/lib/automation-data'
 
 const AutomationChart: React.FC = () => {
   const [automationOpportunities, setAutomationOpportunities] = useState<AutomationOpportunity[]>([])
@@ -72,6 +73,23 @@ const AutomationChart: React.FC = () => {
     } catch (error) {
       console.error('Error adding Tax Trends Market Research:', error)
       alert('❌ Error adding Tax Trends Market Research')
+    }
+  }
+
+  const handleAddCommunicationDrafting = async () => {
+    try {
+      const result = await addCommunicationDraftingOpportunity()
+      if (result) {
+        // Refresh the data
+        const opportunities = await getAutomationOpportunities()
+        setAutomationOpportunities(opportunities)
+        alert('✅ Communication Drafting added successfully!')
+      } else {
+        alert('❌ Failed to add Communication Drafting')
+      }
+    } catch (error) {
+      console.error('Error adding Communication Drafting:', error)
+      alert('❌ Error adding Communication Drafting')
     }
   }
 
@@ -335,6 +353,13 @@ const AutomationChart: React.FC = () => {
                 <TrendingUp className="w-3 h-3" />
                 Add Tax Trends Research
               </button>
+              <button
+                onClick={handleAddCommunicationDrafting}
+                className="px-3 py-1.5 text-xs bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-md transition-colors duration-200 flex items-center gap-1"
+              >
+                <FileText className="w-3 h-3" />
+                Add Communication Drafting
+              </button>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               These opportunities will appear as highlighted data points on the chart
@@ -377,6 +402,7 @@ const AutomationChart: React.FC = () => {
                 const y = 6 + ((100 - opportunity.complexity) / 100) * (100 - 12)
                 const isSelectedSolution = opportunity.name === 'AI Document Search'
                 const isTaxTrendsResearch = opportunity.name === 'Tax Trends Market Research'
+                const isCommunicationDrafting = opportunity.name === 'Communication Drafting'
                 
                 return (
                   <Popover key={opportunity.id}>
@@ -386,6 +412,8 @@ const AutomationChart: React.FC = () => {
                           isSelectedSolution ? 'ring-4 ring-purple-400 ring-opacity-60 shadow-lg shadow-purple-200 animate-pulse' : ''
                         } ${
                           isTaxTrendsResearch ? 'ring-4 ring-blue-400 ring-opacity-60 shadow-lg shadow-blue-200 animate-pulse' : ''
+                        } ${
+                          isCommunicationDrafting ? 'ring-4 ring-emerald-400 ring-opacity-60 shadow-lg shadow-emerald-200 animate-pulse' : ''
                         }`}
                         style={{
                           left: `${x}%`,
