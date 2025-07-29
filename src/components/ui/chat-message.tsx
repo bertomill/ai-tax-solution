@@ -1,3 +1,4 @@
+import React from 'react'
 import { cn } from '@/lib/utils'
 import { Bot, User, Volume2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -37,7 +38,7 @@ export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: Ch
         className={cn(
           'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border shadow-sm',
           isUser 
-            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white border-blue-300' 
+            ? 'bg-blue-700 text-white border-blue-300' 
             : 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-emerald-300'
         )}
       >
@@ -56,7 +57,7 @@ export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: Ch
           className={cn(
             'rounded-2xl px-3 py-2 shadow-sm',
             isUser
-              ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+              ? 'bg-blue-700 text-white'
               : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100'
           )}
         >
@@ -77,7 +78,31 @@ export function ChatMessage({ message, isLoading, onSpeak, speechSupported }: Ch
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
                   components={{
-                    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                    p: ({ children }) => {
+                      // Convert children to string to process citations
+                      const text = React.Children.toArray(children).join('')
+                      
+                      // Split text by citation pattern and process
+                      const parts = text.split(/(\[Source \d+\])/)
+                      const processedParts = parts.map((part, index) => {
+                        const citationMatch = part.match(/\[Source (\d+)\]/)
+                        if (citationMatch) {
+                          const sourceNum = citationMatch[1]
+                          return (
+                            <span
+                              key={index}
+                              className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 mx-0.5 cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                              title={`Click to see source details`}
+                            >
+                              [Source {sourceNum}]
+                            </span>
+                          )
+                        }
+                        return part
+                      })
+                      
+                      return <p className="mb-2 last:mb-0">{processedParts}</p>
+                    },
                     ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
                     ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
                     li: ({ children }) => <li className="text-sm">{children}</li>,

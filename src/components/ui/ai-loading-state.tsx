@@ -5,30 +5,25 @@ import { motion } from 'framer-motion'
 import { Sparkles, FileText, CheckCircle2, Brain } from 'lucide-react'
 
 interface LoadingStep {
-  id: number
   text: string
   icon: React.ReactNode
 }
 
 const loadingSteps: LoadingStep[] = [
   {
-    id: 1,
     text: "Analyzing results...",
     icon: <Sparkles className="w-4 h-4" />
   },
   {
-    id: 2,
     text: "Generating summary...",
     icon: <Brain className="w-4 h-4" />
   },
   {
-    id: 3,
     text: "Checking for relevant information...",
     icon: <FileText className="w-4 h-4" />
   },
   {
-    id: 4,
-    text: "Finalizing analysis...",
+    text: "Refining analysis...",
     icon: <CheckCircle2 className="w-4 h-4" />
   }
 ]
@@ -89,7 +84,7 @@ export function AILoadingState() {
         <div className="space-y-3">
           {loadingSteps.map((step, index) => (
             <motion.div
-              key={step.id}
+              key={index}
               initial={{ opacity: 0.3 }}
               animate={{ 
                 opacity: index <= currentStep ? 1 : 0.3,
@@ -102,17 +97,17 @@ export function AILoadingState() {
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
-              <div className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors ${
+              <div className={`flex items-center justify-center transition-colors ${
                 index < currentStep 
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                  ? 'text-green-600 dark:text-green-400'
                   : index === currentStep
-                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-gray-400 dark:text-gray-500'
               }`}>
                 {index < currentStep ? (
                   <CheckCircle2 className="w-4 h-4" />
                 ) : (
-                  <span className="text-xs font-bold">{step.id}</span>
+                  step.icon
                 )}
               </div>
               <span className={index === currentStep ? 'font-medium' : ''}>

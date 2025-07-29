@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Textarea } from '@/components/ui/textarea'
 import Image from 'next/image'
 
 import { 
@@ -20,7 +22,9 @@ import {
   AlertCircle,
   Building2,
   Briefcase,
-  X
+  X,
+  Edit3,
+  Save
 } from 'lucide-react'
 
 interface MarketInsight {
@@ -55,7 +59,7 @@ const TOP_TAX_FIRMS: TaxFirm[] = [
   { id: 'ey', name: 'EY', description: 'Ernst & Young - Professional services and tax consulting', size: 'Big 4' },
   { id: 'deloitte', name: 'Deloitte', description: 'Deloitte Tax LLP - Tax consulting and compliance', size: 'Big 4' },
   { id: 'kpmg', name: 'KPMG', description: 'KPMG Tax - Global tax advisory services', size: 'Big 4' },
-  { id: 'rst', name: 'RSM', description: 'RSM US - Middle market tax and advisory services', size: 'National' },
+  { id: 'rsm', name: 'RSM', description: 'RSM US - Middle market tax and advisory services', size: 'National' },
   { id: 'bdo', name: 'BDO', description: 'BDO USA - Tax, assurance and advisory services', size: 'National' }
 ]
 
@@ -75,6 +79,7 @@ const RESEARCH_THEMES: ResearchTheme[] = [
 ]
 
 const MarketResearchAgent: React.FC = () => {
+  // State management for the research configuration
   const [selectedFirms, setSelectedFirms] = useState<string[]>([])
   const [selectedTheme, setSelectedTheme] = useState<string>('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -85,7 +90,11 @@ const MarketResearchAgent: React.FC = () => {
   const [scheduleTime, setScheduleTime] = useState('')
   const [isScheduling, setIsScheduling] = useState(false)
   const [scheduleSuccess, setScheduleSuccess] = useState(false)
-  const [showPrompt, setShowPrompt] = useState(false)
+  
+  // NEW: State for the right-side drawer and prompt editing functionality
+  const [showPrompt, setShowPrompt] = useState(false) // Controls whether the drawer is open
+  const [isEditingPrompt, setIsEditingPrompt] = useState(false) // Toggles between preview and edit modes
+  const [customPrompt, setCustomPrompt] = useState('') // Stores the user's custom prompt text
 
   const handleFirmSelection = (firmId: string, checked: boolean) => {
     if (checked) {
@@ -222,11 +231,17 @@ const MarketResearchAgent: React.FC = () => {
     }
   }
 
+  /**
+   * Generates the research prompt that will be sent to the AI agent
+   * This function creates a comprehensive prompt based on the selected firms and theme
+   * If the user has created a custom prompt, it uses that instead of the default one
+   */
   const generateResearchPrompt = () => {
     const selectedFirmNames = selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).filter(Boolean)
     const selectedThemeData = RESEARCH_THEMES.find(t => t.id === selectedTheme)
     
-    return `Conduct comprehensive market research on the following:
+    // This is the default prompt template that gets populated with the user's selections
+    const basePrompt = `Conduct comprehensive market research on the following:
 
 RESEARCH SCOPE:
 - Target Firms: ${selectedFirmNames.join(', ')}
@@ -251,6 +266,28 @@ For each insight, provide:
 - Timestamp
 
 Please conduct thorough research across multiple sources including company websites, press releases, industry reports, and recent news to provide comprehensive market intelligence.`
+
+    // If the user has created a custom prompt, use that instead of the default one
+    // This allows users to fine-tune the research instructions to their specific needs
+    return customPrompt || basePrompt
+  }
+
+  /**
+   * Saves the user's custom prompt and switches back to preview mode
+   * This function is called when the user clicks the "Save Changes" button
+   */
+  const handleSaveCustomPrompt = () => {
+    setCustomPrompt(customPrompt) // Store the custom prompt
+    setIsEditingPrompt(false) // Switch back to preview mode
+  }
+
+  /**
+   * Resets the custom prompt back to empty and switches to preview mode
+   * This function is called when the user clicks the "Reset to Default" button
+   */
+  const handleResetPrompt = () => {
+    setCustomPrompt('') // Clear any custom prompt
+    setIsEditingPrompt(false) // Switch back to preview mode
   }
 
   return (
@@ -424,15 +461,145 @@ Please conduct thorough research across multiple sources including company websi
                     </>
                   )}
                 </Button>
-                <Button
-                  onClick={() => setShowPrompt(true)}
-                  disabled={selectedFirms.length === 0 || !selectedTheme}
-                  variant="outline"
-                  className="h-12 px-4"
-                >
-                  <Lightbulb className="w-4 h-4 mr-2" />
-                  View Research Prompt
-                </Button>
+                {/* RIGHT-SIDE DRAWER: This creates a sliding panel that opens from the right side of the screen */}
+                {/* Instead of a modal that covers the entire screen, this drawer slides in from the right */}
+                {/* This provides a better user experience as it doesn't block the main content completely */}
+                <Sheet open={showPrompt} onOpenChange={setShowPrompt}>
+                  {/* SheetTrigger: This is the button that opens the drawer when clicked */}
+                  <SheetTrigger asChild>
+                    <Button
+                      disabled={selectedFirms.length === 0 || !selectedTheme}
+                      variant="outline"
+                      className="h-12 px-4"
+                    >
+                      <Lightbulb className="w-4 h-4 mr-2" />
+                      View Research Prompt
+                    </Button>
+                  </SheetTrigger>
+                  {/* SheetContent: This is the actual drawer content that slides in from the right */}
+                  {/* side="right": Specifies that the drawer opens from the right side of the screen */}
+                  {/* className: Sets the width and responsive behavior of the drawer */}
+                  <SheetContent side="right" className="w-full sm:max-w-2xl">
+                    {/* SheetHeader: The header section of the drawer with title and action buttons */}
+                    <SheetHeader className="pb-6 border-b border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between">
+                        {/* SheetTitle: The main title of the drawer */}
+                        <SheetTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                          Research Prompt Preview
+                        </SheetTitle>
+                        {/* Action buttons: Edit/Preview toggle and Close button */}
+                        <div className="flex items-center gap-2">
+                          {/* EDIT BUTTON: Toggles between preview and edit modes */}
+                          {/* When clicked, it switches between showing the prompt as text or as an editable textarea */}
+                          <Button
+                            onClick={() => setIsEditingPrompt(!isEditingPrompt)}
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-3"
+                          >
+                            <Edit3 className="w-4 h-4 mr-1" />
+                            {isEditingPrompt ? 'Preview' : 'Edit'}
+                          </Button>
+                          {/* CLOSE BUTTON: Closes the drawer and returns to the main interface */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => setShowPrompt(false)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </SheetHeader>
+                    {/* Main content area of the drawer */}
+                    <div className="py-6 space-y-6">
+                      {/* CONDITIONAL RENDERING: Shows different content based on whether user is editing or previewing */}
+                      {isEditingPrompt ? (
+                        /* EDIT MODE: Shows an editable textarea where users can customize the research prompt */
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              Customize Research Prompt:
+                            </h4>
+                            {/* TEXTAREA: A large text input box where users can edit the research prompt */}
+                            {/* value: Shows either the custom prompt or the default generated prompt */}
+                            {/* onChange: Updates the customPrompt state as the user types */}
+                            {/* placeholder: Shows helpful text when the textarea is empty */}
+                            {/* className: Styles the textarea with monospace font and minimum height */}
+                            <Textarea
+                              value={customPrompt || generateResearchPrompt()}
+                              onChange={(e) => setCustomPrompt(e.target.value)}
+                              placeholder="Enter your custom research prompt..."
+                              className="min-h-[400px] text-sm font-mono"
+                            />
+                          </div>
+                          {/* ACTION BUTTONS: Save changes or reset to default */}
+                          <div className="flex justify-end gap-2">
+                            {/* RESET BUTTON: Clears any custom changes and returns to the default prompt */}
+                            <Button variant="outline" onClick={handleResetPrompt}>
+                              Reset to Default
+                            </Button>
+                            {/* SAVE BUTTON: Saves the custom prompt and switches back to preview mode */}
+                            <Button onClick={handleSaveCustomPrompt}>
+                              <Save className="w-4 h-4 mr-2" />
+                              Save Changes
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        /* PREVIEW MODE: Shows the research prompt as read-only text for review */
+                        <div className="space-y-4">
+                          {/* PROMPT PREVIEW: Displays the research prompt in a formatted, read-only view */}
+                          <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
+                            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              What the AI Agent Will Research:
+                            </h4>
+                            {/* PRE TAG: Preserves formatting and shows the prompt exactly as it will be sent to the AI */}
+                            <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
+                              {generateResearchPrompt()}
+                            </pre>
+                          </div>
+                          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                              Research Configuration:
+                            </h4>
+                            <div className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
+                              {selectedFirms.length > 0 && (
+                                <div>
+                                  <strong>Target Firms:</strong> {selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).join(', ')}
+                                </div>
+                              )}
+                              {selectedTheme && (
+                                <div>
+                                  <strong>Research Theme:</strong> {RESEARCH_THEMES.find(t => t.id === selectedTheme)?.name}
+                                </div>
+                              )}
+                              <div>
+                                <strong>Expected Output:</strong> Structured insights with categories, confidence levels, and impact assessments
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          This prompt will be sent to the AI agent to conduct comprehensive market research.
+                        </p>
+                        <Button
+                          onClick={() => {
+                            setShowPrompt(false)
+                            handleResearch()
+                          }}
+                          disabled={isAnalyzing}
+                        >
+                          <Search className="w-4 h-4 mr-2" />
+                          Start Research Now
+                        </Button>
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               </div>
               {(selectedFirms.length > 0 || selectedTheme) && (
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg">
@@ -798,81 +965,7 @@ Please conduct thorough research across multiple sources including company websi
         </div>
       )}
 
-      {/* Research Prompt Modal */}
-      {showPrompt && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                Research Prompt Preview
-              </h3>
-              <Button
-                onClick={() => setShowPrompt(false)}
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            <div className="p-6 overflow-y-auto max-h-[60vh]">
-              <div className="space-y-4">
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    What the AI Agent Will Research:
-                  </h4>
-                  <pre className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono">
-                    {generateResearchPrompt()}
-                  </pre>
-                </div>
-                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-                    Research Configuration:
-                  </h4>
-                  <div className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
-                    {selectedFirms.length > 0 && (
-                      <div>
-                        <strong>Target Firms:</strong> {selectedFirms.map(id => TOP_TAX_FIRMS.find(f => f.id === id)?.name).join(', ')}
-                      </div>
-                    )}
-                    {selectedTheme && (
-                      <div>
-                        <strong>Research Theme:</strong> {RESEARCH_THEMES.find(t => t.id === selectedTheme)?.name}
-                      </div>
-                    )}
-                    <div>
-                      <strong>Expected Output:</strong> Structured insights with categories, confidence levels, and impact assessments
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                This prompt will be sent to the AI agent to conduct comprehensive market research.
-              </p>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => setShowPrompt(false)}
-                  variant="outline"
-                >
-                  Close
-                </Button>
-                <Button
-                  onClick={() => {
-                    setShowPrompt(false)
-                    handleResearch()
-                  }}
-                  disabled={isAnalyzing}
-                >
-                  <Search className="w-4 h-4 mr-2" />
-                  Start Research Now
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   )
 }

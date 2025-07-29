@@ -141,9 +141,14 @@ const navigationData: { sections: NavigationSection[] } = {
           url: "/problem-identification",
           subItems: [
             {
-              title: "Problem Identification",
+              title: "Research Approach",
               url: "/problem-identification#problem-identification",
               section: "problem-identification"
+            },
+            {
+              title: "Research Methodology",
+              url: "/problem-identification#research-methodology",
+              section: "research-methodology"
             },
             {
               title: "User Analysis",
@@ -151,11 +156,25 @@ const navigationData: { sections: NavigationSection[] } = {
               section: "user-analysis"
             },
             {
+              title: "Day-to-Day Tax Tasks",
+              url: "/problem-identification#task-list",
+              section: "task-list"
+            },
+            {
+              title: "Automation Opportunities",
+              url: "/problem-identification#automation-opportunities",
+              section: "automation-opportunities"
+            },
+            {
               title: "Development Strategy",
               url: "/problem-identification#mvp-strategy",
               section: "mvp-strategy"
             },
-
+            {
+              title: "Enterprise Scale Rollout",
+              url: "/problem-identification#enterprise-rollout",
+              section: "enterprise-rollout"
+            }
           ] 
         },
       ],
@@ -198,17 +217,17 @@ const navigationData: { sections: NavigationSection[] } = {
           ]
         },
         {
-          title: "Tax Research & Compliance",
+          title: "Tax Compliance Simulator",
           icon: <Check className="size-4" />,
           url: "/tax-research",
         },
         {
-          title: "Client Communication Assistant",
+          title: "Communication Drafting",
           icon: <Users className="size-4" />,
           url: "/client-communications",
           subItems: [
             {
-              title: "Communication Assistant",
+              title: "Communication Drafting",
               url: "/client-communications",
               section: "communications"
             },
@@ -277,7 +296,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       itemToExpand = "Market Research Agent"
     } else if (pathname === "/client-communications") {
       sections = ["communications", "design"]
-      itemToExpand = "Client Communication Assistant"
+      itemToExpand = "Communication Drafting"
     }
     
     if (sections.length === 0) return

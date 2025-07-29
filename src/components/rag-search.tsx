@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles } from 'lucide-react'
 import { ConversationalRAG } from '@/components/conversational-rag'
 
 export function RAGSearch() {
@@ -15,10 +14,7 @@ export function RAGSearch() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex items-center gap-2 mb-1">
-          <div className="p-1.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
+        <div className="mb-1">
           <h1 className="text-2xl font-bold text-black dark:text-gray-100">
             AI Tax Research Platform
           </h1>

@@ -566,6 +566,27 @@ const DocumentationPage: React.FC = () => {
                         </li>
                       </ul>
                     </div>
+
+                    <Separator className="my-8" />
+
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-gray-900">Real-World Implementation Experience</h4>
+                      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p className="text-gray-700 leading-relaxed">
+                          From my experience in leading the rollout of CIBC&apos;s flagship AI use case, there were several key lessons learned such as buy vs build decisions, training programs, creating a network of champions, adapting the tools to different end users, and complying with strict financial industry regulations.
+                        </p>
+                        <div className="mt-3">
+                          <a 
+                            href="https://www.cibc.com/en/about-cibc/future-banking/ai/enterprise-generative-ai.html" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center"
+                          >
+                            Read more about CIBC&apos;s Enterprise Generative AI journey →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </section>
                 </motion.section>
               </div>

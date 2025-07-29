@@ -698,6 +698,113 @@ function SearchPageContent() {
                       </Collapsible.Root>
                     </div>
 
+                    {/* In-Market Examples */}
+                    <div id="in-market-examples" className="space-y-6">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        In-Market Examples
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        Several established players are already demonstrating the value of AI-powered tax research and document search. 
+                        These solutions validate the market demand and show the transformative potential of AI in tax services.
+                      </p>
+                      
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                              <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">BJ</span>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Blue J</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">AI-Powered Tax Research Platform</p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              Blue J offers a generative AI solution for tax research that transforms how tax professionals work. 
+                              Their platform provides conversational AI research capabilities with verifiable answers from trusted tax sources.
+                            </p>
+                            
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Key Features:</h5>
+                              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                <li>• Conversational AI research interface</li>
+                                <li>• Curated database of trusted tax resources</li>
+                                <li>• Automated drafting of emails and memos</li>
+                                <li>• Human oversight by experienced legal research team</li>
+                                <li>• Used by leading firms including RSM, KPMG, Crowe</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="pt-2">
+                              <a 
+                                href="https://www.bluej.com/ca" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium inline-flex items-center gap-1"
+                              >
+                                Visit Blue J →
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                              <span className="text-green-600 dark:text-green-400 font-bold text-lg">BT</span>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">Bloomberg Tax AI</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">Intelligent Tax Research & Analysis</p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                             Bloomberg Tax&apos;s AI technology enhances their comprehensive tax research platform with intelligent 
+                               search capabilities and automated analysis tools for tax professionals.
+                            </p>
+                            
+                            <div className="space-y-2">
+                              <h5 className="font-medium text-gray-900 dark:text-gray-100 text-sm">Key Features:</h5>
+                              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                <li>• AI-powered search across Bloomberg Tax content</li>
+                                <li>• Automated tax analysis and insights</li>
+                                <li>• Integration with Bloomberg&apos;s extensive tax database</li>
+                                <li>• Professional-grade research tools</li>
+                                <li>• Enterprise-level security and compliance</li>
+                              </ul>
+                            </div>
+                            
+                            <div className="pt-2">
+                              <a 
+                                href="https://pro.bloombergtax.com/products/ai-and-bloomberg-tax/#technology" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 text-sm font-medium inline-flex items-center gap-1"
+                              >
+                                Learn More →
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg p-4">
+                        <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                          Market Validation
+                        </h4>
+                        <p className="text-blue-800 dark:text-blue-200 text-sm leading-relaxed">
+                          The success of platforms like Blue J and Bloomberg Tax AI demonstrates strong market demand for 
+                          AI-powered tax research solutions. These established players have proven that tax professionals 
+                          are ready to adopt AI tools that enhance their research capabilities while maintaining professional 
+                          standards and accuracy.
+                        </p>
+                      </div>
+                    </div>
+
                     {/* Value Proposition */}
                     <div id="value-proposition" className="space-y-6">
                       <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">

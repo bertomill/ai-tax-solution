@@ -196,9 +196,9 @@ export function ConversationalRAG() {
                 />
               ))}
               
-              {/* Loading indicator for streaming response */}
+              {/* Loading indicator - only show when loading and no assistant message is currently streaming */}
               <AnimatePresence>
-                {isLoading && (
+                {isLoading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
                   <motion.div
                     key="ai-loading"
                     initial={{ opacity: 0, y: 20 }}

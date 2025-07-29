@@ -335,36 +335,6 @@ const AutomationChart: React.FC = () => {
             <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Click on any data point for detailed analysis</span>
           </div>
           
-          {/* Add Opportunities Section */}
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">Add Sample Opportunities</h4>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={handleAddDocumentSearch}
-                className="px-3 py-1.5 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-md transition-colors duration-200 flex items-center gap-1"
-              >
-                <Zap className="w-3 h-3" />
-                Add AI Document Search
-              </button>
-              <button
-                onClick={handleAddTaxTrendsMarketResearch}
-                className="px-3 py-1.5 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors duration-200 flex items-center gap-1"
-              >
-                <TrendingUp className="w-3 h-3" />
-                Add Tax Trends Research
-              </button>
-              <button
-                onClick={handleAddCommunicationDrafting}
-                className="px-3 py-1.5 text-xs bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-md transition-colors duration-200 flex items-center gap-1"
-              >
-                <FileText className="w-3 h-3" />
-                Add Communication Drafting
-              </button>
-            </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-              These opportunities will appear as highlighted data points on the chart
-            </p>
-          </div>
         </div>
         <div>
           <div className="relative">
