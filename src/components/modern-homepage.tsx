@@ -103,7 +103,7 @@ const ModernHomepage: React.FC = () => {
           {/* Welcome Section */}
           <div className="space-y-3">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-blue-300">
-              Welcome to the AI for Tax Use Cases Whiteboarding Session
+             AI for Tax Use Cases
             </h1>
           </div>
 
